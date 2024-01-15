@@ -14,4 +14,7 @@ public class CANConstants {
     public static final int INTAKE_OUTPUT_ID = 7;
     public static final int INTAKE_NOTE_LIMIT_SWITCH_ID = 43;
     public static final int INTAKE_ZEROING_LIMIT_SWITCH_ID = 42;
+    public static final int SHOOTER_ONE_ID = 236535456;
+    public static final int SHOOTER_TWO_ID = 3256748;
+    public static final int LOADER_ID = 76543;
 }
