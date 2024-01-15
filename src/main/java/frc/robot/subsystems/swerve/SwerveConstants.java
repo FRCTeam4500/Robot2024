@@ -14,12 +14,12 @@ import frc.robot.hardware.TalonFXMotorController;
 public class SwerveConstants {
     // TODO: Change these!
     /** Drive rotations per motor rotation */
-    public static final double DRIVE_RATIO = 1/7.5;
+    public static final double DRIVE_RATIO = 1/5.;
     /** Angle rotations per motor rotation */
     public static final double ANGLE_RATIO = 1/6.75;
 
-    public static final double MAX_LINEAR_SPEED_MPS = 4.;
-    public static final double WHEEL_DIAMETER_METERS = 0.1016;
+    public static final double MAX_LINEAR_SPEED_MPS = 5.088;
+    public static final double WHEEL_DIAMETER_METERS = 0.0762;
 
     /* Sensitivities */
     public static final double MAX_FORWARD_SENSITIVITY = 4;
@@ -34,14 +34,14 @@ public class SwerveConstants {
         AlignToTarget
     }
 
-    public static final TalonFXConfiguration driveConfig =
+    public static final TalonFXConfiguration driveConfig = 
         new TalonFXConfiguration()
             .withSlot1(new Slot1Configs()
                 .withKP(0.11)
                 .withKI(0.5)
                 .withKD(0.0001)
                 .withKV(0.12));
-    public static final TalonFXConfiguration angleConfig =
+    public static final TalonFXConfiguration angleConfig = 
         new TalonFXConfiguration()
             .withMotionMagic(new MotionMagicConfigs()
                 .withMotionMagicAcceleration(400)
@@ -52,24 +52,24 @@ public class SwerveConstants {
                 .withKD(0.1)
                 .withKV(0.12));
 
-    public static final EncodedMotorController FRONT_LEFT_DRIVE_MOTOR =
+    public static final EncodedMotorController FRONT_LEFT_DRIVE_MOTOR = 
         new TalonFXMotorController(
             CANConstants.SWERVE_FRONT_LEFT_DRIVE_ID,
             driveConfig.withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive))
         );
-    public static final EncodedMotorController FRONT_LEFT_ANGLE_MOTOR =
+    public static final EncodedMotorController FRONT_LEFT_ANGLE_MOTOR = 
         new TalonFXMotorController(
             CANConstants.SWERVE_FRONT_LEFT_ANGLE_ID,
             angleConfig.withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.CounterClockwise_Positive))
         );
     public static final Translation2d FRONT_LEFT_MODULE_TRANSLATION = new Translation2d(
-        0.2974,
-        0.2974
+        0.3175,
+        0.2413
     );
 
-    public static final EncodedMotorController FRONT_RIGHT_DRIVE_MOTOR =
+    public static final EncodedMotorController FRONT_RIGHT_DRIVE_MOTOR = 
         // new TalonFXMotorController(CANConstants.SWERVE_FRONT_RIGHT_DRIVE_ID)
         //     .configInverted(false)
         //     .configCurrentLimit(35)
@@ -79,7 +79,7 @@ public class SwerveConstants {
             driveConfig.withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.CounterClockwise_Positive))
         );
-    public static final EncodedMotorController FRONT_RIGHT_ANGLE_MOTOR =
+    public static final EncodedMotorController FRONT_RIGHT_ANGLE_MOTOR = 
         // new TalonFXMotorController(CANConstants.SWERVE_FRONT_RIGHT_ANGLE_ID)
         //     .configInverted(false)
         //     .configCurrentLimit(25)
@@ -91,11 +91,11 @@ public class SwerveConstants {
                 .withInverted(InvertedValue.CounterClockwise_Positive))
         );
     public static final Translation2d FRONT_RIGHT_MODULE_TRANSLATION = new Translation2d(
-        0.2974,
-        -0.2974
+        0.3175,
+        -0.2413
     );
 
-    public static final EncodedMotorController BACK_LEFT_DRIVE_MOTOR =
+    public static final EncodedMotorController BACK_LEFT_DRIVE_MOTOR = 
         // new TalonFXMotorController(CANConstants.SWERVE_BACK_LEFT_DRIVE_ID)
         //     .configInverted(true)
         //     .configCurrentLimit(35)
@@ -105,7 +105,7 @@ public class SwerveConstants {
             driveConfig.withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive))
         );
-    public static final EncodedMotorController BACK_LEFT_ANGLE_MOTOR =
+    public static final EncodedMotorController BACK_LEFT_ANGLE_MOTOR = 
         // new TalonFXMotorController(CANConstants.SWERVE_BACK_LEFT_ANGLE_ID)
         //     .configInverted(false)
         //     .configCurrentLimit(25)
@@ -117,11 +117,11 @@ public class SwerveConstants {
                 .withInverted(InvertedValue.CounterClockwise_Positive))
         );
     public static final Translation2d BACK_LEFT_MODULE_TRANSLATION = new Translation2d(
-        -0.2974,
-        0.2974
+        -0.3175,
+        0.2431
     );
 
-    public static final EncodedMotorController BACK_RIGHT_DRIVE_MOTOR =
+    public static final EncodedMotorController BACK_RIGHT_DRIVE_MOTOR = 
         // new TalonFXMotorController(CANConstants.SWERVE_BACK_RIGHT_DRIVE_ID)
         //     .configInverted(false)
         //     .configCurrentLimit(35)
@@ -131,7 +131,7 @@ public class SwerveConstants {
             driveConfig.withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.CounterClockwise_Positive))
         );
-    public static final EncodedMotorController BACK_RIGHT_ANGLE_MOTOR =
+    public static final EncodedMotorController BACK_RIGHT_ANGLE_MOTOR = 
         // new TalonFXMotorController(CANConstants.SWERVE_BACK_RIGHT_ANGLE_ID)
         //     .configInverted(false)
         //     .configCurrentLimit(25)
@@ -143,7 +143,7 @@ public class SwerveConstants {
                 .withInverted(InvertedValue.CounterClockwise_Positive))
         );
     public static final Translation2d BACK_RIGHT_MODULE_TRANSLATION = new Translation2d(
-        -0.2974,
-        -0.2974
+        -0.3175,
+        -0.2413
     );
 }

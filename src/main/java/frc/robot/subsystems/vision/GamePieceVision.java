@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.Limelight;
 
@@ -71,4 +72,12 @@ public class GamePieceVision extends SubsystemBase implements LoggableInputs {
 
     @Override
     public void fromLog(LogTable table) {}
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("Horizontal Offset", () -> getHorizontalOffset(new Rotation2d()).getDegrees(), null);
+        builder.addDoubleProperty("Vertical Offset", () -> getVerticalOffset(new Rotation2d()).getDegrees(), null);
+        builder.addDoubleProperty("Taken Area", () -> getTakenArea(0), null);
+        builder.addBooleanProperty("Sees Piece", () -> seesPiece(), null);
+    }
 }

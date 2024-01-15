@@ -1,5 +1,6 @@
 package frc.robot.subsystems.messaging;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.LogTable;
@@ -37,4 +38,9 @@ public class Messaging extends SubsystemBase implements LoggableInputs {
 
 	@Override
 	public void fromLog(LogTable table) {}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.addStringProperty("Messages", () -> messages.toString(), null);
+	}
 }

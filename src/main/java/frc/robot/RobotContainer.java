@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,12 +15,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.messaging.Messaging;
-import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.CommandSwerve;
 
 public class RobotContainer {
 	private CommandXboxController xbox;
     private Superstructure structure;
-	private SwerveDrive swerve;
+	private CommandSwerve swerve;
 	private Messaging messaging;
 	private Command autoCommand;
 	private SendableChooser<Command> autonChooser;
@@ -28,15 +30,14 @@ public class RobotContainer {
 	public RobotContainer() {
         DriverStation.silenceJoystickConnectionWarning(true);
         structure = Superstructure.getInstance();
-		swerve = SwerveDrive.getInstance();
+		swerve = CommandSwerve.getInstance();
 		messaging = Messaging.getInstance();
 		setupAuto();
 		setupDriveController();
 	}
 
 	public void setupAuto() {
-		autonChooser = new SendableChooser<Command>();
-		autonChooser.setDefaultOption("No Auto", null);
+		autonChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Display").add(
 			"Auto Route", 
 			autonChooser
@@ -45,7 +46,7 @@ public class RobotContainer {
 
 	public void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
-		swerve.setDefaultCommand(structure.angleCentricDriveCommand(xbox));
+		swerve.setDefaultCommand(swerve.angleCentricDriveCommand(xbox));
 
 		Trigger switchDriveModeButton = xbox.x();
 		Trigger resetGyroButton = xbox.a();
@@ -53,10 +54,10 @@ public class RobotContainer {
 		Trigger cancelationButton = xbox.start();
 		Trigger moveToAprilTagButton = xbox.leftBumper();
 
-        moveToAprilTagButton.whileTrue(structure.driveToTagCommand(new Pose2d(1, 0.25, new Rotation2d())));
-        switchDriveModeButton.toggleOnTrue(structure.robotCentricDriveCommand(xbox));
-		resetGyroButton.onTrue(structure.resetGyroCommand());
-		alignToTargetButton.whileTrue(structure.alignToTargetDriveCommand(xbox));
+        moveToAprilTagButton.whileTrue(structure.driveToTag(new Pose2d(1, 0.25, new Rotation2d())));
+        switchDriveModeButton.toggleOnTrue(structure.robotCentricDrive(xbox));
+		resetGyroButton.onTrue(structure.resetGyro());
+		alignToTargetButton.whileTrue(structure.driveToPiece());
 		cancelationButton.onTrue(Commands.runOnce(
 			() -> CommandScheduler.getInstance().cancelAll())
 		);

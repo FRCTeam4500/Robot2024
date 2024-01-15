@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.248376211038137,
+      "y": 4.441815740774339
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left3 to Piece3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Drive To Piece"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Piece3 to Piece1 with2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Drive To Piece"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Piece1 to Center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Drive To Piece"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

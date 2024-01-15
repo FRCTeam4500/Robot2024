@@ -5,21 +5,17 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.hardware.NavX;
-import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.GamePieceVision;
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
@@ -38,10 +34,8 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 	private SwerveDriveOdometry odometry;
 	private SwerveDrivePoseEstimator poseEstimator;
 	private PIDController anglePID;
-	private Rotation2d targetAngle;
-	private DriveMode driveMode;
 
-	private SwerveDrive() {
+	protected SwerveDrive() {
 		anglePID = new PIDController(4, 0, 0);
 		anglePID.enableContinuousInput(-Math.PI, Math.PI);
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
@@ -109,98 +103,6 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		}
 	}
 
-	public Command teleopDriveCommand(CommandXboxController xbox) {
-		return Commands.run(
-			() -> {
-				double sensMod = Math.max(1 - xbox.getLeftTriggerAxis(), MIN_SENSITIVITY);
-				double forward = -xbox.getLeftY() * MAX_FORWARD_SENSITIVITY * sensMod;
-				double left = -xbox.getLeftX() * MAX_SIDEWAYS_SENSITIVITY * sensMod;
-				double rotational = -xbox.getRightX() * MAX_ROTATIONAL_SENSITIVITY * sensMod;
-				
-				switch (driveMode) {
-					case RobotCentric:
-						driveRobotCentric(new ChassisSpeeds(
-							forward,
-							left,
-							rotational
-						));
-						break;
-					case AngleCentric:
-						if (Math.abs(xbox.getRightY()) > 0.5){
-							targetAngle = Rotation2d.fromDegrees(90 + 90 * Math.signum(-xbox.getRightY()));
-						}
-						targetAngle = Rotation2d.fromDegrees(targetAngle.getDegrees() + rotational);
-						driveAngleCentric(
-							forward,
-							left,
-							targetAngle
-						);
-						break;
-					case AlignToTarget:
-						driveAlignToTarget(
-							forward,
-							left, 
-							targetAngle
-						);
-						break;
-				}
-			}, this
-		).beforeStarting(
-			() -> {
-				driveMode = DriveMode.AngleCentric;
-				targetAngle = getRobotAngle();
-			}
-		);
-	}
-
-	public Command resetGyroCommand() {
-		return Commands.runOnce(() -> {
-			zeroRobotAngle();
-			targetAngle = new Rotation2d();
-		});
-	}
-
-	public Command moveToTagCommand(Pose2d relativeTargetPose) {
-        return Commands.run(
-			() -> {
-				Pose2d poseDif = tagVision.getRelativeTagPose(relativeTargetPose).relativeTo(relativeTargetPose);
-				driveRobotCentric(
-                    new ChassisSpeeds(
-						poseDif.getX() * 2,
-						poseDif.getY() * 2,
-						-poseDif.getRotation().getRadians() * 5
-					)
-				);
-			}, this
-		);
-    }
-
-    public Command toggleRobotCentricCommand() {
-        return Commands.runOnce(
-            () -> {
-                if (driveMode != DriveMode.RobotCentric) {
-					driveMode = DriveMode.RobotCentric;
-				} else {
-					driveMode = DriveMode.AngleCentric;
-					targetAngle = getRobotAngle();
-				}
-            }  
-        );
-    }
-
-	public Command toggleAlignToTargetCommand() {
-		return Commands.startEnd(
-			() -> {
-				driveMode = DriveMode.AlignToTarget;
-				targetAngle = getRobotAngle();
-			},
-			() -> {
-				driveMode = DriveMode.AngleCentric;
-				targetAngle = getRobotAngle();
-			}
-		);
-	}
-
 	public void driveAngleCentric(
 		double forwardVelocity,
 		double sidewaysVelocity,
@@ -237,7 +139,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 
 	public void driveRobotCentric(ChassisSpeeds targetChassisSpeeds) {
 		SwerveModuleState[] states = kinematics.toSwerveModuleStates(
-			discretize(targetChassisSpeeds)
+			ChassisSpeeds.discretize(targetChassisSpeeds, 0.02)
 		);
 		SwerveDriveKinematics.desaturateWheelSpeeds(
 			states,
@@ -336,6 +238,14 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 	@Override
 	public void fromLog(LogTable table) {}
 
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.addDoubleProperty("Offset Robot Angle (deg)", () -> gyro.getOffsetedAngle().getDegrees(), null);
+		builder.addDoubleProperty("Forward Velocity (mps)", () -> getChassisSpeeds().vxMetersPerSecond, null);
+		builder.addDoubleProperty("Sideways Velocity (mps)", () -> getChassisSpeeds().vyMetersPerSecond, null);
+		builder.addDoubleProperty("Rotational Velocity (radps)", () -> getChassisSpeeds().omegaRadiansPerSecond, null);
+	}
+
 	private double calculateRotationalVelocityToTarget(Rotation2d targetRotation) {
 		double rotationalVelocity = anglePID.calculate(
 			getRobotAngle().getRadians(), 
@@ -345,32 +255,6 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			rotationalVelocity = 0;
 		}
 		return rotationalVelocity;
-	}
-
-	/**
-	 * Fixes situation where robot drifts in the direction it's rotating in if
-	 * turning and translating at the same time
-	 * 
-	 * @see <a href="https://www.chiefdelphi.com/t/whitepaper-swerve-drive-skew-and-second-order-kinematics/416964">Chief Delphi</a>
-	 */
-	private ChassisSpeeds discretize(
-		ChassisSpeeds originalChassisSpeeds
-    ) {
-		double vx = originalChassisSpeeds.vxMetersPerSecond;
-		double vy = originalChassisSpeeds.vyMetersPerSecond;
-		double omega = originalChassisSpeeds.omegaRadiansPerSecond;
-		double dt = 0.02; // This should be the time these values will be used, so normally just the loop time
-		Pose2d desiredDeltaPose = new Pose2d(
-            vx * dt,
-            vy * dt,
-            new Rotation2d(omega * dt)
-        );
-		Twist2d twist = new Pose2d().log(desiredDeltaPose);
-		return new ChassisSpeeds(
-            twist.dx / dt,
-            twist.dy / dt,
-            twist.dtheta / dt
-        );
 	}
 
 	private Translation2d[] getModuleTranslations() {

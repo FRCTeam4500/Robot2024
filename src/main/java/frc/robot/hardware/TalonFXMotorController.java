@@ -18,18 +18,13 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
     private VelocityVoltage vVoltage;
 
     public TalonFXMotorController(int deviceID) {
-        super(deviceID);
-        config = new TalonFXConfiguration();
-        mVoltage = new MotionMagicVoltage(0).withSlot(0).withEnableFOC(false);
-        vVoltage = new VelocityVoltage(0).withSlot(1).withEnableFOC(false);
+        this(deviceID, new TalonFXConfiguration());
     }
 
-    public TalonFXMotorController(
-        int deviceID,
-        TalonFXConfiguration config
-    ) {
+    public TalonFXMotorController(int deviceID, TalonFXConfiguration config) {
         super(deviceID);
         this.config = config;
+        setPosition(0);
         mVoltage = new MotionMagicVoltage(0).withSlot(0).withEnableFOC(false);
         vVoltage = new VelocityVoltage(0).withSlot(1).withEnableFOC(false);
         refreshConfig();
