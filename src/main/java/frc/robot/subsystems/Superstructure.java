@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.swerve.CommandSwerve;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
@@ -24,10 +25,12 @@ public class Superstructure {
     }
 
     private CommandSwerve swerve;
+    private CommandIntake intake;
     private DriveMode driveMode;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
+        intake = CommandIntake.getInstance();
         driveMode = DriveMode.AngleCentric;
         configurePathPlanner();
 
@@ -76,5 +79,21 @@ public class Superstructure {
 
     public Command resetGyro() {
         return swerve.resetGyro();
+    }
+
+    public Command handoff() {
+        return intake.handoff();
+    }
+
+    public Command groundIntake() {
+        return intake.groundIntake();
+    }
+
+    public Command waitTillIntakeAtTarget() {
+        return intake.waitUntilAtTarget();
+    }
+
+    public Command zeroIntake() {
+        return intake.zero();
     }
 }

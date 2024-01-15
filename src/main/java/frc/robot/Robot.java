@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.messaging.Messaging;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.vision.AprilTagVision;
@@ -54,6 +55,7 @@ public class Robot extends LoggedRobot {
 					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
 					Logger.processInputs("Piece Vision", GamePieceVision.getInstance());
 					Logger.processInputs("Messaging", Messaging.getInstance());
+					Logger.processInputs("Intake", Intake.getInstance());
 				}
 			}, 
 			10, 
