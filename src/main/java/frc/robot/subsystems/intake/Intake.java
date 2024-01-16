@@ -13,17 +13,38 @@ import frc.robot.utilities.ExtendedMath;
 import static frc.robot.CANConstants.*;
 import static frc.robot.subsystems.intake.IntakeConstants.*;
 
+/** 
+ * This class represents the robot's intake. It has a lot of comments, use it
+ * as a referense for other subsystems. You should probably be using 
+ * {@link frc.robot.subsystems.intake.CommandIntake CommandIntake} instead for 
+ * actual roboting.
+ * @author Vimal Buckley
+ */
 public class Intake extends SubsystemBase implements LoggableInputs {
+    // Static: Maintains one state throughout all intake objects
+    // Not Static: Has a state for each intake object
+
+    // Singleton Stuff
     private static Intake instance;
     public static synchronized Intake getInstance() {
         if (instance == null) instance = new Intake();
         return instance;
     }
 
+    // Declare variables
+    // Hardware
     private SparkMaxMotorController tiltMotor;
     private SparkMaxMotorController outputMotor;
     private DigitalInput noteLimitSwitch;
+    // State
     private IntakeState targetState;
+    
+    /**
+     * The constructor of the intake class. This is run when an object of type Intake
+     * is created. Initialization code (setting variables to values) should
+     * happen here.
+     * @author Vimal Buckley
+     */
     protected Intake() {
         tiltMotor = new SparkMaxMotorController(INTAKE_TILT_ID, MotorType.kBrushless);
         outputMotor = new SparkMaxMotorController(INTAKE_OUTPUT_ID, MotorType.kBrushless);
@@ -31,19 +52,43 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         targetState = IntakeState.Stow;
     }
 
+    /**
+     * Sets the state of the intake
+     * Doesn't return anything (return type is void)
+     * @param state The new target state of the intake
+     * @author Vimal Buckley
+     */
     public void setState(IntakeState state) {
         tiltMotor.setAngle(state.tilt);
         outputMotor.setOutput(state.output);
     }
 
+    /**
+     * Returns a boolean (return type is boolean)
+     * @return Whether the intake has reached its target tilt
+     * @author Vimal Buckley
+     */
     public boolean atTargetState() {
         return ExtendedMath.within(tiltMotor.getAngle(), targetState.tilt, tiltThreshold);
     }
 
+    /**
+     * Returns a boolean (return type is boolean)
+     * @return Whether the limit switch is detecting a note in the intake
+     * @author Vimal Buckley
+     */
     public boolean hasNote() {
         return noteLimitSwitch.get();
     }
 
+    /**
+     * Method that logs data to a data table.
+     * The Override annoation shows that it is from the 
+     * {@link org.littletonrobotics.junction.inputs.LoggableInputs LoggedInputs} 
+     * interface
+     * @param table The table to log data to
+     * @author Vimal Buckley
+     */
     @Override
     public void toLog(LogTable table) {
         table.put("Current Tilt (deg)", tiltMotor.getAngle().getDegrees());
@@ -52,6 +97,12 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         table.put("Target Output (%)", outputMotor.getOutput());
     }
 
+    /**
+     * A method to update a robot's state from a log. Useful for simulation,
+     * which we don't do
+     * @param table The table to read state from
+     * @author Vimal Buckley
+     */
     @Override
     public void fromLog(LogTable table) {}
 }
