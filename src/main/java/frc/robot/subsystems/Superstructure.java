@@ -85,15 +85,11 @@ public class Superstructure {
         return intake.handoff();
     }
 
-    public Command groundIntake() {
-        return intake.groundIntake();
+    public Command stow() {
+        return intake.stow();
     }
 
-    public Command waitTillIntakeAtTarget() {
-        return intake.waitUntilAtTarget();
-    }
-
-    public Command zeroIntake() {
-        return intake.zero();
+    public Command pickup() {
+        return intake.pickup();
     }
 }

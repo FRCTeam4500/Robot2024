@@ -151,19 +151,6 @@ public class ExtendedMath {
 		return Math.acos(dotProduct);
 	}
 
-	public static boolean isClose(
-		Pose2d pose1,
-		Pose2d pose2,
-		Pose2d threshold
-	) {
-		Pose2d poseDiff = pose1.relativeTo(pose2);
-		boolean xClose = Math.abs(poseDiff.getX()) < Math.abs(threshold.getX());
-		boolean yClose = Math.abs(poseDiff.getY()) < Math.abs(threshold.getY());
-		boolean thetaClose = Math.abs(poseDiff.getRotation().getDegrees()) <
-			Math.abs(threshold.getRotation().getDegrees());
-		return xClose && yClose && thetaClose;
-	}
-
 	public static double singedSquare(double input) {
 		return Math.signum(input) * Math.pow(input, 2);
 	}
@@ -209,5 +196,23 @@ public class ExtendedMath {
 			desiredState.speedMetersPerSecond,
 			Rotation2d.fromDegrees(originalAngle + delta)
 		);
+	}
+
+	public static boolean within(double a, double b, double threshold) {
+		return Math.abs(a - b) < Math.abs(threshold);
+	}
+
+	public static boolean within(Rotation2d a, Rotation2d b, Rotation2d threshold) {
+		return within(a.getDegrees(), b.getDegrees(), threshold.getDegrees());
+	}
+
+	public static boolean within(Translation2d a, Translation2d b, Translation2d threshold) {
+		return within(a.getX(), b.getX(), threshold.getX()) 
+			&& within(a.getX(), b.getX(), threshold.getX());
+	}
+
+	public static boolean within(Pose2d a, Pose2d b, Pose2d threshold) {
+		return within(a.getTranslation(), b.getTranslation(), threshold.getTranslation())
+			&& within(a.getRotation(), b.getRotation(), threshold.getRotation());
 	}
 }

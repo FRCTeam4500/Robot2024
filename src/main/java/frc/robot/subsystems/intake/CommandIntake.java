@@ -2,8 +2,7 @@ package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.intake.IntakeConstants.IntakePosition;
-import frc.robot.subsystems.intake.IntakeConstants.IntakeSpeed;
+import frc.robot.subsystems.intake.IntakeConstants.IntakeState;
 
 public class CommandIntake extends Intake {
     private static CommandIntake instance;
@@ -16,49 +15,43 @@ public class CommandIntake extends Intake {
         super();
     }
 
-    /**
-     * Set the current state of the intake to be zero.
-     */
-    public Command zero() {
-        return Commands.runOnce(
-            () -> setState(IntakePosition.Zero, IntakeSpeed.Off),
-            this
-        ).andThen(waitUntilAtTarget());
+    public Command waitUntilAtTarget() {
+        return Commands.waitUntil(() -> atTargetState());
     }
 
-    /**
-     * Move the intake to the ground position and set the speed to be intaking.
-     */
-    public Command groundIntake() {
+    public Command stow() {
         return Commands.runOnce(
-            () -> setState(IntakePosition.Ground, IntakeSpeed.Intaking),
-            this
-        )
-            .andThen(waitUntilAtTarget())
-            .andThen(Commands.waitUntil(() -> hasNote()))
-            .andThen(zero());
+            () -> setState(IntakeState.Stow), this
+        ).andThen(
+            waitUntilAtTarget()
+        );
     }
 
-    /**
-     * Move the intake to the handoff position 
-     * and then handoff the note to the loader.
-     */
     public Command handoff() {
         return Commands.runOnce(
-            () -> setState(IntakePosition.Handoff, IntakeSpeed.Off), // tilt to handoff position
-            this
-        ).andThen(waitUntilAtTarget()) // When at handoff position
-            .andThen(Commands.runOnce(() -> setState(IntakeSpeed.Ejecting))) // handoff
-            .withTimeout(1) // for 1 second
-            .andThen(zero()); // then go to zero
+            () -> setState(IntakeState.ReadyHandoff), this
+        ).andThen(
+            waitUntilAtTarget()
+        ).andThen(
+            () -> setState(IntakeState.ExecuteHandoff), this
+        ).andThen(
+            waitUntilAtTarget()
+        );
     }
 
-    /**
-     * Wait until the intake is at the target state.
-     */
-    public Command waitUntilAtTarget() {
-        return Commands.waitUntil(
-            () -> atPosition() && atSpeed()
+    public Command pickup() {
+        return Commands.runOnce(
+            () -> setState(IntakeState.ReadyPickup), this
+        ).andThen(
+            waitUntilAtTarget()
+        ).andThen(
+            () -> setState(IntakeState.ExecutePickup), this
+        ).andThen(
+            Commands.waitUntil(() -> hasNote())
+        ).andThen(
+            stow()
+        ).andThen(
+            waitUntilAtTarget()
         );
     }
 }
