@@ -20,6 +20,7 @@ public class CommandIntake extends Intake {
      * The constructor, which is run on object creation. Since this class doesn't
      * hold any state, we just call our super constructor, which calls
      * {@link Intake Intake's} constructor
+     * @author Vimal Buckley
      */
     private CommandIntake() {
         super();
@@ -27,6 +28,7 @@ public class CommandIntake extends Intake {
 
     /** 
      * A command that waits until the intake has reached its target tilt
+     * @author Vimal Buckley
      */
     public Command waitUntilAtTarget() {
         // Quick lamda (() -> {}) syntax intro
@@ -42,6 +44,7 @@ public class CommandIntake extends Intake {
 
     /** 
      * A command that stows (zeroes) the intake
+     * @author Vimal Buckley
      */
     public Command stow() {
         return Commands.runOnce(
@@ -51,7 +54,10 @@ public class CommandIntake extends Intake {
         );
     }
 
-    /** A command that handoffs a piece to the loader/shooter */
+    /** 
+     * A command that handoffs a piece to the loader/shooter 
+     * @author Vimal Buckley
+    */
     public Command handoff() {
         return Commands.runOnce(
             () -> setState(IntakeState.ReadyHandoff), this
@@ -62,7 +68,10 @@ public class CommandIntake extends Intake {
         );
     }
 
-    /** A command that pickups a game piece, then stows the intake */
+    /** 
+     * A command that pickups a game piece, then stows the intake 
+     * @author Vimal Buckley
+    */
     public Command pickup() {
         return Commands.runOnce(
             () -> setState(IntakeState.ReadyPickup), this

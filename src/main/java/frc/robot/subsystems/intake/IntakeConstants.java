@@ -6,7 +6,10 @@ public class IntakeConstants {
     /** How far the intake tilt can be from the target to be counted as having reached it */
     public static final Rotation2d tiltThreshold = Rotation2d.fromDegrees(0);
 
-    /** Contains all the states the intake could be at */
+    /** 
+     * Contains all the states the intake could be at 
+     * @author Vimal Buckley
+    */
     public static enum IntakeState {
         /** The intake is down, but not running */
         ReadyPickup(Rotation2d.fromDegrees(50), 0),

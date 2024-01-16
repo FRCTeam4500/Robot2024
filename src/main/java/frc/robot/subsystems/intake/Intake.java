@@ -36,6 +36,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     private SparkMaxMotorController tiltMotor;
     private SparkMaxMotorController outputMotor;
     private DigitalInput noteLimitSwitch;
+    private DigitalInput zeroingLimitSwitch;
     // State
     private IntakeState targetState;
     
@@ -49,6 +50,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         tiltMotor = new SparkMaxMotorController(INTAKE_TILT_ID, MotorType.kBrushless);
         outputMotor = new SparkMaxMotorController(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         noteLimitSwitch = new DigitalInput(INTAKE_NOTE_LIMIT_SWITCH_ID);
+        zeroingLimitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
         targetState = IntakeState.Stow;
     }
 
@@ -79,6 +81,23 @@ public class Intake extends SubsystemBase implements LoggableInputs {
      */
     public boolean hasNote() {
         return noteLimitSwitch.get();
+    }
+
+    /**
+     * Method that runs every 20ms
+     * The Override annotation shows that it is from the
+     * {@link edu.wpi.first.wpilibj2.command.SubsystemBase SubsystemBase} class
+     * @author Vimal Buckley
+     */
+    @Override
+    public void periodic() {
+        // If the limit switch is triggered (if we're stowed), reset the encoder
+        // of the arm motor. This is so that the arm motor will be constantly
+        // corrected throughout the match
+        if (zeroingLimitSwitch.get()) {
+            tiltMotor.getEncoder()
+                .setPosition(IntakeState.Stow.tilt.getRotations());
+        }
     }
 
     /**
