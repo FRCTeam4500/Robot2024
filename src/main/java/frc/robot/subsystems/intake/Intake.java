@@ -16,7 +16,7 @@ import static frc.robot.subsystems.intake.IntakeConstants.*;
 /** 
  * This class represents the robot's intake. It has a lot of comments, use it
  * as a referense for other subsystems. You should probably be using 
- * {@link frc.robot.subsystems.intake.CommandIntake CommandIntake} instead for 
+ * {@link CommandIntake CommandIntake} instead for 
  * actual roboting.
  * @author Vimal Buckley
  */
