@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.intake.IntakeConstants.IntakeState;
 
 /**
- * A wrapper class around {@link Intake Intake} which provides command functionality.
- * @author Vimal Buckley
+ * A wraqqer class around {@link Intake Intake} which provides command functionality.
+ * @author Billy Bonga
  */
 public class CommandIntake extends Intake {
     // Singleton stuff
@@ -26,7 +26,7 @@ public class CommandIntake extends Intake {
         super();
     }
 
-    /** 
+    /**
      * A command that waits until the intake has reached its target tilt
      * @author Vimal Buckley
      */
@@ -42,7 +42,7 @@ public class CommandIntake extends Intake {
         return Commands.waitUntil(() -> atTargetState());
     }
 
-    /** 
+    /**
      * A command that stows (zeroes) the intake
      * @author Vimal Buckley
      */
@@ -54,8 +54,8 @@ public class CommandIntake extends Intake {
         );
     }
 
-    /** 
-     * A command that handoffs a piece to the loader/shooter 
+    /**
+     * A command that handoffs a piece to the loader/shooter
      * @author Vimal Buckley
     */
     public Command handoff() {
@@ -68,8 +68,8 @@ public class CommandIntake extends Intake {
         );
     }
 
-    /** 
-     * A command that pickups a game piece, then stows the intake 
+    /**
+     * A command that pickups a game piece, then stows the intake
      * @author Vimal Buckley
     */
     public Command pickup() {

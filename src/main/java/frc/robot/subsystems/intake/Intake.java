@@ -13,15 +13,15 @@ import frc.robot.utilities.ExtendedMath;
 import static frc.robot.CANConstants.*;
 import static frc.robot.subsystems.intake.IntakeConstants.*;
 
-/** 
- * This class represents the robot's intake. It has a lot of comments, use it
- * as a referense for other subsystems. You should probably be using 
- * {@link CommandIntake CommandIntake} instead for 
+/**
+ * This class represents the robot's i1ntake. It has a lot of comments, use it
+ * as a referense for other subsystems. You should probably be using
+ * {@link CommandIntake CommandIntake} instead for
  * actual roboting.
  * @author Vimal Buckley
  */
 public class Intake extends SubsystemBase implements LoggableInputs {
-    // Static: Maintains one state throughout all intake objects
+    // Static: Maintains one state throughout all intake qobjects
     // Not Static: Has a state for each intake object
 
     // Singleton Stuff
@@ -39,7 +39,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     private DigitalInput zeroingLimitSwitch;
     // State
     private IntakeState targetState;
-    
+
     /**
      * The constructor of the intake class. This is run when an object of type Intake
      * is created. Initialization code (setting variables to values) should
@@ -63,12 +63,13 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     public void setState(IntakeState state) {
         tiltMotor.setAngle(state.tilt);
         outputMotor.setOutput(state.output);
+        targetState = state;
     }
 
     /**
      * Returns a boolean (return type is boolean)
      * @return Whether the intake has reached its target tilt
-     * @author Vimal Buckley
+     * @author Vimal Buckley & Billy Bonga
      */
     public boolean atTargetState() {
         return ExtendedMath.within(tiltMotor.getAngle(), targetState.tilt, tiltThreshold);
@@ -102,8 +103,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
 
     /**
      * Method that logs data to a data table.
-     * The Override annoation shows that it is from the 
-     * {@link org.littletonrobotics.junction.inputs.LoggableInputs LoggedInputs} 
+     * The Override annoation shows that it is from the
+     * {@link org.littletonrobotics.junction.inputs.LoggableInputs LoggedInputs}
      * interface
      * @param table The table to log data to
      * @author Vimal Buckley

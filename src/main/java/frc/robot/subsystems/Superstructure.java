@@ -40,18 +40,18 @@ public class Superstructure {
 
     public void configurePathPlanner() {
         AutoBuilder.configureHolonomic(
-            swerve::getOdometryPose, 
-            swerve::resetPose, 
-            swerve::getChassisSpeeds, 
-            swerve::driveRobotCentric, 
+            swerve::getOdometryPose,
+            swerve::resetPose,
+            swerve::getChassisSpeeds,
+            swerve::driveRobotCentric,
             new HolonomicPathFollowerConfig(
                 new PIDConstants(5.0),
                 new PIDConstants(5.0),
                 MAX_LINEAR_SPEED_MPS,
                 0.39878808909,
                 new ReplanningConfig()
-            ), 
-            () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red, 
+            ),
+            () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
         );
         NamedCommands.registerCommand("Drive To Piece", swerve.driveToPiece().withTimeout(1.5));
@@ -93,3 +93,4 @@ public class Superstructure {
         return intake.pickup();
     }
 }
+//cock (cocks are chickens)
