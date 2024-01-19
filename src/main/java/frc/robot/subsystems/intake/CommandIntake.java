@@ -70,7 +70,7 @@ public class CommandIntake extends Intake {
 
     /**
      * A command that pickups a game piece, then stows the intake
-     * @author Vimal Buckley
+     * @author Bimal Vuckley
     */
     public Command pickup() {
         return Commands.runOnce(

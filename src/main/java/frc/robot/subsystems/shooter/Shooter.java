@@ -1,26 +1,26 @@
 package frc.robot.subsystems.shooter;
-
+//impot s the shooterconatsnts
 import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
-
+//imports the CANConstants that are needed in the Shooter.java file
 import static frc.robot.CANConstants.LOADER_ID;
 import static frc.robot.CANConstants.SHOOTER_ONE_ID;
 import static frc.robot.CANConstants.SHOOTER_TWO_ID;
-
+///imports the MOTORTypE
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+//imports the SunsystemBase and sparkyadayada
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.SparkMaxMotorController;
-
+//imports the ShooterConstants and ShooterState
 import frc.robot.subsystems.shooter.ShooterConstants.ShooterState;
 
 /**
  * a bunch of stuff
  * 
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
 public class Shooter extends SubsystemBase implements LoggableInputs {
 
@@ -37,7 +37,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * word we use for the first motor
      * 
      * @author David Wharton
-     * @author "lord gre"
+     * @author lord gre
      */
     private SparkMaxMotorController shootshootMotorOne;
 
@@ -45,7 +45,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * word we use for the second motor
      * 
      * @author David Wharton
-     * @author "lord gre"
+     * @author lord gre
      */
     private SparkMaxMotorController shootshootMotorTwo;
 
@@ -53,20 +53,20 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * word we use for the loading motor
      * 
      * @author David Wharton
-     * @author "lord gre"
+     * @author lord gre
      */
     private SparkMaxMotorController loaderMotor;
     /**
  * wanted state of the shooter/loader
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
 
     private ShooterState targetState;
     /**
  * defines motors
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
 
     protected Shooter() {
@@ -78,18 +78,18 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
   /**
  * changes target state
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
     public void setTargetState(ShooterState state) {
         shootshootMotorOne.setOutput(state.shooterSpeed);
-        shootshootMotorTwo.setOutput(state.shooterSpeed);
+        shootshootMotorTwo.setOutput(state.shooterSpeed);//beans
         loaderMotor.setOutput(state.loaderSpeed);
         targetState = state;
     }
 /**
  * checks if the motor is spun up
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
     public boolean spunUp() {
         return Math.abs(shootshootMotorOne.getOutput() - targetState.shooterSpeed) < threshold &&
@@ -113,7 +113,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
 /**
  * does absolutely nothing
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
     @Override
     public void fromLog(LogTable table) {
