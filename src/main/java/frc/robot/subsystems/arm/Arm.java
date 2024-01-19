@@ -3,16 +3,22 @@ package frc.robot.subsystems.arm;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-import frc.robot.subsystems.arm.ArmConstants;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import frc.robot.subsystems.arm.ArmConstants.ArmState;
+import frc.robot.utilities.ExtendedMath;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.SparkMaxMotorController;
 
+/**
+ * @author Max
+ * @author Yijia
+ */
 public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make Motor(s?) here (SparkMaxMotorController)
-    private SparkMaxMotorController armMotor;
+    private SparkMaxMotorController extensionMotor;
 
     // private spark max shooter tilt TODO
 
@@ -21,22 +27,33 @@ public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make GetInstance Here (Look At Intake.java)
     public static synchronized Arm getInstance() {
-        if (instance == null) instance = new Arm();
+        if (instance == null)
+            instance = new Arm();
         return instance;
     }
-    // Make Constructor Here
-    public Arm()
-    {
 
+    private ArmState targetState;
+
+    // Make Constructor Here
+    public Arm() {
+        extensionMotor = new SparkMaxMotorController(ArmConstants.EXTENSION_MOTOR_ID, MotorType.kBrushless);
+        targetState = ArmState.ZERO;
     }
+
+    public boolean atTargetState() { //returns your target state
+        return ExtendedMath.within(extensionMotor.getAngle().getDegrees(), targetState.position, ArmConstants.extensionPositionThreshold);
+    }
+
     @Override
     public void toLog(LogTable table) {
 
     }
 
     @Override
-    public void fromLog(LogTable table) {}
+    public void fromLog(LogTable table) {
+    }
+
     public void setState(ArmState state) {
-        armMotor.setAngle(new Rotation2d(state.position));//se
+        extensionMotor.setAngle(Rotation2d.fromDegrees(state.position));// se
     }
 }

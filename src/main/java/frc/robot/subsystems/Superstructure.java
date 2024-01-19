@@ -93,4 +93,3 @@ public class Superstructure {
         return intake.pickup();
     }
 }
-//cock (cocks are chickens)

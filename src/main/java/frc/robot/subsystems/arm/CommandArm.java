@@ -4,17 +4,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.ExtendedMath;
 
-public class CommandArm extends SubsystemBase { //runs commands
+/**
+ * @author Max
+ * @author Yijia
+ */
+public class CommandArm extends Arm { // runs commands
 
     public CommandArm(){
         super();
     }
-    public static
 
-    public Command wait(){
+    public Command waitUntilAtTargetState(){
         return Commands.waitUntil(() -> atTargetState());
     }
-    public boolean atTargetState() { //returns your target state
-        return ExtendedMath.within(armMotor.getAngle(), ArmState.position, );
-    }
+    
 }
