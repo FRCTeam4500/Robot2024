@@ -23,6 +23,7 @@ public class ArmConstants {
 
         private ArmState(double position) {
             this.position = position;
+            hi
         }
 
     }
