@@ -1,8 +1,8 @@
 package frc.robot.subsystems.arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utilities.ExtendedMath;
+import frc.robot.subsystems.arm.ArmConstants.ArmState;
+import frc.robot.subsystems.intake.IntakeConstants.IntakeState;
 
 /**
  * @author Max
@@ -17,5 +17,14 @@ public class CommandArm extends Arm { // runs commands
     public Command waitUntilAtTargetState(){
         return Commands.waitUntil(() -> atTargetState());
     }
-    
+
+    public Command goToZeroCommand()
+    {
+        return Commands.runOnce(
+            () -> setState(ArmState.ZERO), this
+        ).andThen(
+            waitUntilAtTargetState()
+        );
+    }
+  
 }
