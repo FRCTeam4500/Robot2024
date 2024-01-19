@@ -9,6 +9,7 @@ import frc.robot.subsystems.arm.ArmConstants.ArmState;
 import frc.robot.utilities.ExtendedMath;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CANConstants;
 import frc.robot.hardware.SparkMaxMotorController;
 
 /**
@@ -19,6 +20,7 @@ public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make Motor(s?) here (SparkMaxMotorController)
     private SparkMaxMotorController extensionMotor;
+    private SparkMaxMotorController tiltMotor;
 
     // private spark max shooter tilt TODO
 
@@ -36,12 +38,14 @@ public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make Constructor Here
     public Arm() {
-        extensionMotor = new SparkMaxMotorController(ArmConstants.EXTENSION_MOTOR_ID, MotorType.kBrushless);
+        extensionMotor = new SparkMaxMotorController(CANConstants.ARM_EXTENSION_MOTOR_ID, MotorType.kBrushless);
+        tiltMotor = new SparkMaxMotorController(CANConstants.ARM_TILT_MOTOR_ID, MotorType.kBrushless);
         targetState = ArmState.ZERO;
     }
 
     public boolean atTargetState() { //returns your target state
-        return ExtendedMath.within(extensionMotor.getAngle().getDegrees(), targetState.position, ArmConstants.extensionPositionThreshold);
+        return ExtendedMath.within(extensionMotor.getAngle().getDegrees(), targetState.extensionPosition, ArmConstants.extensionPositionThreshold) 
+        && ExtendedMath.within(tiltMotor.getAngle().getDegrees(), targetState.tiltPosition, ArmConstants.tiltPositionThreshold);
     }
 
     @Override
@@ -54,6 +58,7 @@ public class Arm extends SubsystemBase implements LoggableInputs {
     }
 
     public void setState(ArmState state) {
-        extensionMotor.setAngle(Rotation2d.fromDegrees(state.position));// se
+        extensionMotor.setAngle(Rotation2d.fromDegrees(state.extensionPosition));// se
+        tiltMotor.setAngle(Rotation2d.fromDegrees(state.tiltPosition));
     }
 }
