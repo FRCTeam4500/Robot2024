@@ -88,7 +88,7 @@ public class ShooterConstants {
  * @author David Wharton
  * @author "lord gre"
  */
-
+         //q
         private ShooterState(double shooterMotorSpeed, double loaderMotorSpeed) {
             shooterSpeed = shooterMotorSpeed;
             loaderSpeed = loaderMotorSpeed;
