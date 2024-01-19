@@ -10,7 +10,7 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
  * a class that does things
  * 
  * @author David Wharton
- * @author "lord gre"
+ * @author lord gre
  */
 public class CommandShooter extends Shooter {
 
@@ -62,7 +62,7 @@ public class CommandShooter extends Shooter {
     /**
      * a command that runs the whole shoot command
      * 
-     * @author David Wharton and "lord gre"
+     * @author David Wharton and lord gre
      */
     public Command shoot() {
         return spinUp().andThen(

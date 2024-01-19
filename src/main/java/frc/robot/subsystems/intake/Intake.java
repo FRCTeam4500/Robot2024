@@ -1,15 +1,19 @@
 package frc.robot.subsystems.intake;
 
+//imports the LogTable
 import org.littletonrobotics.junction.LogTable;
+//imports the LoggableInputs
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
+//imports the MotorType
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+//imports the DigitalInput,SubsystemBase,SparkMaxMotorController,ExtendedMath
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.SparkMaxMotorController;
 import frc.robot.utilities.ExtendedMath;
-
+//imports the CANConstants and IntakeConstants
 import static frc.robot.CANConstants.*;
 import static frc.robot.subsystems.intake.IntakeConstants.*;
 

@@ -18,5 +18,7 @@ public class CANConstants {
     public static final int SHOOTER_TWO_ID = 3256748;
     public static final int LOADER_ID = 76543;
     public static final int MOTORID = 100;
-    //cock (cocks are chickens)
+    public static final int ARM_TILT_MOTOR_ID = 123; // shooter tilt
+    public static final int ARM_EXTENSION_MOTOR_ID = 321; // arm extension
+    
 }
