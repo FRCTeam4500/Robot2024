@@ -18,7 +18,8 @@ public class ArmConstants {
     public static enum ArmState {
         ZERO(0.0, 1.2),
         SPEAKER(1.0, 1.1),
-        AMP(2.0,1.3);
+        AMP(2.0,1.3),
+        HANDOFF(3.1,1.2);
         public double tiltPosition;
 
         public double extensionPosition;

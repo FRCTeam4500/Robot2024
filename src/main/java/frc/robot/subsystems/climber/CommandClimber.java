@@ -11,7 +11,7 @@ import frc.robot.subsystems.climber.ClimberConstants.ClimberState;
 public class CommandClimber extends Climber {
     private static CommandClimber instance;
     public static synchronized CommandClimber getInstance(){
-        if (instance == null) instance = new CommandClimber ();
+        if (instance == null) instance = new CommandClimber();
         return instance;
 
     }

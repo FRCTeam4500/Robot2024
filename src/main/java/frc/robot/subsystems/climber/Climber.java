@@ -6,11 +6,9 @@ import frc.robot.utilities.ExtendedMath;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.estimator.ExtendedKalmanFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.subsystems.climber.ClimberConstants.*;
-import static frc.robot.subsystems.intake.IntakeConstants.tiltThreshold;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
@@ -18,6 +16,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 /**
  * @author Gasya
  * @author Ashwin
+ * @author Bennett
  */
 public class Climber extends SubsystemBase implements LoggableInputs {
 
@@ -34,13 +33,14 @@ public class Climber extends SubsystemBase implements LoggableInputs {
     /**
      * @author Gasya
      * @author Ashwin
+     * @author Bennett
      */
     public Climber() {
         motor = new SparkMaxMotorController(CANConstants.MOTORID, MotorType.kBrushless);
-        targetState=ClimberState.Lowhook;
+        targetState = ClimberState.Lowhook;
     }
 
-    public void setState(ClimberState state){
+    public void setState(ClimberState state) {
         motor.setAngle(state.tilt);
         targetState = state;
     }
