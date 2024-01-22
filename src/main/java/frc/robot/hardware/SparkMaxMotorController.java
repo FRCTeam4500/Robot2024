@@ -6,25 +6,23 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public class SparkMaxMotorController extends CANSparkMax implements EncodedMotorController {
-	private Rotation2d offset;
 	public SparkMaxMotorController(int deviceID, MotorType type) {
 		super(deviceID, type);
-		offset = new Rotation2d();
 	}
 
-	public void assignCurrentAngle(Rotation2d newCurrentAngle) {
-		offset = newCurrentAngle.minus(getAngle());
+	public SparkMaxMotorController(int deviceID) {
+		this(deviceID, MotorType.kBrushless);
 	}
 
     @Override
 	public Rotation2d getAngle() {
-		return Rotation2d.fromRotations(getEncoder().getPosition()).plus(offset);
+		return Rotation2d.fromRotations(getEncoder().getPosition());
 	}
 
     @Override
 	public void setAngle(Rotation2d position) {
 		getPIDController()
-			.setReference(offset.plus(position).getRotations(), ControlType.kPosition);
+			.setReference(position.getRotations(), ControlType.kPosition);
 	}
 
     @Override

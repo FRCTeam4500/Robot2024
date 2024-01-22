@@ -2,7 +2,6 @@ package frc.robot.subsystems.arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.arm.ArmConstants.ArmState;
-import frc.robot.subsystems.intake.IntakeConstants.IntakeState;
 
 /**
  * @author Max
