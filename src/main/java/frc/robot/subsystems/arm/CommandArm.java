@@ -6,6 +6,7 @@ import frc.robot.subsystems.arm.ArmConstants.ArmState;
 /**
  * @author Max
  * @author Yijia
+ * @author Oliver
  */
 public class CommandArm extends Arm { // runs commands
 

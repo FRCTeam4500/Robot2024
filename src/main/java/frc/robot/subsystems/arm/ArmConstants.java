@@ -3,6 +3,7 @@ package frc.robot.subsystems.arm;
 /**
  * @author Max
  * @author Yijia
+ * @author Oliver
  */
 public class ArmConstants {
 

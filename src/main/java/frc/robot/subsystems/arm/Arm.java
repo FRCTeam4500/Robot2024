@@ -15,6 +15,7 @@ import frc.robot.hardware.SparkMaxMotorController;
 /**
  * @author Max
  * @author Yijia
+ * @author Oliver
  */
 public class Arm extends SubsystemBase implements LoggableInputs {
 
@@ -24,7 +25,7 @@ public class Arm extends SubsystemBase implements LoggableInputs {
 
     // private spark max shooter tilt TODO
 
-    // Make Instance Here (Look At Intake.java) @Author The Yellow
+    // Make Instance Here (Look At Intake.java) @author The Yellow
     private static Arm instance;
 
     // Make GetInstance Here (Look At Intake.java)
@@ -50,7 +51,8 @@ public class Arm extends SubsystemBase implements LoggableInputs {
 
     @Override
     public void toLog(LogTable table) {
-
+        table.put("Current Tilt (deg)", tiltMotor.getAngle().getDegrees());
+        table.put("Current Extension (deg)", extensionMotor.getAngle().getDegrees());
     }
 
     @Override
