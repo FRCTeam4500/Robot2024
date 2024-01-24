@@ -61,7 +61,7 @@ public class Superstructure {
     }
 
     public Command angleCentricDrive(CommandXboxController xbox) {
-        return swerve.alignToPiece(xbox);
+        return swerve.angleCentricDrive(xbox);
     }
 
     public Command robotCentricDrive(CommandXboxController xbox) {
