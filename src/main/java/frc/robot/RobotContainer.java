@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
@@ -19,6 +20,7 @@ import frc.robot.subsystems.swerve.CommandSwerve;
 
 public class RobotContainer {
 	private CommandXboxController xbox;
+	private CommandJoystick flightSim;
     private Superstructure structure;
 	private CommandSwerve swerve;
 	private Messaging messaging;
@@ -26,6 +28,7 @@ public class RobotContainer {
 	private SendableChooser<Command> autonChooser;
 
 	private final int DRIVER_PORT = 2;
+	private final int OPERATOR_PORT = 1;
 
 	public RobotContainer() {
         DriverStation.silenceJoystickConnectionWarning(true);
@@ -46,7 +49,7 @@ public class RobotContainer {
 
 	public void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
-		swerve.setDefaultCommand(swerve.angleCentricDriveCommand(xbox));
+		swerve.setDefaultCommand(structure.angleCentricDrive(xbox));
 
 		Trigger switchDriveModeButton = xbox.x();
 		Trigger resetGyroButton = xbox.a();
@@ -63,6 +66,19 @@ public class RobotContainer {
 		);
 	}
 
+	public void setupOperatorController() {
+		flightSim = new CommandJoystick(OPERATOR_PORT);
+		Trigger intakeButton = flightSim.button(2);
+		Trigger climberClimbButton = flightSim.button(5);
+		Trigger climberPullButton = flightSim.button(6);
+		Trigger shootButton = flightSim.trigger();
+		intakeButton.onTrue(structure.startIntake());
+		intakeButton.onFalse(structure.finishIntake());
+		climberClimbButton.onTrue(structure.climbUp());
+		climberPullButton.onTrue(structure.pullUp());
+		shootButton.onTrue(structure.shoot());
+	}
+	
 	public Command rumbleCommand(double timeSeconds) {
 		return Commands.startEnd(
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0.5),

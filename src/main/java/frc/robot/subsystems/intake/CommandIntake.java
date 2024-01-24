@@ -87,4 +87,10 @@ public class CommandIntake extends Intake {
             waitUntilAtTarget()
         );
     }
+
+    public Command startPickup() {
+        return Commands.runOnce(
+            () -> setState(IntakeState.ExecutePickup), this
+        );
+    }
 }

@@ -36,7 +36,7 @@ public class Climber extends SubsystemBase implements LoggableInputs {
      * @author Bennett
      */
     public Climber() {
-        motor = new SparkMaxMotorController(CANConstants.MOTORID, MotorType.kBrushless);
+        motor = new SparkMaxMotorController(CANConstants.CLIMBER_MOTOR_ID, MotorType.kBrushless);
         targetState = ClimberState.Lowhook;
     }
 
