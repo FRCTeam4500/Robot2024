@@ -1,97 +1,31 @@
 package frc.robot.subsystems.shooter;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * numbers
  * @author David Wharton
  * @author lord gre
  */
 public class ShooterConstants {
-    /**
- * number when shooter is zerod
- * @author David Wharton
- * @author lord gre
- */
-    public static final double shooterZero = 0;
-    /**
- * number when shooter is shooting
- * @author David Wharton
- * @author lord gre
- */
-    public static final double shooterShooting = 1;
-    /**
- * number when loader is zerod
- * @author David Whartn
- * @author lord gre
- */
-    public static final double loaderZero = 0;
-    /**
- * number when the loader is loading
- * @author David Wharton
- * @author lord gre
- */
-    public static final double loaderLoading = 1;
-    /**
- * number when the loader is existing while the note is being shot
- * @author David Wharton
- * @author lord gre
- */
-    public static final double loaderShooting = 0.5;
-    /**
- * number that tells us when were "close enough"
- * @author David Wharton
- * @author lord gre
- */
-    public static final double threshold = 0.07;
-/**
- * a group of states
- * @author David Wharton
- * @author lord gre
- */
-    public static enum ShooterState {
-        /**
- * loading state
- * @author David Wharton
- * @author lord gre
- */
-        Loading(shooterZero, loaderLoading),
-        /**
- * off state
- * @author David Wharton
- * @author lord gre
- */
-        Off(shooterZero, loaderZero),
-        /**
- * shooting state
- * @author David Wharton
- * @author lord gre
- */
-        Shooting(shooterShooting, loaderLoading),
-        /**
- * spinning up state
- * @author David Wharton
- * @author lord gre
- */
-        SpinningUp(shooterShooting, loaderZero);
-/**
- * speed of shooter
- * @author David Wharton
- * @author lord gre
- */
-        public double shooterSpeed;
-        /**
- * speed of loader
- * @author David Wharton
- * @author lord gre
- */
-        public double loaderSpeed;
-        /**
- * defines the arguments for the states
- * @author David Wharton
- * @author lord gre
- */
-
-        private ShooterState(double shooterMotorSpeed, double loaderMotorSpeed) {
-            shooterSpeed = shooterMotorSpeed;
-            loaderSpeed = loaderMotorSpeed;
-        }
-    }
+   public static final Rotation2d tiltThreshold = Rotation2d.fromDegrees(1);
+   public static final double speedThreshold = 0.07;
+   public static enum ShooterState {
+      Loading(0, 1, Rotation2d.fromDegrees(0)),
+      Off(0, 0, Rotation2d.fromDegrees(0)),
+      Amp(1, 1, Rotation2d.fromDegrees(0)),
+      Subwoofer(1, 1, Rotation2d.fromDegrees(0)),
+      LeftStage(1, 1, Rotation2d.fromDegrees(0)),
+      RightStage(1, 1, Rotation2d.fromDegrees(0)),
+      Podium(1, 1, Rotation2d.fromDegrees(0)),
+      SpinningUp(1, 0, Rotation2d.fromDegrees(0));
+      public double shooterSpeed;  
+      public double loaderSpeed;
+      public Rotation2d tilt;
+      private ShooterState(double shooterMotorSpeed, double loaderMotorSpeed, Rotation2d tilt) {
+         shooterSpeed = shooterMotorSpeed;
+         loaderSpeed = loaderMotorSpeed;
+         this.tilt = tilt;
+      }
+   }
 }

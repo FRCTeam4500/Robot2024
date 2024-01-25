@@ -4,6 +4,8 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
+
+import static frc.robot.CANConstants.ARM_TILT_MOTOR_ID;
 //imports the CANConstants that are needed in the Shooter.java file
 import static frc.robot.CANConstants.LOADER_ID;
 import static frc.robot.CANConstants.SHOOTER_ONE_ID;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.SparkMaxMotorController;
 //imports the ShooterConstants and ShooterState
 import frc.robot.subsystems.shooter.ShooterConstants.ShooterState;
+import frc.robot.utilities.ExtendedMath;
 
 /**
  * a bunch of stuff
@@ -56,6 +59,12 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * @author lord gre
      */
     private SparkMaxMotorController loaderMotor;
+
+    /**
+     * Motor to tilt the shooter
+     * @author Sal
+     */
+    private SparkMaxMotorController tiltMotor;
     /**
  * wanted state of the shooter/loader
  * @author David Wharton
@@ -73,6 +82,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         shootshootMotorOne = new SparkMaxMotorController(SHOOTER_ONE_ID, MotorType.kBrushless);
         shootshootMotorTwo = new SparkMaxMotorController(SHOOTER_TWO_ID, MotorType.kBrushless);
         loaderMotor = new SparkMaxMotorController(LOADER_ID, MotorType.kBrushless);
+        tiltMotor = new SparkMaxMotorController(ARM_TILT_MOTOR_ID);
         targetState = ShooterState.Off;
     }
   /**
@@ -82,8 +92,9 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
  */
     public void setTargetState(ShooterState state) {
         shootshootMotorOne.setOutput(state.shooterSpeed);
-        shootshootMotorTwo.setOutput(state.shooterSpeed);//beans
+        shootshootMotorTwo.setOutput(state.shooterSpeed);
         loaderMotor.setOutput(state.loaderSpeed);
+        tiltMotor.setAngle(state.tilt);
         targetState = state;
     }
 /**
@@ -92,9 +103,13 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
  * @author lord gre
  */
     public boolean spunUp() {
-        return Math.abs(shootshootMotorOne.getOutput() - targetState.shooterSpeed) < threshold &&
-                Math.abs(shootshootMotorTwo.getOutput() - targetState.shooterSpeed) < threshold;
+        return Math.abs(shootshootMotorOne.getOutput() - targetState.shooterSpeed) < speedThreshold &&
+                Math.abs(shootshootMotorTwo.getOutput() - targetState.shooterSpeed) < speedThreshold;
     }
+
+    // public boolean tilted() {
+    //     return ExtendedMath.within()
+    // }
 
     /**
      * log stuff in the graphy tihng
@@ -108,6 +123,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         table.put("Current shootshoot motor output 1 (%):", shootshootMotorOne.getOutput());
         table.put("Current shootshoot motor output 2 (%):", shootshootMotorTwo.getOutput());
         table.put("Current loader motor output (%):", loaderMotor.getOutput());
+        table.put("Shooter tilt (deg)", tiltMotor.getAngle().getDegrees());
         table.put("Current state",targetState.name());
     }
 /**
@@ -116,7 +132,5 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
  * @author lord gre
  */
     @Override
-    public void fromLog(LogTable table) {
-        // i came out to my mom and she got mad at me - The Lord
-    }
+    public void fromLog(LogTable table) {}
 }

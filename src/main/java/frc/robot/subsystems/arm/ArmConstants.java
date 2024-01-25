@@ -17,17 +17,13 @@ public class ArmConstants {
      * @param maxDisplace
      */
     public static enum ArmState {
-        ZERO(0.0, 1.2),
-        SPEAKER(1.0, 1.1),
-        AMP(2.0,1.3),
-        HANDOFF(3.1,1.2);
-        public double tiltPosition;
-
+        ZERO(0.0),
+        SPEAKER(1.0),
+        AMP(2.0),
+        HANDOFF(3.1);
         public double extensionPosition;
-
-        private ArmState(double extensionPosition, double tiltPosition) {
+        private ArmState(double extensionPosition) {
             this.extensionPosition = extensionPosition;
-            this.tiltPosition = tiltPosition;
         }
 
     }
