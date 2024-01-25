@@ -1,5 +1,5 @@
 package frc.robot.subsystems.swerve;
-//PPAP
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -121,7 +121,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 	public void driveAlignToTarget(
 		double forwardVelocity,
 		double leftVelocity,
-		Rotation2d aligningAngle//PPAP
+		Rotation2d aligningAngle
 	) {
 		driveRobotCentric(
 			new ChassisSpeeds(

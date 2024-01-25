@@ -75,7 +75,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
      * @return Whether the intake has reached its target tilt
      * @author Vimal Buckley & Billy Bonga
      */
-    public boolean atTargetState() {//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP//PPAP
+    public boolean atTargetState() {
         return ExtendedMath.within(tiltMotor.getAngle(), targetState.tilt, tiltThreshold);
     }
 
