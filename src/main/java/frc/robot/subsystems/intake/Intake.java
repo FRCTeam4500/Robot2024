@@ -8,6 +8,8 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 //imports the MotorType
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
 //imports the DigitalInput,SubsystemBase,SparkMaxMotorController,ExtendedMath
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,8 +41,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     // Hardware
     private SparkMaxMotorController tiltMotor;
     private SparkMaxMotorController outputMotor;
-    private DigitalInput noteLimitSwitch;
-    private DigitalInput zeroingLimitSwitch;
+    // private DigitalInput noteLimitSwitch;
+    // private DigitalInput zeroingLimitSwitch;
     // State
     private IntakeState targetState;
 
@@ -53,9 +55,17 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     protected Intake() {
         tiltMotor = new SparkMaxMotorController(INTAKE_TILT_ID, MotorType.kBrushless);
         outputMotor = new SparkMaxMotorController(INTAKE_OUTPUT_ID, MotorType.kBrushless);
-        noteLimitSwitch = new DigitalInput(INTAKE_NOTE_LIMIT_SWITCH_ID);
-        zeroingLimitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
+        // noteLimitSwitch = new DigitalInput(INTAKE_NOTE_LIMIT_SWITCH_ID);
+        // zeroingLimitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
         targetState = IntakeState.Stow;
+    }
+
+    public void setTilt(Rotation2d target) {
+        tiltMotor.setAngle(target);
+    }
+
+    public void setSpeed(double output) {
+        outputMotor.set(output);
     }
 
     /**
@@ -85,7 +95,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
      * @author Vimal Buckley
      */
     public boolean hasNote() {
-        return noteLimitSwitch.get();
+        // return noteLimitSwitch.get();
+        return false;
     }
 
     /**
@@ -99,10 +110,10 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         // If the limit switch is triggered (if we're stowed), reset the encoder
         // of the arm motor. This is so that the arm motor will be constantly
         // corrected throughout the match
-        if (zeroingLimitSwitch.get()) {
-            tiltMotor.getEncoder()
-                .setPosition(IntakeState.Stow.tilt.getRotations());
-        }
+        // if (zeroingLimitSwitch.get()) {
+        //     tiltMotor.getEncoder()
+        //         .setPosition(IntakeState.Stow.tilt.getRotations());
+        // }
     }
 
     /**
@@ -129,4 +140,9 @@ public class Intake extends SubsystemBase implements LoggableInputs {
      */
     @Override
     public void fromLog(LogTable table) {}
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("Tilt (deg)", () -> tiltMotor.getAngle().getDegrees(), null);
+    }
 }

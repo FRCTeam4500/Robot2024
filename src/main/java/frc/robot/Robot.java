@@ -81,7 +81,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void teleopInit() {
-		// robotContainer.teleopInit();
+		robotContainer.teleopInit();
 	}
 
 	@Override

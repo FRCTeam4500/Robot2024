@@ -36,7 +36,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 	private PIDController anglePID;
 
 	protected SwerveDrive() {
-		anglePID = new PIDController(4, 0, 0);
+		anglePID = new PIDController(7, 0, 0);
 		anglePID.enableContinuousInput(-Math.PI, Math.PI);
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
 		anglePID.setSetpoint(0);
