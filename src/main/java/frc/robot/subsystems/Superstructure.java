@@ -28,19 +28,19 @@ public class Superstructure {
     }
 
     private CommandSwerve swerve;
-    private CommandIntake intake;
-    private CommandArm arm;
-    private CommandShooter shooter;
-    private CommandClimber climber;
+    // private CommandIntake intake;
+    // private CommandArm arm;
+    // private CommandShooter shooter;
+    // private CommandClimber climber;
     private DriveMode driveMode;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
-        intake = CommandIntake.getInstance();
-        arm = CommandArm.getInstance();
-        shooter = CommandShooter.getInstance();
+        // intake = CommandIntake.getInstance();
+        // arm = CommandArm.getInstance();
+        // shooter = CommandShooter.getInstance();
         driveMode = DriveMode.AngleCentric;
-        climber = CommandClimber.getInstance();
+        // climber = CommandClimber.getInstance();
         configurePathPlanner();
 
         Shuffleboard.getTab("Display").add(swerve);
@@ -89,34 +89,34 @@ public class Superstructure {
         return swerve.resetGyro();
     }
 
-    public Command startIntake() {
-        return intake.startPickup();
-    }
+    // public Command startIntake() {
+    //     return intake.startPickup();
+    // }
 
-    public Command finishIntake() {
-        return arm.goToHandoffCommand().andThen(
-            shooter.load()
-        ).andThen(
-            intake.handoff()
-        );
-    }
+    // public Command finishIntake() {
+    //     return arm.goToHandoffCommand().andThen(
+    //         shooter.load()
+    //     ).andThen(
+    //         intake.handoff()
+    //     );
+    // }
 
-    public Command shoot() {
-        return null;
-    }
+    // public Command shoot() {
+    //     return null;
+    // }
     
-    public Command shootInSpeaker() {
-        return arm.goToSpeakerCommand().andThen(shooter.shoot()).andThen(arm.goToZeroCommand());  
-    }
-    public Command shootInAmp() {
-        return arm.goToAmpCommand().andThen(shooter.shoot()).andThen(arm.goToZeroCommand());
-    } 
-    public Command climbUp() {
-        return climber.readyClimb();
-    }
-    public Command pullUp() {
-        return climber.climb();
-    }
+    // public Command shootInSpeaker() {
+    //     return arm.goToSpeakerCommand().andThen(shooter.shoot()).andThen(arm.goToZeroCommand());  
+    // }
+    // public Command shootInAmp() {
+    //     return arm.goToAmpCommand().andThen(shooter.shoot()).andThen(arm.goToZeroCommand());
+    // } 
+    // public Command climbUp() {
+    //     return climber.readyClimb();
+    // }
+    // public Command pullUp() {
+    //     return climber.climb();
+    // }
 
     // shoot: Shoots
     // readySpeaker: get arm ready to fire at speaker, spin up shooter

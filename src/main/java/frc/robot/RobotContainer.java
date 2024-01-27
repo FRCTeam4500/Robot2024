@@ -21,7 +21,7 @@ import frc.robot.subsystems.swerve.CommandSwerve;
 public class RobotContainer {
 	private CommandXboxController xbox;
 	private CommandJoystick flightSim;
-    private Superstructure structure;
+    // private Superstructure structure;
 	private CommandSwerve swerve;
 	private Messaging messaging;
 	private Command autoCommand;
@@ -32,10 +32,10 @@ public class RobotContainer {
 
 	public RobotContainer() {
         DriverStation.silenceJoystickConnectionWarning(true);
-        structure = Superstructure.getInstance();
+        // structure = Superstructure.getInstance();
 		swerve = CommandSwerve.getInstance();
-		messaging = Messaging.getInstance();
-		setupAuto();
+		// messaging = Messaging.getInstance();
+		// setupAuto();
 		setupDriveController();
 	}
 
@@ -49,7 +49,7 @@ public class RobotContainer {
 
 	public void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
-		swerve.setDefaultCommand(structure.angleCentricDrive(xbox));
+		swerve.setDefaultCommand(swerve.robotCentricDrive(xbox));
 
 		Trigger switchDriveModeButton = xbox.x();
 		Trigger resetGyroButton = xbox.a();
@@ -57,13 +57,13 @@ public class RobotContainer {
 		Trigger cancelationButton = xbox.start();
 		Trigger moveToAprilTagButton = xbox.leftBumper();
 
-        moveToAprilTagButton.whileTrue(structure.driveToTag(new Pose2d(1, 0.25, new Rotation2d())));
-        switchDriveModeButton.toggleOnTrue(structure.robotCentricDrive(xbox));
-		resetGyroButton.onTrue(structure.resetGyro());
-		alignToTargetButton.whileTrue(structure.driveToPiece());
-		cancelationButton.onTrue(Commands.runOnce(
-			() -> CommandScheduler.getInstance().cancelAll())
-		);
+        // moveToAprilTagButton.whileTrue(structure.driveToTag(new Pose2d(1, 0.25, new Rotation2d())));
+        // switchDriveModeButton.toggleOnTrue(structure.robotCentricDrive(xbox));
+		// resetGyroButton.onTrue(structure.resetGyro());
+		// alignToTargetButton.whileTrue(structure.driveToPiece());
+		// cancelationButton.onTrue(Commands.runOnce(
+		// 	() -> CommandScheduler.getInstance().cancelAll())
+		// );
 	}
 
 	public void setupOperatorController() {
@@ -72,11 +72,11 @@ public class RobotContainer {
 		Trigger climberClimbButton = flightSim.button(5);
 		Trigger climberPullButton = flightSim.button(6);
 		Trigger shootButton = flightSim.trigger();
-		intakeButton.onTrue(structure.startIntake());
-		intakeButton.onFalse(structure.finishIntake());
-		climberClimbButton.onTrue(structure.climbUp());
-		climberPullButton.onTrue(structure.pullUp());
-		shootButton.onTrue(structure.shoot());
+		// intakeButton.onTrue(structure.startIntake());
+		// intakeButton.onFalse(structure.finishIntake());
+		// climberClimbButton.onTrue(structure.climbUp());
+		// climberPullButton.onTrue(structure.pullUp());
+		// shootButton.onTrue(structure.shoot());
 	}
 	
 	public Command rumbleCommand(double timeSeconds) {

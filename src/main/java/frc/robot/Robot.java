@@ -41,26 +41,26 @@ public class Robot extends LoggedRobot {
 				Logger.recordMetadata("GitDirty", "Unknown");
 				break;
 		}
-		Logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+		// Logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
 		Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
 		LoggedPowerDistribution.getInstance(1, ModuleType.kRev); // Enables power distribution logging
 
 		Logger.start();
 		robotContainer = new RobotContainer();
-		timer.schedule(
-			new TimerTask() {
-				public void run() {
-					// TODO: Change these!
-					Logger.processInputs("Swerve", SwerveDrive.getInstance());
-					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
-					Logger.processInputs("Piece Vision", GamePieceVision.getInstance());
-					Logger.processInputs("Messaging", Messaging.getInstance());
-					Logger.processInputs("Intake", Intake.getInstance());
-				}
-			}, 
-			10, 
-			20
-		);
+		// timer.schedule(
+		// 	new TimerTask() {
+		// 		public void run() {
+		// 			// TODO: Change these!
+		// 			Logger.processInputs("Swerve", SwerveDrive.getInstance());
+		// 			Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
+		// 			Logger.processInputs("Piece Vision", GamePieceVision.getInstance());
+		// 			Logger.processInputs("Messaging", Messaging.getInstance());
+		// 			Logger.processInputs("Intake", Intake.getInstance());
+		// 		}
+		// 	}, 
+		// 	10, 
+		// 	20
+		// );
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousInit() {
-		robotContainer.autonomousInit();
+		// robotContainer.autonomousInit();
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void teleopInit() {
-		robotContainer.teleopInit();
+		// robotContainer.teleopInit();
 	}
 
 	@Override
