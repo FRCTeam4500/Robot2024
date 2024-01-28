@@ -1,21 +1,12 @@
 package frc.robot.subsystems.shooter;
-//impot s the shooterconatsnts
 import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-import static frc.robot.CANConstants.SHOOTER_PIVOT_ID;
-//imports the CANConstants that are needed in the Shooter.java file
-import static frc.robot.CANConstants.LOADER_ID;
-import static frc.robot.CANConstants.SHOOTER_ONE_ID;
-import static frc.robot.CANConstants.SHOOTER_TWO_ID;
-///imports the MOTORTypE
-import com.revrobotics.CANSparkLowLevel.MotorType;
-//imports the SunsystemBase and sparkyadayada
+import static frc.robot.CANConstants.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.SparkMaxMotorController;
-//imports the ShooterConstants and ShooterState
 import frc.robot.subsystems.shooter.ShooterConstants.ShooterState;
 import frc.robot.utilities.ExtendedMath;
 
