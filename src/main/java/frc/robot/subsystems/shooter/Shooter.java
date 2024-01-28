@@ -5,7 +5,7 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-import static frc.robot.CANConstants.ARM_TILT_MOTOR_ID;
+import static frc.robot.CANConstants.SHOOTER_PIVOT_ID;
 //imports the CANConstants that are needed in the Shooter.java file
 import static frc.robot.CANConstants.LOADER_ID;
 import static frc.robot.CANConstants.SHOOTER_ONE_ID;
@@ -79,10 +79,10 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
  */
 
     protected Shooter() {
-        shootshootMotorOne = new SparkMaxMotorController(SHOOTER_ONE_ID, MotorType.kBrushless);
-        shootshootMotorTwo = new SparkMaxMotorController(SHOOTER_TWO_ID, MotorType.kBrushless);
-        loaderMotor = new SparkMaxMotorController(LOADER_ID, MotorType.kBrushless);
-        tiltMotor = new SparkMaxMotorController(ARM_TILT_MOTOR_ID);
+        shootshootMotorOne = new SparkMaxMotorController(SHOOTER_ONE_ID);
+        shootshootMotorTwo = new SparkMaxMotorController(SHOOTER_TWO_ID);
+        loaderMotor = new SparkMaxMotorController(LOADER_ID);
+        tiltMotor = new SparkMaxMotorController(SHOOTER_PIVOT_ID);
         targetState = ShooterState.Off;
     }
   /**
@@ -107,9 +107,9 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
                 Math.abs(shootshootMotorTwo.getOutput() - targetState.shooterSpeed) < speedThreshold;
     }
 
-    // public boolean tilted() {
-    //     return ExtendedMath.within()
-    // }
+    public boolean tilted() {
+        return ExtendedMath.within(tiltMotor.getAngle(), targetState.tilt, tiltThreshold);
+    }
 
     /**
      * log stuff in the graphy tihng
@@ -124,7 +124,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         table.put("Current shootshoot motor output 2 (%):", shootshootMotorTwo.getOutput());
         table.put("Current loader motor output (%):", loaderMotor.getOutput());
         table.put("Shooter tilt (deg)", tiltMotor.getAngle().getDegrees());
-        table.put("Current state",targetState.name());
+        table.put("Current state", targetState.name());
     }
 /**
  * does absolutely nothing

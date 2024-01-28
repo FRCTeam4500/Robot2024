@@ -2,20 +2,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.messaging.Messaging;
-import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.vision.AprilTagVision;
-import frc.robot.subsystems.vision.GamePieceVision;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
 	private RobotContainer robotContainer;

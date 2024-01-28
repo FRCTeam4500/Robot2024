@@ -1,7 +1,5 @@
 package frc.robot.subsystems.swerve;
 
-import com.pathplanner.lib.util.PIDConstants;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.hardware.EncodedMotorController;
 import frc.robot.hardware.SparkMaxMotorController;

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.arm;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * @author Max
  * @author Yijia
@@ -7,23 +9,16 @@ package frc.robot.subsystems.arm;
  */
 public class ArmConstants {
 
-    public static final int TILT_MOTOR_ID = 123; // shooter tilt
-    public static final int EXTENSION_MOTOR_ID = 321; // arm extension
-    public static final double extensionPositionThreshold = 1;
-    public static final double tiltPositionThreshold = 1.1;
+    public static final Rotation2d extensionThreshold = Rotation2d.fromDegrees(1);
 
-    /**
-     * @param displacement distance the arm has extended
-     * @param maxDisplace
-     */
     public static enum ArmState {
-        ZERO(0.0),
-        SPEAKER(1.0),
-        AMP(2.0),
-        HANDOFF(3.1);
-        public double extensionPosition;
-        private ArmState(double extensionPosition) {
-            this.extensionPosition = extensionPosition;
+        ZERO(Rotation2d.fromDegrees(0.0)),
+        SPEAKER(Rotation2d.fromDegrees(1.0)),
+        AMP(Rotation2d.fromDegrees(2.0)),
+        HANDOFF(Rotation2d.fromDegrees(3.1));
+        public Rotation2d extension;
+        private ArmState(Rotation2d extensionPosition) {
+            this.extension = extensionPosition;
         }
 
     }

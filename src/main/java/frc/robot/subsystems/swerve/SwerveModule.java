@@ -71,7 +71,7 @@ public class SwerveModule {
 
 	public void setModuleVelocity(double targetVelocityMetersPerSecond) {
 		driveMotor.setAngularVelocity(
-			new Rotation2d(2 * targetVelocityMetersPerSecond * 2 /
+			new Rotation2d(targetVelocityMetersPerSecond * 2 /
 			(SwerveConstants.DRIVE_RATIO * SwerveConstants.WHEEL_DIAMETER_METERS))
 		);
 	}

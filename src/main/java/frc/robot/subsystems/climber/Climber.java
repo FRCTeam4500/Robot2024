@@ -4,8 +4,6 @@ import frc.robot.CANConstants;
 import frc.robot.hardware.SparkMaxMotorController;
 import frc.robot.utilities.ExtendedMath;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.subsystems.climber.ClimberConstants.*;
@@ -24,7 +22,7 @@ public class Climber extends SubsystemBase implements LoggableInputs {
     private ClimberState targetState;
 
     private static Climber instance;
-    public static synchronized Climber getInstance(){
+    public static synchronized Climber getInstance() {
         if (instance == null) instance = new Climber ();
         return instance;
 
@@ -36,7 +34,7 @@ public class Climber extends SubsystemBase implements LoggableInputs {
      * @author Bennett
      */
     public Climber() {
-        motor = new SparkMaxMotorController(CANConstants.CLIMBER_MOTOR_ID, MotorType.kBrushless);
+        motor = new SparkMaxMotorController(CANConstants.CLIMBER_ID);
         targetState = ClimberState.Lowhook;
     }
 
@@ -51,8 +49,8 @@ public class Climber extends SubsystemBase implements LoggableInputs {
 
     @Override
     public void toLog(LogTable table) {
-        table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
         table.put("Motor extension (deg)", motor.getAngle().getDegrees());
+        table.put("Target State", targetState.name());
     }
     @Override
     public void fromLog(LogTable table) {
