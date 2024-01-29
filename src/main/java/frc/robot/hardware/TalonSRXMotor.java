@@ -7,51 +7,44 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.subsystems.swerve.SwerveMotor;
 
-public class TalonSRXMotorController extends TalonSRX implements EncodedMotorController {
+public class TalonSRXMotor extends TalonSRX implements SwerveMotor {
     private double TICKS_PER_RADIAN = 4096 / Math.PI / 2;
 
-    public TalonSRXMotorController(int deviceID) {
+    public TalonSRXMotor(int deviceID) {
         super(deviceID);
     }
 
-    @Override
     public void setOutput(double targetPercentOutput) {
         set(ControlMode.PercentOutput, targetPercentOutput);
     }
 
-    @Override
     public double getOutput() {
         return getMotorOutputPercent();
     }
 
-    @Override
     public void setAngularVelocity(Rotation2d targetAngularVelocity) {
         set(ControlMode.Velocity, targetAngularVelocity.getRadians() * TICKS_PER_RADIAN / 10.0);
     }
 
-    @Override
     public Rotation2d getAngularVelocity() {
         return new Rotation2d(getSelectedSensorVelocity() / TICKS_PER_RADIAN * 10);
     }
 
-    @Override
     public void setAngle(Rotation2d targetAngle) {
         set(ControlMode.Position, targetAngle.getRadians() * TICKS_PER_RADIAN);
     }
 
-    @Override
     public Rotation2d getAngle() {
         return new Rotation2d(getSelectedSensorPosition() / TICKS_PER_RADIAN);
     }
 
-    @Override
     public boolean hasContinuousRotation() {
         return true;
     }
 
-    @Override
-    public TalonSRXMotorController configCurrentLimit(int currentLimit) {
+    public TalonSRXMotor configCurrentLimit(int currentLimit) {
         configSupplyCurrentLimit(
             new SupplyCurrentLimitConfiguration(
                 true, 
@@ -64,53 +57,45 @@ public class TalonSRXMotorController extends TalonSRX implements EncodedMotorCon
         return this;
     }
 
-    @Override
-    public TalonSRXMotorController configAnglePID(PIDConstants pid) {
+    public TalonSRXMotor configAnglePID(PIDConstants pid) {
         config_kP(0, pid.kP);
         config_kI(0, pid.kI);
         config_kD(0, pid.kD);
         return this;
     }
 
-    @Override
-    public EncodedMotorController configVelocityPID(PIDConstants pid) {
+    public TalonSRXMotor configVelocityPID(PIDConstants pid) {
         return configAnglePID(pid);
     }
 
-    @Override
-    public TalonSRXMotorController configMinAngle(Rotation2d minPosition) {
+    public TalonSRXMotor configMinAngle(Rotation2d minPosition) {
         configReverseSoftLimitEnable(true);
         configReverseSoftLimitThreshold(minPosition.getRadians() * TICKS_PER_RADIAN);
         return this;
     }
 
-    @Override
-    public TalonSRXMotorController configMaxAngle(Rotation2d maxPosition) {
+    public TalonSRXMotor configMaxAngle(Rotation2d maxPosition) {
         configForwardSoftLimitEnable(true);
         configForwardSoftLimitThreshold(maxPosition.getRadians() * TICKS_PER_RADIAN);
         return this;
     }
 
-    @Override
-    public TalonSRXMotorController configMinOutput(double minOutput) {
+    public TalonSRXMotor configMinOutput(double minOutput) {
         configPeakOutputReverse(minOutput);
        return this;
     }
 
-    @Override
-    public TalonSRXMotorController configMaxOutput(double maxOutput) {
+    public TalonSRXMotor configMaxOutput(double maxOutput) {
         configPeakOutputForward(maxOutput);
         return this;
     }
     
-    @Override
-    public TalonSRXMotorController configInverted(boolean shouldInvert) {
+    public TalonSRXMotor configInverted(boolean shouldInvert) {
         setInverted(shouldInvert);
         return this;
     }
 
-    @Override
-    public TalonSRXMotorController configBrakeOnIdle(boolean shouldBreak) {
+    public TalonSRXMotor configBrakeOnIdle(boolean shouldBreak) {
         setNeutralMode(
             shouldBreak
             ? NeutralMode.Brake

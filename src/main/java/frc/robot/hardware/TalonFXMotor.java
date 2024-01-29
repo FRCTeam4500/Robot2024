@@ -11,17 +11,18 @@ import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.utilities.ExtendedMath;
+import frc.robot.subsystems.swerve.SwerveMotor;
 
-public class TalonFXMotorController extends TalonFX implements EncodedMotorController {
+public class TalonFXMotor extends TalonFX implements SwerveMotor {
     private TalonFXConfiguration config;
     private MotionMagicVoltage mVoltage;
     private VelocityVoltage vVoltage;
 
-    public TalonFXMotorController(int deviceID) {
+    public TalonFXMotor(int deviceID) {
         this(deviceID, new TalonFXConfiguration());
     }
 
-    public TalonFXMotorController(int deviceID, TalonFXConfiguration config) {
+    public TalonFXMotor(int deviceID, TalonFXConfiguration config) {
         super(deviceID);
         this.config = config;
         setPosition(0);
@@ -30,43 +31,35 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         refreshConfig();
     }
 
-    @Override
     public void setAngularVelocity(Rotation2d velocity) {
         setControl(vVoltage.withVelocity(velocity.getRotations()));
     }
 
-    @Override
     public Rotation2d getAngularVelocity() {
-        return Rotation2d.fromRotations(getVelocity().getValueAsDouble());
+        return Rotation2d.fromRotations(super.getVelocity().getValueAsDouble());
     }
 
-    @Override
     public void setAngle(Rotation2d angle) {
         setControl(mVoltage.withPosition(angle.getRotations()));
     }
 
-    @Override
     public Rotation2d getAngle() {
         return Rotation2d.fromRotations(getPosition().getValueAsDouble());
     }
 
-    @Override
     public void setOutput(double output) {
         set(output);
     }
 
-    @Override
     public double getOutput() {
         return get();
     }
 
-    @Override
     public boolean hasContinuousRotation() {
         return false;
     }
 
-    @Override
-    public TalonFXMotorController configCurrentLimit(int limtAmps) {
+    public TalonFXMotor configCurrentLimit(int limtAmps) {
         config.CurrentLimits.SupplyCurrentLimit = limtAmps;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.SupplyCurrentThreshold = limtAmps + 1;
@@ -74,8 +67,7 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configAnglePID(PIDConstants pid) {
+    public TalonFXMotor configAnglePID(PIDConstants pid) {
         config.Slot0.kP = pid.kP;
         config.Slot0.kI = pid.kI;
         config.Slot0.kD = pid.kD;
@@ -83,8 +75,7 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configVelocityPID(PIDConstants pid) {
+    public TalonFXMotor configVelocityPID(PIDConstants pid) {
         config.Slot1.kP = pid.kP;
         config.Slot1.kI = pid.kI;
         config.Slot1.kD = pid.kD;
@@ -92,38 +83,33 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configMinAngle(Rotation2d min) {
+    public TalonFXMotor configMinAngle(Rotation2d min) {
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = min.getRotations();
         refreshConfig();
         return this;    
     }
 
-    @Override
-    public TalonFXMotorController configMaxAngle(Rotation2d max) {
+    public TalonFXMotor configMaxAngle(Rotation2d max) {
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = max.getRotations();
         refreshConfig();
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configMinOutput(double min) {
+    public TalonFXMotor configMinOutput(double min) {
         config.MotorOutput.PeakReverseDutyCycle = ExtendedMath.clamp(-1, 1, min);
         refreshConfig();
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configMaxOutput(double max) {
+    public TalonFXMotor configMaxOutput(double max) {
         config.MotorOutput.PeakForwardDutyCycle = ExtendedMath.clamp(-1, 1, max);
         refreshConfig();
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configInverted(boolean shouldInvert) {
+    public TalonFXMotor configInverted(boolean shouldInvert) {
         if (shouldInvert) {
             if (config.MotorOutput.Inverted == InvertedValue.Clockwise_Positive) {
                 config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -135,8 +121,7 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         return this;
     }
 
-    @Override
-    public TalonFXMotorController configBrakeOnIdle(boolean shouldBreak) {
+    public TalonFXMotor configBrakeOnIdle(boolean shouldBreak) {
         if (shouldBreak) {
             config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         } else {
@@ -146,20 +131,20 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         return this;
     }
     
-    public TalonFXMotorController configMotionMagic(double maxVelocity, double acceleration) {
+    public TalonFXMotor configMotionMagic(double maxVelocity, double acceleration) {
         config.MotionMagic.MotionMagicCruiseVelocity = maxVelocity;
         config.MotionMagic.MotionMagicAcceleration = acceleration;
         refreshConfig();
         return this;
     }
 
-    public TalonFXMotorController configAngleFF(double kV) {
+    public TalonFXMotor configAngleFF(double kV) {
         config.Slot0.kV = kV;
         refreshConfig();
         return this;
     }
 
-    public TalonFXMotorController configVelocityFF(double kV) {
+    public TalonFXMotor configVelocityFF(double kV) {
         config.Slot1.kV = kV;
         refreshConfig();
         return this;
@@ -173,5 +158,4 @@ public class TalonFXMotorController extends TalonFX implements EncodedMotorContr
         }
         return status.isOK();
     }
-
 }

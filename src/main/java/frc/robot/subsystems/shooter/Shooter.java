@@ -6,7 +6,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 import static frc.robot.CANConstants.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.hardware.SparkMaxMotorController;
+import frc.robot.hardware.SparkMaxMotor;
 import frc.robot.subsystems.shooter.ShooterConstants.ShooterState;
 import frc.robot.utilities.ExtendedMath;
 
@@ -33,7 +33,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * @author David Wharton
      * @author lord gre
      */
-    private SparkMaxMotorController shootshootMotorOne;
+    private SparkMaxMotor shootshootMotorOne;
 
     /**
      * word we use for the second motor
@@ -41,7 +41,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * @author David Wharton
      * @author lord gre
      */
-    private SparkMaxMotorController shootshootMotorTwo;
+    private SparkMaxMotor shootshootMotorTwo;
 
     /**
      * word we use for the loading motor
@@ -49,13 +49,13 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
      * @author David Wharton
      * @author lord gre
      */
-    private SparkMaxMotorController loaderMotor;
+    private SparkMaxMotor loaderMotor;
 
     /**
      * Motor to tilt the shooter
      * @author Sal
      */
-    private SparkMaxMotorController tiltMotor;
+    private SparkMaxMotor tiltMotor;
     /**
  * wanted state of the shooter/loader
  * @author David Wharton
@@ -70,10 +70,10 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
  */
 
     protected Shooter() {
-        shootshootMotorOne = new SparkMaxMotorController(SHOOTER_ONE_ID);
-        shootshootMotorTwo = new SparkMaxMotorController(SHOOTER_TWO_ID);
-        loaderMotor = new SparkMaxMotorController(LOADER_ID);
-        tiltMotor = new SparkMaxMotorController(SHOOTER_PIVOT_ID);
+        shootshootMotorOne = new SparkMaxMotor(SHOOTER_ONE_ID);
+        shootshootMotorTwo = new SparkMaxMotor(SHOOTER_TWO_ID);
+        loaderMotor = new SparkMaxMotor(LOADER_ID);
+        tiltMotor = new SparkMaxMotor(SHOOTER_PIVOT_ID);
         targetState = ShooterState.Off;
     }
   /**

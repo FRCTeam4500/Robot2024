@@ -1,7 +1,7 @@
 package frc.robot.subsystems.climber;
 
 import frc.robot.CANConstants;
-import frc.robot.hardware.SparkMaxMotorController;
+import frc.robot.hardware.SparkMaxMotor;
 import frc.robot.utilities.ExtendedMath;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +18,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
  */
 public class Climber extends SubsystemBase implements LoggableInputs {
 
-    private SparkMaxMotorController motor;
+    private SparkMaxMotor motor;
     private ClimberState targetState;
 
     private static Climber instance;
@@ -34,7 +34,7 @@ public class Climber extends SubsystemBase implements LoggableInputs {
      * @author Bennett
      */
     public Climber() {
-        motor = new SparkMaxMotorController(CANConstants.CLIMBER_ID);
+        motor = new SparkMaxMotor(CANConstants.CLIMBER_ID);
         targetState = ClimberState.Lowhook;
     }
 

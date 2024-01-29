@@ -1,8 +1,7 @@
 package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.hardware.EncodedMotorController;
-import frc.robot.hardware.SparkMaxMotorController;
+import frc.robot.hardware.SparkMaxMotor;
 import static frc.robot.CANConstants.*;
 
 public class SwerveConstants {
@@ -27,37 +26,37 @@ public class SwerveConstants {
         RobotCentric,
         AlignToTarget
     }
-    public static final EncodedMotorController FRONT_LEFT_DRIVE_MOTOR =
-        new SparkMaxMotorController(SWERVE_FRONT_LEFT_DRIVE_ID);
-    public static final EncodedMotorController FRONT_LEFT_ANGLE_MOTOR =
-        new SparkMaxMotorController(SWERVE_FRONT_LEFT_ANGLE_ID);
+    public static final SwerveMotor FRONT_LEFT_DRIVE_MOTOR =
+        new SparkMaxMotor(SWERVE_FRONT_LEFT_DRIVE_ID);
+    public static final SwerveMotor FRONT_LEFT_ANGLE_MOTOR =
+        new SparkMaxMotor(SWERVE_FRONT_LEFT_ANGLE_ID);
     public static final Translation2d FRONT_LEFT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
         0.2974
     );
 
-    public static final EncodedMotorController FRONT_RIGHT_DRIVE_MOTOR =
-        new SparkMaxMotorController(SWERVE_FRONT_RIGHT_DRIVE_ID);
-    public static final EncodedMotorController FRONT_RIGHT_ANGLE_MOTOR =
-        new SparkMaxMotorController(SWERVE_FRONT_RIGHT_ANGLE_ID);
+    public static final SwerveMotor FRONT_RIGHT_DRIVE_MOTOR =
+        new SparkMaxMotor(SWERVE_FRONT_RIGHT_DRIVE_ID);
+    public static final SwerveMotor FRONT_RIGHT_ANGLE_MOTOR =
+        new SparkMaxMotor(SWERVE_FRONT_RIGHT_ANGLE_ID);
     public static final Translation2d FRONT_RIGHT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
         -0.2974
     );
 
-    public static final EncodedMotorController BACK_LEFT_DRIVE_MOTOR =
-        new SparkMaxMotorController(SWERVE_BACK_LEFT_DRIVE_ID);
-    public static final EncodedMotorController BACK_LEFT_ANGLE_MOTOR =
-        new SparkMaxMotorController(SWERVE_BACK_LEFT_ANGLE_ID);
+    public static final SwerveMotor BACK_LEFT_DRIVE_MOTOR =
+        new SparkMaxMotor(SWERVE_BACK_LEFT_DRIVE_ID);
+    public static final SwerveMotor BACK_LEFT_ANGLE_MOTOR =
+        new SparkMaxMotor(SWERVE_BACK_LEFT_ANGLE_ID);
     public static final Translation2d BACK_LEFT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
         0.2974
     );
 
-    public static final EncodedMotorController BACK_RIGHT_DRIVE_MOTOR =
-        new SparkMaxMotorController(SWERVE_BACK_RIGHT_DRIVE_ID);
-    public static final EncodedMotorController BACK_RIGHT_ANGLE_MOTOR =
-        new SparkMaxMotorController(SWERVE_BACK_RIGHT_ANGLE_ID);
+    public static final SwerveMotor BACK_RIGHT_DRIVE_MOTOR =
+        new SparkMaxMotor(SWERVE_BACK_RIGHT_DRIVE_ID);
+    public static final SwerveMotor BACK_RIGHT_ANGLE_MOTOR =
+        new SparkMaxMotor(SWERVE_BACK_RIGHT_ANGLE_ID);
     public static final Translation2d BACK_RIGHT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
         -0.2974

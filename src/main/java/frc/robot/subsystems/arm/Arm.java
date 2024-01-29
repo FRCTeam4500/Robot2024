@@ -7,7 +7,7 @@ import frc.robot.subsystems.arm.ArmConstants.ArmState;
 import frc.robot.utilities.ExtendedMath;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANConstants;
-import frc.robot.hardware.SparkMaxMotorController;
+import frc.robot.hardware.SparkMaxMotor;
 
 /**
  * @author Max
@@ -17,7 +17,7 @@ import frc.robot.hardware.SparkMaxMotorController;
 public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make Motor(s?) here (SparkMaxMotorController)
-    private SparkMaxMotorController extensionMotor;
+    private SparkMaxMotor extensionMotor;
 
     // Make Instance Here (Look At Intake.java) @author The Yellow
     private static Arm instance;
@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make Constructor Here
     public Arm() {
-        extensionMotor = new SparkMaxMotorController(CANConstants.ARM_EXTENSION_MOTOR_ID);
+        extensionMotor = new SparkMaxMotor(CANConstants.ARM_EXTENSION_MOTOR_ID);
         targetState = ArmState.ZERO;
     }
 

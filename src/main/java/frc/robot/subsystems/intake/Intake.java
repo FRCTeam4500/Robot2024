@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.hardware.SparkMaxMotorController;
+import frc.robot.hardware.SparkMaxMotor;
 import frc.robot.utilities.ExtendedMath;
 import static frc.robot.CANConstants.*;
 import static frc.robot.subsystems.intake.IntakeConstants.*;
@@ -33,8 +33,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
 
     // Declare variables
     // Hardware
-    private SparkMaxMotorController tiltMotor;
-    private SparkMaxMotorController outputMotor;
+    private SparkMaxMotor tiltMotor;
+    private SparkMaxMotor outputMotor;
     // private DigitalInput noteLimitSwitch;
     // private DigitalInput zeroingLimitSwitch;
     // State
@@ -47,8 +47,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
      * @author Vimal Buckley
      */
     protected Intake() {
-        tiltMotor = new SparkMaxMotorController(INTAKE_TILT_ID, MotorType.kBrushless);
-        outputMotor = new SparkMaxMotorController(INTAKE_OUTPUT_ID, MotorType.kBrushless);
+        tiltMotor = new SparkMaxMotor(INTAKE_TILT_ID, MotorType.kBrushless);
+        outputMotor = new SparkMaxMotor(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         // noteLimitSwitch = new DigitalInput(INTAKE_NOTE_LIMIT_SWITCH_ID);
         // zeroingLimitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
         targetState = IntakeState.Stow;
