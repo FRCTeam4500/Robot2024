@@ -34,11 +34,15 @@ public class Shooter2 extends SubsystemBase {
         loader.set(LOADING_OUTPUT);
     }
 
+    public void stopLoading() {
+        loader.set(0);
+    }
+
     public void pivot(Rotation2d angle) {
         pivoter.setAngle(angle);
     }
 
-    public static Rotation2d calcAngle(double distanceMeters) {
+    public static Rotation2d calculatePivot() {
         return new Rotation2d();
     }
 }
