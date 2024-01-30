@@ -123,7 +123,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		double leftVelocity,
 		Rotation2d aligningAngle
 	) {
-		driveRobotCentric(
+		driveRobotCentric(		
 			new ChassisSpeeds(
 				ChassisSpeeds.fromFieldRelativeSpeeds(
 					forwardVelocity,
@@ -131,7 +131,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 					0, 
 					getRobotAngle()
 				).vxMetersPerSecond, 
-				pieceVision.getHorizontalOffset(new Rotation2d()).getDegrees() / 10,
+				pieceVision.getHorizontalOffset(new Rotation2d()).getDegrees() / (pieceVision.getTakenArea(99)),
 				calculateRotationalVelocityToTarget(aligningAngle)
 			)
 		);
