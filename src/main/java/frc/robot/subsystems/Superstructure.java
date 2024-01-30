@@ -4,10 +4,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.swerve.CommandSwerve;
+
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
@@ -26,16 +29,18 @@ public class Superstructure {
 
     private CommandSwerve swerve;
     private CommandIntake intake;
-    private DriveMode driveMode;
+    // private CommandArm arm;
+    // private CommandShooter shooter;
+    // private CommandClimber climber;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
-        driveMode = DriveMode.AngleCentric;
+        // arm = CommandArm.getInstance();
+        // shooter = CommandShooter.getInstance();
+        // climber = CommandClimber.getInstance();
         configurePathPlanner();
-
-        Shuffleboard.getTab("Display").add(swerve);
-        Shuffleboard.getTab("Display").addString("Drive Mode", () -> driveMode.toString());
+        debugToShuffleboard();
     }
 
     public void configurePathPlanner() {
@@ -54,15 +59,25 @@ public class Superstructure {
             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
         );
-        NamedCommands.registerCommand("Drive To Piece", swerve.driveToPiece().withTimeout(1.5));
+        NamedCommands.registerCommand("Drive To Piece", driveToPiece().withTimeout(1.5));
+    }
+
+    public void displayToShuffleboard() {
+        // ShuffleboardTab display = Shuffleboard.getTab("Display");
+    }
+
+    public void debugToShuffleboard() {
+        ShuffleboardTab debug = Shuffleboard.getTab("Debug");
+        debug.add(swerve);
+        debug.add(intake);
+    }
+
+    public void setDefaultDrive(CommandXboxController xbox) {
+        swerve.setDefaultCommand(angleCentricDrive(xbox));
     }
 
     public Command angleCentricDrive(CommandXboxController xbox) {
-        return swerve.alignToPiece(xbox);
-    }
-
-    public Command robotCentricDrive(CommandXboxController xbox) {
-        return swerve.robotCentricDrive(xbox);
+        return swerve.angleCentricDrive(xbox);
     }
 
     public Command alignToPiece(CommandXboxController xbox) {
@@ -81,15 +96,15 @@ public class Superstructure {
         return swerve.resetGyro();
     }
 
-    public Command handoff() {
-        return intake.handoff();
+    public Command runIntake(double output) {
+        return Commands.runOnce(() -> intake.setSpeed(output));
     }
-
-    public Command stow() {
-        return intake.stow();
-    }
-
-    public Command pickup() {
-        return intake.pickup();
-    }
+    // shoot: Shoots
+    // readySpeaker: get arm ready to fire at speaker, spin up shooter
+    // readyAmp: get arm ready to fire at amp, spin up shooter
+    // climberUp: get ready to climb
+    // climberDown: actually climb
+    // intakeStart: start intaking
+    // intakeFinish: stop intaking
+    
 }

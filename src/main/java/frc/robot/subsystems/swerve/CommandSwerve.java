@@ -33,7 +33,7 @@ public class CommandSwerve extends SwerveDrive {
         driveMode = DriveMode.AngleCentric;
     }
 
-    public Command angleCentricDriveCommand(CommandXboxController xbox) {
+    public Command angleCentricDrive(CommandXboxController xbox) {
         return Commands.run(
             () -> {
                 double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
