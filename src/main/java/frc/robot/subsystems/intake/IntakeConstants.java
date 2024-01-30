@@ -12,7 +12,7 @@ public class IntakeConstants {
     */
     public static enum IntakeState {
         /** The intake is down, but not running */
-        ReadyPickup(Rotation2d.fromDegrees(50), 0),
+        ReadyPickup(Rotation2d.fromDegrees(-200), 0),
         /** The intake is down and running */
         ExecutePickup(Rotation2d.fromDegrees(50), -0.5),
         /** The intake is zeroed and not running */

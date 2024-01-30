@@ -73,18 +73,18 @@ public class CommandIntake extends Intake {
      * @author Bimal Vuckley
     */
     public Command pickup() {
-        return Commands.runOnce(
-            () -> setState(IntakeState.ReadyPickup), this
-        ).andThen(
-            waitUntilAtTarget()
-        ).andThen(
-            () -> setState(IntakeState.ExecutePickup), this
-        ).andThen(
+        return startPickup().andThen(
             Commands.waitUntil(() -> hasNote())
         ).andThen(
             stow()
         ).andThen(
             waitUntilAtTarget()
+        );
+    }
+
+    public Command startPickup() {
+        return Commands.runOnce(
+            () -> setState(IntakeState.ExecutePickup), this
         );
     }
 }

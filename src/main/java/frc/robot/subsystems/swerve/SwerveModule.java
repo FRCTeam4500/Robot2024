@@ -4,17 +4,16 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.hardware.EncodedMotorController;
 import frc.robot.utilities.ExtendedMath;
 
 public class SwerveModule {
-	private EncodedMotorController driveMotor;
-	private EncodedMotorController angleMotor;
+	private SwerveMotor driveMotor;
+	private SwerveMotor angleMotor;
 	private Translation2d translationFromCenter;
 
 	public SwerveModule(
-		EncodedMotorController driveMotor,
-		EncodedMotorController angleMotor,
+		SwerveMotor driveMotor,
+		SwerveMotor angleMotor,
 		Translation2d translationToCenter
 	) {
 		this.driveMotor = driveMotor;
