@@ -32,15 +32,15 @@ public class Superstructure {
     private CommandSwerve swerve;
     private CommandIntake intake;
     // private CommandArm arm;
-    // private CommandShooter shooter;
-    // private CommandClimber climber;
+    private CommandShooter shooter;
+    private CommandClimber climber;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
         // arm = CommandArm.getInstance();
-        // shooter = CommandShooter.getInstance();
-        // climber = CommandClimber.getInstance();
+        shooter = CommandShooter.getInstance();
+        climber = CommandClimber.getInstance();
         configurePathPlanner();
         debugToShuffleboard();
     }
@@ -104,6 +104,20 @@ public class Superstructure {
 
     public Command endPickUp() {
         return intake.readyHandoff().andThen(intake.eject());
+    }
+
+    public Command climberUp() {
+        return climber.readyClimb();
+    }
+
+    public Command climberDown() {
+        return climber.climb();
+    }
+
+    // shoot: Shoots
+
+    public Command shoot() {
+        return shooter.shoot();
     }
 
     // readySpeaker: get arm ready to fire at speaker, spin up shooter
