@@ -6,7 +6,7 @@ import frc.robot.subsystems.intake.IntakeConstants.IntakeState;
 
 /**
  * A wraqqer class around {@link Intake Intake} which provides command functionality.
- * @author Billy Bonga
+ * @author Vimal Buckley
  */
 public class CommandIntake extends Intake {
     // Singleton stuff
@@ -68,8 +68,25 @@ public class CommandIntake extends Intake {
         );
     }
 
+    public Command readyHandoff() {
+        return Commands.runOnce(
+            () -> setState(IntakeState.ReadyHandoff), this
+        ).withTimeout(1);
+    }
+
+    public Command eject() {
+        return Commands.runOnce(
+            () -> setSpeed(-0.4)
+        ).withTimeout(
+            0.5
+        ).andThen(
+            stow()
+        );
+    }
+
     /**
      * A command that pickups a game piece, then stows the intake
+     * @deprecated
      * @author Bimal Vuckley
     */
     public Command pickup() {
@@ -77,8 +94,6 @@ public class CommandIntake extends Intake {
             Commands.waitUntil(() -> hasNote())
         ).andThen(
             stow()
-        ).andThen(
-            waitUntilAtTarget()
         );
     }
 

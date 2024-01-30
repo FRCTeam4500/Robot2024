@@ -34,7 +34,7 @@ public class RobotContainer {
 	private void setupAuto() {
 		autonChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Display").add(
-			"Auto Route", 
+			"Auto Route",
 			autonChooser
 		);
 	}
@@ -42,7 +42,7 @@ public class RobotContainer {
 	private void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
 		structure.setDefaultDrive(xbox);
-		
+
 		Trigger resetGyroButton = xbox.a();
 
 		resetGyroButton.onTrue(structure.resetGyro());
@@ -53,12 +53,12 @@ public class RobotContainer {
 		Trigger intakeButton = flightSim.button(2);
 		Trigger outtakeButton = flightSim.button(1);
 
-		intakeButton.onTrue(structure.runIntake(0.4));
-		intakeButton.onFalse(structure.runIntake(0));
-		outtakeButton.onTrue(structure.runIntake(-0.4));
-		outtakeButton.onFalse(structure.runIntake(0));
+		intakeButton.onTrue(structure.startPickUp());
+		intakeButton.onFalse(structure.endPickUp());
+		// outtakeButton.onTrue(structure.runIntake(-0.4));
+		// outtakeButton.onFalse(structure.runIntake(0));
 	}
-	
+
 	public Command rumbleCommand(double timeSeconds) {
 		return Commands.startEnd(
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0.5),
@@ -69,7 +69,7 @@ public class RobotContainer {
 	public void autonomousInit() {
 		autoCommand = autonChooser.getSelected();
 		if (autoCommand != null) autoCommand.schedule();
-		
+
 	}
 
 	public void teleopInit() {

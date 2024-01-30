@@ -8,7 +8,7 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 /**
  * a class that does things
- * 
+ *
  * @author David Wharton
  * @author lord gre
  */
@@ -29,7 +29,7 @@ public class CommandShooter extends Shooter {
 
     /**
      * a command that turns off the shootshoot
-     * 
+     *
      * @author lord gre
      */
     public Command off() {
@@ -40,7 +40,7 @@ public class CommandShooter extends Shooter {
 
     /**
      * a command that turns on the loader
-     * 
+     *
      * @author David Wharton
      */
     public Command load() {
@@ -50,7 +50,7 @@ public class CommandShooter extends Shooter {
 
     /**
      * a command that spins up the shootshoot motor
-     * 
+     *
      * @author DavsetTargetState(ShooterState.SpinningUp), this
      */
 
@@ -61,15 +61,13 @@ public class CommandShooter extends Shooter {
 
     /**
      * a command that runs the whole shoot command
-     * 
+     *
      * @author David Wharton and lord gre
      */
     public Command shoot() {
         return spinUp().andThen(
                 Commands.waitUntil(() -> spunUp())).andThen(
                         load())
-                .andThen(
-                        shoot())
                 .andThen(
                         Commands.waitSeconds(0.5))
                 .andThen(

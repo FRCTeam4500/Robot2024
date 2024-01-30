@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
+import frc.robot.subsystems.shooter.CommandShooter;
 import frc.robot.subsystems.swerve.CommandSwerve;
 
 
@@ -96,15 +98,15 @@ public class Superstructure {
         return swerve.resetGyro();
     }
 
-    public Command runIntake(double output) {
-        return Commands.runOnce(() -> intake.setSpeed(output));
+    public Command startPickUp() {
+        return intake.startPickup();
     }
-    // shoot: Shoots
+
+    public Command endPickUp() {
+        return intake.readyHandoff().andThen(intake.eject());
+    }
+
     // readySpeaker: get arm ready to fire at speaker, spin up shooter
     // readyAmp: get arm ready to fire at amp, spin up shooter
-    // climberUp: get ready to climb
-    // climberDown: actually climb
-    // intakeStart: start intaking
-    // intakeFinish: stop intaking
-    
+
 }
