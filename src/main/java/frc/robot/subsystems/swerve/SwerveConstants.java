@@ -1,11 +1,11 @@
 package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.hardware.SparkMaxMotor;
+import frc.robot.hardware.TalonFXMotor;
+
 import static frc.robot.CANConstants.*;
 
 public class SwerveConstants {
-    // TODO: Change these!
     /** Drive rotations per motor rotation */
     public static final double DRIVE_RATIO = 1/5.0;
     /** Angle rotations per motor rotation */
@@ -27,36 +27,36 @@ public class SwerveConstants {
         AlignToTarget
     }
     public static final SwerveMotor FRONT_LEFT_DRIVE_MOTOR =
-        new SparkMaxMotor(SWERVE_FRONT_LEFT_DRIVE_ID);
+        new TalonFXMotor(SWERVE_FRONT_LEFT_DRIVE_ID);
     public static final SwerveMotor FRONT_LEFT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_FRONT_LEFT_ANGLE_ID);
+        new TalonFXMotor(SWERVE_FRONT_LEFT_ANGLE_ID);
     public static final Translation2d FRONT_LEFT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
         0.2974
     );
 
     public static final SwerveMotor FRONT_RIGHT_DRIVE_MOTOR =
-        new SparkMaxMotor(SWERVE_FRONT_RIGHT_DRIVE_ID);
+        new TalonFXMotor(SWERVE_FRONT_RIGHT_DRIVE_ID);
     public static final SwerveMotor FRONT_RIGHT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_FRONT_RIGHT_ANGLE_ID);
+        new TalonFXMotor(SWERVE_FRONT_RIGHT_ANGLE_ID);
     public static final Translation2d FRONT_RIGHT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
         -0.2974
     );
 
     public static final SwerveMotor BACK_LEFT_DRIVE_MOTOR =
-        new SparkMaxMotor(SWERVE_BACK_LEFT_DRIVE_ID);
+        new TalonFXMotor(SWERVE_BACK_LEFT_DRIVE_ID);
     public static final SwerveMotor BACK_LEFT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_BACK_LEFT_ANGLE_ID);
+        new TalonFXMotor(SWERVE_BACK_LEFT_ANGLE_ID);
     public static final Translation2d BACK_LEFT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
         0.2974
     );
 
     public static final SwerveMotor BACK_RIGHT_DRIVE_MOTOR =
-        new SparkMaxMotor(SWERVE_BACK_RIGHT_DRIVE_ID);
+        new TalonFXMotor(SWERVE_BACK_RIGHT_DRIVE_ID);
     public static final SwerveMotor BACK_RIGHT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_BACK_RIGHT_ANGLE_ID);
+        new TalonFXMotor(SWERVE_BACK_RIGHT_ANGLE_ID);
     public static final Translation2d BACK_RIGHT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
         -0.2974

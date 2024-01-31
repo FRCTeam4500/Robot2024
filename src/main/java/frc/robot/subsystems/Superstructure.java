@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.arm.CommandArm;
 import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.shooter.CommandShooter;
+import frc.robot.subsystems.shooter2.CommandShooter2;
 import frc.robot.subsystems.swerve.CommandSwerve;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
@@ -34,15 +36,15 @@ public class Superstructure {
 
     private CommandSwerve swerve;
     private CommandIntake intake;
-    // private CommandArm arm;
-    private CommandShooter shooter;
+    private CommandArm arm;
+    private CommandShooter2 shooter;
     private CommandClimber climber;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
-        // arm = CommandArm.getInstance();
-        shooter = CommandShooter.getInstance();
+        arm = CommandArm.getInstance();
+        shooter = CommandShooter2.getInstance();
         climber = CommandClimber.getInstance();
         configurePathPlanner();
         debugToShuffleboard();
@@ -185,7 +187,26 @@ public class Superstructure {
         return shooter.shoot();
     }
 
-    // readySpeaker: get arm ready to fire at speaker, spin up shooter
-    // readyAmp: get arm ready to fire at amp, spin up shooter
+    /**
+     * Returns a Command object that represents the action of getting the shooter ready.
+     *
+     * @return a Command object representing the action of getting the shooter ready
+     * @author sal and gre
+     * @param sal
+     */
+    public Command readyShooter() {
+        return shooter.readySpeaker();
+    }
+
+    /**
+     * Returns a Command object that represents the action of getting ready for amplification.
+     * This command is composed of two sub-commands: one for the arm to go to the amplification position,
+     * and one for the shooter to get ready for amplification.
+     *
+     * @return The Command object representing the action of getting ready for amplification.
+     */
+    public Command readyAmp() {
+        return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
+    }
 
 }
