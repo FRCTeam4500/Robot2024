@@ -56,6 +56,6 @@ public class Climber extends SubsystemBase implements LoggableInputs {
     public void fromLog(LogTable table) {
 
     }
-    
+
 
 }

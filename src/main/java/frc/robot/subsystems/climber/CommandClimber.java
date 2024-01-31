@@ -9,27 +9,31 @@ import frc.robot.subsystems.climber.ClimberConstants.ClimberState;
  * @author Ashwin
  */
 public class CommandClimber extends Climber {
+
     private static CommandClimber instance;
     public static synchronized CommandClimber getInstance(){
         if (instance == null) instance = new CommandClimber();
         return instance;
 
     }
+
     public Command climb() {
         return Commands.runOnce(
             () -> setState(ClimberState.Midhook)
         ).andThen(
-        atClimberTargetState()
+        waitUntilAtTargetState()
         );
     }
+
     public Command readyClimb() {
         return Commands.runOnce(
         () -> setState(ClimberState.Highhook)
         ).andThen(
-            atClimberTargetState()
+            waitUntilAtTargetState()
         );
     }
-    public Command atClimberTargetState() {
+
+    public Command waitUntilAtTargetState() {
         return Commands.waitUntil(() -> atTargetState());
     }
 }

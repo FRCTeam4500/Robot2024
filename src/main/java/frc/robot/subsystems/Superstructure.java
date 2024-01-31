@@ -12,7 +12,6 @@ import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.shooter.CommandShooter;
 import frc.robot.subsystems.swerve.CommandSwerve;
 
-
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
