@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
@@ -22,6 +21,11 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+/**
+ * The Superstructure class represents the overall structure of the robot.
+ * It is responsible for coordinating the different subsystems and commands
+ * to perform various actions and tasks.
+ */
 public class Superstructure {
     private static Superstructure instance;
     public static synchronized Superstructure getInstance() {
@@ -45,6 +49,10 @@ public class Superstructure {
         debugToShuffleboard();
     }
 
+    /**
+     * Configures the path planner for the superstructure.
+     * This method sets up the necessary components and parameters for the path planner.
+     */
     public void configurePathPlanner() {
         AutoBuilder.configureHolonomic(
             swerve::getOdometryPose,
@@ -68,54 +76,112 @@ public class Superstructure {
         // ShuffleboardTab display = Shuffleboard.getTab("Display");
     }
 
+    /**
+     * Displays the debug information of to Shuffleboard (initSendable)
+     */
     public void debugToShuffleboard() {
         ShuffleboardTab debug = Shuffleboard.getTab("Debug");
         debug.add(swerve);
         debug.add(intake);
     }
 
+    /**
+     * Sets the default drive command for the superstructure.
+     *
+     * @param xbox The Xbox controller used for driving.
+     */
     public void setDefaultDrive(CommandXboxController xbox) {
         swerve.setDefaultCommand(angleCentricDrive(xbox));
     }
 
+    /**
+     * Drives the superstructure in angle-centric mode using the given Xbox controller.
+     *
+     * @param xbox the Xbox controller used for driving
+     * @return the command to drive the superstructure in angle-centric mode
+     */
     public Command angleCentricDrive(CommandXboxController xbox) {
         return swerve.angleCentricDrive(xbox);
     }
 
+    /**
+     * Aligns the superstructure to a game piece based on input from the Xbox controller.
+     *
+     * @param xbox The Xbox controller used to control the alignment.
+     * @return The command to align the superstructure to the game piece.
+     */
     public Command alignToPiece(CommandXboxController xbox) {
         return swerve.alignToPiece(xbox);
     }
 
+    /**
+     * Drives the robot to a specified target pose relative to the april tag.
+     *
+     * @param targetPose The target pose to drive to relative to the april tag.
+     * @return The command to drive to the target pose.
+     */
     public Command driveToTag(Pose2d targetPose) {
         return swerve.driveToTag(targetPose);
     }
 
+    /**
+     * Drives the robot to a piece.
+     *
+     * @return the command to drive to the piece
+     */
     public Command driveToPiece() {
         return swerve.driveToPiece();
     }
 
+    /**
+     * Resets the gyro and returns a Command object.
+     *
+     * @return The Command object that resets the gyro.
+     */
     public Command resetGyro() {
         return swerve.resetGyro();
     }
 
+    /**
+     * Start the intake to pick up a game piece.
+     */
     public Command startPickUp() {
         return intake.startPickup();
     }
 
+    /**
+     * Returns a Command object that represents the end of the pick-up process.
+     * This command is composed of two sequential commands: readyHandoff() and eject().
+     *
+     * @return The Command object representing the end of the pick-up process.
+     */
     public Command endPickUp() {
         return intake.readyHandoff().andThen(intake.eject());
     }
 
+    /**
+     * Returns a Command object that represents the action of moving the climber up.
+     *
+     * @return the Command object for moving the climber up
+     */
     public Command climberUp() {
         return climber.readyClimb();
     }
 
+    /**
+     * Returns a command to initiate the climber's descent.
+     *
+     * @return the command to initiate the climber's descent
+     */
     public Command climberDown() {
         return climber.climb();
     }
 
-    // shoot: Shoots
-
+    /**
+     * Executes the shoot command.
+     *
+     * @return the shoot command
+     */
     public Command shoot() {
         return shooter.shoot();
     }
