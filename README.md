@@ -13,7 +13,7 @@ This repository contains the code for controlling our robot.
 
 In this section, provide a brief overview of the robot and its purpose. Explain what the code in this repository does and how it contributes to the robot's functionality.
 
-## Getting Started
+## [Getting Started](https://frcteam4500.github.io/mkdocs-4500-docs/Getting%20Started/software-guide/)
 
 To get started with developing and running the robot code, follow these steps:
 
