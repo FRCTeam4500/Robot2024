@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.arm.CommandArm;
 import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
-import frc.robot.subsystems.shooter.CommandShooter;
 import frc.robot.subsystems.shooter2.CommandShooter2;
 import frc.robot.subsystems.swerve.CommandSwerve;
 

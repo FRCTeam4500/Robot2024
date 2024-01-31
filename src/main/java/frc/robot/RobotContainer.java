@@ -30,7 +30,11 @@ public class RobotContainer {
 		setupOperatorController();
 		structure.debugToShuffleboard();
 	}
-
+/**
+ * the
+ * @author me
+ * @param vimal
+ */
 	private void setupAuto() {
 		autonChooser = AutoBuilder.buildAutoChooser();
 		Shuffleboard.getTab("Display").add(
@@ -52,11 +56,18 @@ public class RobotContainer {
 		flightSim = new CommandJoystick(OPERATOR_PORT);
 		Trigger intakeButton = flightSim.button(2);
 		Trigger outtakeButton = flightSim.button(1);
+		Trigger climbUpButton = flightSim.button(6);
+		Trigger climbDownButton = flightSim.button(5);
+		Trigger readyAmpButton = flightSim.button(9);
+		Trigger readySpeakerButton = flightSim.button(10);
 
 		intakeButton.onTrue(structure.startPickUp());
 		intakeButton.onFalse(structure.endPickUp());
-		// outtakeButton.onTrue(structure.runIntake(-0.4));
-		// outtakeButton.onFalse(structure.runIntake(0));
+		outtakeButton.toggleOnTrue(structure.shoot());
+		climbUpButton.onTrue(structure.climberUp());
+		climbDownButton.onTrue(structure.climberDown());
+		readySpeakerButton.onTrue(structure.readyShooter());
+		readyAmpButton.onTrue(structure.readyAmp());//ppap
 	}
 
 	public Command rumbleCommand(double timeSeconds) {

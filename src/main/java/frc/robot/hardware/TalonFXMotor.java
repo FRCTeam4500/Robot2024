@@ -87,7 +87,7 @@ public class TalonFXMotor extends TalonFX implements SwerveMotor {
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = min.getRotations();
         refreshConfig();
-        return this;    
+        return this;
     }
 
     public TalonFXMotor configMaxAngle(Rotation2d max) {
@@ -130,7 +130,7 @@ public class TalonFXMotor extends TalonFX implements SwerveMotor {
         refreshConfig();
         return this;
     }
-    
+
     public TalonFXMotor configMotionMagic(double maxVelocity, double acceleration) {
         config.MotionMagic.MotionMagicCruiseVelocity = maxVelocity;
         config.MotionMagic.MotionMagicAcceleration = acceleration;
