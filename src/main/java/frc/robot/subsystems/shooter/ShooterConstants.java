@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 /**
  * numbers
  * @author David Wharton
- * @author Gretchen Miller
+ * @author lord gre
  */
 public class ShooterConstants {
    public static final Rotation2d tiltThreshold = Rotation2d.fromDegrees(1);
