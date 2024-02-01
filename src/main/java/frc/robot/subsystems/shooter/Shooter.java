@@ -11,16 +11,14 @@ import frc.robot.subsystems.shooter.ShooterConstants.ShooterState;
 import frc.robot.utilities.ExtendedMath;
 
 /**
- * a bunch of stuff
- * 
  * @author David Wharton
- * @author lord gre
+ * @author Gretchen Miller
  */
 public class Shooter extends SubsystemBase implements LoggableInputs {
 
     private static Shooter instance;
 
-    // hi
+
     public static synchronized Shooter getInstance() {
         if (instance == null)
             instance = new Shooter();
@@ -29,37 +27,25 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
 
     /**
      * word we use for the first motor
-     * 
-     * @author David Wharton
-     * @author lord gre
      */
     private SparkMaxMotor shootshootMotorOne;
 
-    /**
-     * word we use for the second motor
-     * 
-     * @author David Wharton
-     * @author lord gre
-     */
+
+    // word we use for the second motor
+
     private SparkMaxMotor shootshootMotorTwo;
 
     /**
      * word we use for the loading motor
-     * 
-     * @author David Wharton
-     * @author lord gre
      */
     private SparkMaxMotor loaderMotor;
 
     /**
      * Motor to tilt the shooter
-     * @author Sal
      */
     private SparkMaxMotor tiltMotor;
     /**
  * wanted state of the shooter/loader
- * @author David Wharton
- * @author lord gre
  */
 
     private ShooterState targetState;
@@ -79,7 +65,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
   /**
  * changes target state
  * @author David Wharton
- * @author lord gre
+ * @author Gretchen Miller
  */
     public void setTargetState(ShooterState state) {
         shootshootMotorOne.setOutput(state.shooterSpeed);
@@ -91,7 +77,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
 /**
  * checks if the motor is spun up
  * @author David Wharton
- * @author lord gre
+ * @author Gretchen Miller
  */
     public boolean spunUp() {
         return Math.abs(shootshootMotorOne.getOutput() - targetState.shooterSpeed) < speedThreshold &&
@@ -120,7 +106,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
 /**
  * does absolutely nothing
  * @author David Wharton
- * @author lord gre
+ * @author Gretchen Miller
  */
     @Override
     public void fromLog(LogTable table) {}

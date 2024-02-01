@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter;
 //q
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.shooter.ShooterConstants.ShooterState;
 
 import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
@@ -10,7 +11,7 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
  * a class that does things
  *
  * @author David Wharton
- * @author lord gre
+ * @author Gretchen Miller
  */
 public class CommandShooter extends Shooter {
 
@@ -30,7 +31,7 @@ public class CommandShooter extends Shooter {
     /**
      * a command that turns off the shootshoot
      *
-     * @author lord gre
+     * @author Gretchen Miller
      */
     public Command off() {
         return Commands.runOnce(
@@ -62,7 +63,7 @@ public class CommandShooter extends Shooter {
     /**
      * a command that runs the whole shoot command
      *
-     * @author David Wharton and lord gre
+     * @author David Wharton and Gretchen Miller
      */
     public Command shoot() {
         return spinUp().andThen(

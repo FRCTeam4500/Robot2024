@@ -12,12 +12,12 @@ import frc.robot.hardware.SparkMaxMotor;
 /**
  * @author Max
  * @author Yijia
- * @author Oliver
+ * @author Oliver The Smart
  */
 public class Arm extends SubsystemBase implements LoggableInputs {
 
     // Make Motor(s?) here (SparkMaxMotorController)
-    private SparkMaxMotor extensionMotor;
+    private SparkMaxMotor extensionMotor; 
 
     // Make Instance Here (Look At Intake.java) @author The Yellow
     private static Arm instance;
