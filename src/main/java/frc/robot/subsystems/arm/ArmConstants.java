@@ -9,18 +9,17 @@ import edu.wpi.first.math.geometry.Rotation2d;
  */
 public class ArmConstants {
 
-    public static final Rotation2d extensionThreshold = Rotation2d.fromDegrees(1);
+    public static final double extensionThreshold = 75;
 
     public static enum ArmState {
-        ZERO(Rotation2d.fromDegrees(0.0)),
-        SPEAKER(Rotation2d.fromDegrees(1.0)),
-        AMP(Rotation2d.fromDegrees(2.0)),
-        HANDOFF(Rotation2d.fromDegrees(3.1));
-        public Rotation2d extension;
-        private ArmState(Rotation2d extensionPosition) {
+        ZERO(0.0),
+        SPEAKER(0.0),
+        AMP(5100),
+        HANDOFF(3100);
+        public double extension;
+        private ArmState(double extensionPosition) {
             this.extension = extensionPosition;
         }
-
     }
 
 }

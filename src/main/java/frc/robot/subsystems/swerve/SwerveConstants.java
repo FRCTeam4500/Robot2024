@@ -14,7 +14,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 public class SwerveConstants {
     /** Drive rotations per motor rotation
-     * @param  poop
+     * @param  Vimal Bucky
      */
     public static final double DRIVE_RATIO = 1/7.5;
     /** Angle rotations per motor rotation */

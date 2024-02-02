@@ -16,7 +16,7 @@ import frc.robot.utilities.ExtendedMath;
  * @author David Wharton
  * @author lord gre
  */
-public class Shooter extends SubsystemBase implements LoggableInputs {
+public class Shooter extends SubsystemBase implements LoggableInputs {//ppap
 
     private static Shooter instance;
 

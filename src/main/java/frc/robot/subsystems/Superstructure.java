@@ -27,6 +27,8 @@ import com.pathplanner.lib.util.ReplanningConfig;
  * The Superstructure class represents the overall structure of the robot.
  * It is responsible for coordinating the different subsystems and commands
  * to perform various actions and tasks.
+ * 
+ * @author Borian Vassilev Schonhuth
  */
 public class Superstructure {
     private static Superstructure instance;
