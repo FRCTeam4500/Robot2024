@@ -78,15 +78,19 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			getModulePositions(),
 			tagVision.getRobotPose(new Pose2d())
 		);
-        Shuffleboard.getTab("Display").addBoolean(
-			"Gyro Connected", 
-			() -> gyro.getAHRS().isConnected()
-		);
+        // Shuffleboard.getTab("Display").addBoolean(
+		// 	"Gyro is Connected", 
+		// 	() -> gyro.getAHRS().isConnected()
+		// );
 	}
 
     public static synchronized SwerveDrive getInstance() {
 		if (instance == null) instance = new SwerveDrive();
 		return instance;
+	}
+
+	public boolean gyroConnected() {
+		return gyro.getAHRS().isConnected();
 	}
 
 	@Override
@@ -244,6 +248,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		builder.addDoubleProperty("Forward Velocity (mps)", () -> getChassisSpeeds().vxMetersPerSecond, null);
 		builder.addDoubleProperty("Sideways Velocity (mps)", () -> getChassisSpeeds().vyMetersPerSecond, null);
 		builder.addDoubleProperty("Rotational Velocity (radps)", () -> getChassisSpeeds().omegaRadiansPerSecond, null);
+		// builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
 	}
 
 	private double calculateRotationalVelocityToTarget(Rotation2d targetRotation) {
