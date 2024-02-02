@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.arm.CommandArm;
-import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
+import frc.robot.subsystems.shooter.CommandShooter;
 import frc.robot.subsystems.shooter2.CommandShooter2;
 import frc.robot.subsystems.swerve.CommandSwerve;
 
@@ -27,7 +27,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
  * The Superstructure class represents the overall structure of the robot.
  * It is responsible for coordinating the different subsystems and commands
  * to perform various actions and tasks.
- * 
+ *
  * @author Borian Vassilev Schonhuth
  */
 public class Superstructure {
@@ -39,17 +39,14 @@ public class Superstructure {
 
     private CommandSwerve swerve;
     private CommandIntake intake;
-    // private CommandArm arm;
-    // private CommandShooter2 shooter;
-    // private CommandClimber climber;
+    private CommandArm arm;
+    private CommandShooter2 shooter;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
-        // arm = CommandArm.getInstance();
-        // shooter = CommandShooter2.getInstance();
-        // climber = CommandClimber.getInstance();
-        // configurePathPlanner();
+        arm = CommandArm.getInstance();
+        shooter = CommandShooter2.getInstance();
         displayToShuffleboard();
         debugToShuffleboard();
     }
@@ -179,26 +176,26 @@ public class Superstructure {
     public Command ejectIntake() {
         return Commands.startEnd(
             () -> intake.setSpeed(-0.4),
-            () -> intake.setSpeed(0)  
+            () -> intake.setSpeed(0)
         );
     }
 
-    // /**
-    //  * Start the intake to pick up a game piece.
-    //  */
-    // public Command startPickUp() {
-    //     return intake.startPickup();
-    // }
+    /**
+     * Start the intake to pick up a game piece.
+     */
+    public Command startPickUp() {
+        return intake.startPickup();
+    }
 
-    // /**
-    //  * Returns a Command object that represents the end of the pick-up process.
-    //  * This command is composed of two sequential commands: readyHandoff() and eject().
-    //  *
-    //  * @return The Command object representing the end of the pick-up process.
-    //  */
-    // public Command endPickUp() {
-    //     return intake.readyHandoff().andThen(intake.eject());
-    // // }
+    /**
+     * Returns a Command object that represents the end of the pick-up process.
+     * This command is composed of two sequential commands: readyHandoff() and eject().
+     *
+     * @return The Command object representing the end of the pick-up process.
+     */
+    public Command endPickUp() {
+        return intake.readyHandoff().andThen(intake.eject());
+    }
 
     // /**
     //  * Returns a Command object that represents the action of moving the climber up.
@@ -218,35 +215,35 @@ public class Superstructure {
     //     return climber.climb();
     // }
 
-    // /**
-    //  * Executes the shoot command.
-    //  *
-    //  * @return the shoot command
-    //  */
-    // public Command shoot() {
-    //     return shooter.shoot();
-    // }
+    /**
+     * Executes the shoot command.
+     *
+     * @return the shoot command
+     */
+    public Command shoot() {
+        return shooter.shoot();
+    }
 
-    // /**
-    //  * Returns a Command object that represents the action of getting the shooter ready.
-    //  *
-    //  * @return a Command object representing the action of getting the shooter ready
-    //  * @author sal and gre
-    //  * @param sal
-    //  */
-    // public Command readyShooter() {
-    //     return shooter.readySpeaker();
-    // }
+    /**
+     * Returns a Command object that represents the action of getting the shooter ready.
+     *
+     * @return a Command object representing the action of getting the shooter ready
+     * @author sal and gre
+     * @param sal
+     */
+    public Command readyShooter() {
+        return shooter.readySpeaker();
+    }
 
-    // /**
-    //  * Returns a Command object that represents the action of getting ready for amplification.
-    //  * This command is composed of two sub-commands: one for the arm to go to the amplification position,
-    //  * and one for the shooter to get ready for amplification.
-    //  *
-    //  * @return The Command object representing the action of getting ready for amplification.
-    //  */
-    // public Command readyAmp() {
-    //     return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
-    // }
+    /**
+     * Returns a Command object that represents the action of getting ready for amplification.
+     * This command is composed of two sub-commands: one for the arm to go to the amplification position,
+     * and one for the shooter to get ready for amplification.
+     *
+     * @return The Command object representing the action of getting ready for amplification.
+     */
+    public Command readyAmp() {
+        return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
+    }
 
 }
