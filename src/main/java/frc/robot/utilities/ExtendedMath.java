@@ -12,6 +12,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
  * This is a simple container for math methods which are useful
@@ -214,5 +216,22 @@ public class ExtendedMath {
 	public static boolean within(Pose2d a, Pose2d b, Pose2d threshold) {
 		return within(a.getTranslation(), b.getTranslation(), threshold.getTranslation())
 			&& within(a.getRotation(), b.getRotation(), threshold.getRotation());
+	}
+	public static Rotation2d getAngleToSpeaker(Pose2d currentPose) {
+		Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+		Pose2d speakerPosition = new Pose2d();
+		if (alliance == Alliance.Blue) {
+			speakerPosition = new Pose2d(0, 5.6, Rotation2d.fromDegrees(0));
+		} else {
+			speakerPosition = new Pose2d(16, 5.6, Rotation2d.fromDegrees(180));
+		}
+		if (currentPose.getY() > 5.6) {
+			return Rotation2d.fromDegrees(3*Math.PI/2 + Math.atan(-(speakerPosition.getX()-currentPose.getX())/(speakerPosition.getY()-currentPose.getY()))-speakerPosition.getRotation().getRadians());
+		}
+		if (currentPose.getY() < 5.6) {
+			return Rotation2d.fromDegrees(Math.PI/2 + Math.atan(-(speakerPosition.getX()-currentPose.getX())/(speakerPosition.getY()-currentPose.getY()))-speakerPosition.getRotation().getRadians());
+		} 
+		return Rotation2d.fromDegrees(180);
+		
 	}
 }
