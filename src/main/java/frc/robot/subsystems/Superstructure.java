@@ -154,7 +154,7 @@ public class Superstructure {
 
     public Command runIntake() {
         return Commands.runOnce(
-            () -> intake.setTilt(Rotation2d.fromRotations(-15))
+            () -> intake.setTilt(Rotation2d.fromRotations(-88))
         ).alongWith(
             Commands.runOnce(() -> intake.setSpeed(0.3))
         ).andThen(
