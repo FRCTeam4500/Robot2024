@@ -54,8 +54,9 @@ public class RobotContainer {
 		// structure.setDefaultDrive(xbox);
 
 		Trigger resetGyroButton = xbox.a();
-
+		Trigger alignSpeaker = xbox.rightTrigger();
 		resetGyroButton.onTrue(structure.resetGyro());
+		alignSpeaker.whileTrue(structure.alignToSpeaker(xbox));
 	}
 
 	private void setupOperatorController() {

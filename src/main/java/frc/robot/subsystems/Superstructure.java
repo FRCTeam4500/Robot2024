@@ -138,7 +138,10 @@ public class Superstructure {
     public Command driveToPiece() {
         return swerve.driveToPiece();
     }
-
+    public Command alignToSpeaker(CommandXboxController xbox)
+    {
+return swerve.rotateToSpeaker(xbox);
+    }
     /**
      * Resets the gyro and returns a Command object.
      *
