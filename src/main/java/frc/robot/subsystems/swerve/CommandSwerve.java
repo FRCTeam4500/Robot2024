@@ -124,6 +124,13 @@ public class CommandSwerve extends SwerveDrive {
                 }
             }, this);
     }
+    /**
+     * @author Bennett
+     * @author David
+     * turns robot to speaker
+     * @param xbox
+     * @return
+     */
     public Command rotateToSpeaker(CommandXboxController xbox)
     {
     return Commands.run(() -> {
