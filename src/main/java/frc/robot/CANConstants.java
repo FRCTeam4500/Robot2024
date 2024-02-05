@@ -18,7 +18,7 @@ public class CANConstants {
     public static final int SHOOTER_TWO_ID = 14;
     public static final int LOADER_ID = 76543;
     public static final int CLIMBER_ID = 100;
-    public static final int SHOOTER_PIVOT_ID = 123;
-    public static final int ARM_EXTENSION_MOTOR_ID = 321;
+    public static final int SHOOTER_PIVOT_ID = 15;
+    public static final int ARM_EXTENSION_MOTOR_ID = 12;
 
 }

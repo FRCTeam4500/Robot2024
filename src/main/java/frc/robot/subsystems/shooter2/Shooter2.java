@@ -23,6 +23,9 @@ public class Shooter2 extends SubsystemBase {
         rightShooter = new SparkMaxMotor(SHOOTER_TWO_ID);
         loader = new SparkMaxMotor(LOADER_ID);
         pivoter = new SparkMaxMotor(SHOOTER_PIVOT_ID);
+
+        pivoter.getPIDController().setP(0.5);
+        pivoter.getPIDController().setOutputRange(-0.6, 0.6);
     }
 
     public void shoot(double output) {
