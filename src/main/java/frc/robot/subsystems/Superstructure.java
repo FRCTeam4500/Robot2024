@@ -135,7 +135,10 @@ public class Superstructure {
     public Command driveToPiece() {
         return swerve.driveToPiece();
     }
-
+    public Command alignToSpeaker(CommandXboxController xbox)
+    {
+return swerve.rotateToSpeaker(xbox);
+    }
     /**
      * Resets the gyro and returns a Command object.
      *
@@ -151,25 +154,27 @@ public class Superstructure {
 
     public Command runIntake() {
         return Commands.runOnce(
-            () -> intake.setTilt(Rotation2d.fromRotations(-15))
-        ).alongWith(
-            Commands.runOnce(() -> intake.setSpeed(0.3))
-        ).andThen(
-            Commands.waitSeconds(1)
-        ).andThen(
-            Commands.runOnce(() -> intake.coastTilt())
+            () -> {
+                intake.setTilt(Rotation2d.fromRotations(-88));
+                intake.setSpeed(0.3);
+            }
         );
     }
 
     public Command offIntake() {
         return Commands.runOnce(
-            () -> intake.setTilt(Rotation2d.fromRotations(-2))
-        ).alongWith(
+            () -> {
+                intake.setTilt(Rotation2d.fromRotations(-2));
+                intake.setSpeed(0);
+            }
+        ).andThen(
+            Commands.waitSeconds(2)
+        ).andThen(
+            Commands.runOnce(() -> intake.setSpeed(-0.4))
+        ).andThen(
+            Commands.waitSeconds(1)
+        ).andThen(
             Commands.runOnce(() -> intake.setSpeed(0))
-        ).andThen(
-            Commands.waitSeconds(1.5)
-        ).andThen(
-            Commands.runOnce(() -> intake.coastTilt())
         );
     }
 

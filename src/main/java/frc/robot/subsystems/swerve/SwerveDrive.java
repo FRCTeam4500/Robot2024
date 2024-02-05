@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.NavX;
@@ -62,7 +63,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 				BACK_RIGHT_MODULE_TRANSLATION
 			),
 		};
-		gyro = new NavX(I2C.Port.kMXP);
+		gyro = new NavX(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		tagVision = AprilTagVision.getInstance();
 		pieceVision = GamePieceVision.getInstance();
 		kinematics = new SwerveDriveKinematics(getModuleTranslations());

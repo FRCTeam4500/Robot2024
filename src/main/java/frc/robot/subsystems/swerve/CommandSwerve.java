@@ -124,6 +124,26 @@ public class CommandSwerve extends SwerveDrive {
                 }
             }, this);
     }
+    /**
+     * @author Bennett
+     * @author David
+     * turns robot to speaker
+     * @param xbox
+     * @return
+     */
+    public Command rotateToSpeaker(CommandXboxController xbox)
+    {
+    return Commands.run(() -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+
+                driveAngleCentric(
+                    -xbox.getLeftY() * forwardSens, 
+                    -xbox.getLeftX() * sidewaysSens, 
+                    ExtendedMath.getAngleToSpeaker(getEstimatorPose()));
+    }, this);
+    }
 
     public Command resetGyro() {
         return Commands.runOnce(

@@ -7,11 +7,15 @@
 
 package frc.robot.utilities;
 
+import org.w3c.dom.ranges.RangeException;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
  * This is a simple container for math methods which are useful
@@ -215,4 +219,22 @@ public class ExtendedMath {
 		return within(a.getTranslation(), b.getTranslation(), threshold.getTranslation())
 			&& within(a.getRotation(), b.getRotation(), threshold.getRotation());
 	}
-}
+	/** 
+	 * @author Bennett
+	 * @author David
+	 * takes in current position of robot and finds angle to speaker based off our alliance
+	*/
+	public static Rotation2d getAngleToSpeaker(Pose2d currentPose) {
+		if (currentPose.getY() == 5.6)  return Rotation2d.fromDegrees(180);
+		Pose2d speakerPosition = (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) ? 
+		new Pose2d(0, 5.6, Rotation2d.fromDegrees(0)) : 
+		new Pose2d(16, 5.6, Rotation2d.fromDegrees(180));
+
+		double wrongAngle = (Math.atan(-(speakerPosition.getX()-currentPose.getX())
+			/(speakerPosition.getY()-currentPose.getY()))
+			-speakerPosition.getRotation().getRadians());
+		return Rotation2d.fromRadians((currentPose.getY() > 5.6) ? 
+			wrongAngle + 3*Math.PI/2 : 
+			wrongAngle + Math.PI/2);
+	}
+} 
