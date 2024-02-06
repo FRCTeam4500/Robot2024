@@ -68,6 +68,10 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         tiltMotor.set(0);
     }
 
+    public void setTiltSpeed(double output) {
+        tiltMotor.set(output);
+    }
+
     /**
      * Sets the state of the intake
      * Doesn't return anything (return type is void)

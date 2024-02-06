@@ -157,27 +157,37 @@ return swerve.rotateToSpeaker(xbox);
 
     public Command runIntake() {
         return Commands.runOnce(
-            () -> {
-                intake.setTilt(Rotation2d.fromRotations(-88));
-                intake.setSpeed(0.3);
-            }
+            () -> intake.setSpeed(0.3), intake
+        ).alongWith(
+            Commands.runOnce(
+                () -> intake.setTiltSpeed(-0.75)
+            ).andThen(
+                Commands.waitSeconds(0.6)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(-0.25))
+            ).andThen(
+                Commands.waitSeconds(0.1)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0.1))
+            ).andThen(
+                Commands.waitSeconds(0.05)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0))
+            )
         );
     }
 
     public Command offIntake() {
         return Commands.runOnce(
-            () -> {
-                intake.setTilt(Rotation2d.fromRotations(-2));
-                intake.setSpeed(0);
-            }
-        ).andThen(
-            Commands.waitSeconds(2)
-        ).andThen(
-            Commands.runOnce(() -> intake.setSpeed(-0.4))
-        ).andThen(
-            Commands.waitSeconds(1)
-        ).andThen(
-            Commands.runOnce(() -> intake.setSpeed(0))
+            () -> intake.setSpeed(0), intake
+        ).alongWith(
+            Commands.runOnce(
+                () -> intake.setTiltSpeed(0.75)
+            ).andThen(
+                Commands.waitSeconds(0.4)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0))
+            )
         );
     }
 
