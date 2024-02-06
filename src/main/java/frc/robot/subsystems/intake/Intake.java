@@ -134,8 +134,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     public void toLog(LogTable table) {
         table.put("Current Tilt (deg)", tiltMotor.getAngle().getDegrees());
         table.put("Current Output (%)", outputMotor.getOutput());
-        table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
-        table.put("Target Output (%)", outputMotor.getOutput());
+        // table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
+        // table.put("Target Output (%)", outputMotor.getOutput());
     }
 
     /**

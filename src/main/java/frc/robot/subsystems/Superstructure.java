@@ -184,7 +184,7 @@ return swerve.rotateToSpeaker(xbox);
             Commands.runOnce(
                 () -> intake.setTiltSpeed(0.75)
             ).andThen(
-                Commands.waitSeconds(0.4)
+                Commands.waitSeconds(0.5)
             ).andThen(
                 Commands.runOnce(() -> intake.setTiltSpeed(0))
             )

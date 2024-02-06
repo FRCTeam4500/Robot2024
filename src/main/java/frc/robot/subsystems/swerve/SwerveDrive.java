@@ -71,7 +71,8 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d())
+			// tagVision.getRobotPose(new Pose2d())
+			new Pose2d(8, 4, getRobotAngle())
 		);
 		poseEstimator = new SwerveDrivePoseEstimator(
 			kinematics,
@@ -178,6 +179,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			getModulePositions(),
 			newPose
 		);
+		resetRobotAngle(newPose.getRotation().plus(Rotation2d.fromDegrees(180)));
 	}
 
 	public Rotation2d getRobotAngle() {
