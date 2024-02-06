@@ -1,17 +1,21 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.arm.CommandArm;
 import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.shooter2.CommandShooter2;
 import frc.robot.subsystems.swerve.CommandSwerve;
+import java.lang.Math;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
@@ -210,4 +214,15 @@ public class Superstructure {
         return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
     }
 
+
+    public Command aligntoShooter() {
+            Translation2d coordinates = swerve.getEstimatorPose().getTranslation();
+            double x= coordinates.getX();
+            double y = coordinates.getY();
+            double angle = Math.atan(5.547868/Math.sqrt(Math.pow(-0.0381-x,2))+ Math.pow(1.451102-y, 2));
+            return Commands.startEnd(
+                () -> swerve.driveAngleCentric(0, 0, new Rotation2d(-0.0381-x, 1.451102-y));
+                () -> shooter.pivot(new Rotation2d(angle));
+            )
+    }
 }

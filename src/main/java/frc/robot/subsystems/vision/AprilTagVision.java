@@ -55,7 +55,7 @@ public class AprilTagVision extends SubsystemBase implements LoggableInputs {
         );
     }
     
-    private Pose2d getTagPose(int tagId) {
+    public static Pose2d getTagPose(int tagId) {
         // Positions gotten from https://firstfrc.blob.core.windows.net/frc2024/FieldAssets/2024LayoutMarkingDiagram.pdf
         // but with flipped rotations, and in meters
         switch (tagId) {

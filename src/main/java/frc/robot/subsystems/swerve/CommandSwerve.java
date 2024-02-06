@@ -1,9 +1,12 @@
 package frc.robot.subsystems.swerve;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -124,7 +127,17 @@ public class CommandSwerve extends SwerveDrive {
                 }
             }, this);
     }
+public Command  alignToSpeaker(CommandXboxController xbox){
+    return Commands.run(()-> {
+        Alliance currentalliance= DriverStation.getAlliance().orElse(Alliance.Blue);
+        Pose2d targetPose2d= AprilTagVision.getTagPose(currentalliance==Alliance.Blue?7:4);
+        Pose2d currentPose2d= getEstimatorPose();
+        Translation2d distbetween= new Translation2d(0,0);
+        Rotation2d targetangle=Rotation2d.fromRadians(Math.atan(distbetween.getY()/distbetween.getX()));
+e34345
+    }, this);
 
+}
     public Command resetGyro() {
         return Commands.runOnce(
             () -> {
