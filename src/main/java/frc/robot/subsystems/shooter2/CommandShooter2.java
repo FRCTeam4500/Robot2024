@@ -36,35 +36,33 @@ public class CommandShooter2 extends Shooter2 {
         );
     }
 
-    public Command shoot() {
-        return Commands.runOnce(() -> load());
-    }
+    // p
 
-    public Command readySpeaker() {
-        return Commands.runOnce(
-            () -> {
-                shoot(1);
-                pivot(calculatePivot());
-            }
-        );
-    }
+    // public Command readySpeaker() {
+    //     return Commands.runOnce(
+    //         () -> {
+    //             shoot(1);
+    //             pivot(calculatePivot());
+    //         }
+    //     );
+    // }
 
-    public Command readyAmp() {
-        return Commands.runOnce(
-            () -> {
-                shoot(AMP_OUTPUT);
-                pivot(AMP_ANGLE);
-            }
-        );
-    }
+    // public Command readyAmp() {
+    //     return Commands.runOnce(
+    //         () -> {
+    //             shoot(AMP_OUTPUT);
+    //             pivot(AMP_ANGLE);
+    //         }
+    //     );
+    // }
 
-    public Command zero() {
-        return Commands.runOnce(
-            () -> {
-                stopLoading();
-                shoot(0);
-                pivot(STOW_ANGLE);
-            }
-        );
-    }
+    // public Command zero() {
+    //     return Commands.runOnce(
+    //         () -> {
+    //             stopLoading();
+    //             shoot(0);
+    //             pivot(STOW_ANGLE);
+    //         }
+    //     );
+    // }
 }
