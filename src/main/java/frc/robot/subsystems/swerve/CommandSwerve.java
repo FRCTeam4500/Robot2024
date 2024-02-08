@@ -1,12 +1,9 @@
 package frc.robot.subsystems.swerve;
-import edu.wpi.first.wpilibj.DriverStation;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -127,17 +124,27 @@ public class CommandSwerve extends SwerveDrive {
                 }
             }, this);
     }
-public Command  alignToSpeaker(CommandXboxController xbox){
-    return Commands.run(()-> {
-        Alliance currentalliance= DriverStation.getAlliance().orElse(Alliance.Blue);
-        Pose2d targetPose2d= AprilTagVision.getTagPose(currentalliance==Alliance.Blue?7:4);
-        Pose2d currentPose2d= getEstimatorPose();
-        Translation2d distbetween= new Translation2d(0,0);
-        Rotation2d targetangle=Rotation2d.fromRadians(Math.atan(distbetween.getY()/distbetween.getX()));
-e34345
-    }, this);
+    /**
+     * @author Bennett
+     * @author David
+     * turns robot to speaker
+     * @param xbox
+     * @return
+     */
+    public Command rotateToSpeaker(CommandXboxController xbox)
+    {
+    return Commands.run(() -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
 
-}
+                driveAngleCentric(
+                    -xbox.getLeftY() * forwardSens, 
+                    -xbox.getLeftX() * sidewaysSens, 
+                    ExtendedMath.getAngleToSpeaker(getEstimatorPose()));
+    }, this);
+    }
+
     public Command resetGyro() {
         return Commands.runOnce(
             () -> {

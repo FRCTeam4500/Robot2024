@@ -55,7 +55,7 @@ public class AprilTagVision extends SubsystemBase implements LoggableInputs {
         );
     }
     
-    public static Pose2d getTagPose(int tagId) {
+    private Pose2d getTagPose(int tagId) {
         // Positions gotten from https://firstfrc.blob.core.windows.net/frc2024/FieldAssets/2024LayoutMarkingDiagram.pdf
         // but with flipped rotations, and in meters
         switch (tagId) {
@@ -101,7 +101,7 @@ public class AprilTagVision extends SubsystemBase implements LoggableInputs {
         table.put("Tag ID", getTagId(0));
         table.put("Sees tag", seesTag());
         Logger.recordOutput(
-            "Robot Pose", 
+            "Vision Robot Pose", 
             getRobotPose(new Pose2d())
         );
         Logger.recordOutput(

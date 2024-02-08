@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -15,7 +14,6 @@ import frc.robot.subsystems.climber.CommandClimber;
 import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.shooter2.CommandShooter2;
 import frc.robot.subsystems.swerve.CommandSwerve;
-import java.lang.Math;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
@@ -80,7 +78,8 @@ public class Superstructure {
     }
 
     public void displayToShuffleboard() {
-        // ShuffleboardTab display = Shuffleboard.getTab("Display");
+        ShuffleboardTab display = Shuffleboard.getTab("Display");
+        display.addBoolean("Gyro", () -> swerve.gyroConnected());
     }
 
     /**
@@ -156,32 +155,47 @@ return swerve.rotateToSpeaker(xbox);
     //     return swerve.gyroConnected();
     // }
 
-    /**
-     * Returns a Command object that represents the end of the pick-up process.
-     * This command is composed of two sequential commands: readyHandoff() and eject().
-     *
-     * @return The Command object representing the end of the pick-up process.
-     */
-    public Command endPickUp() {
-        return intake.readyHandoff().andThen(intake.eject());
+    public Command runIntake() {
+        return Commands.runOnce(
+            () -> intake.setSpeed(0.3), intake
+        ).alongWith(
+            Commands.runOnce(
+                () -> intake.setTiltSpeed(-0.75)
+            ).andThen(
+                Commands.waitSeconds(0.6)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(-0.25))
+            ).andThen(
+                Commands.waitSeconds(0.1)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0.1))
+            ).andThen(
+                Commands.waitSeconds(0.05)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0))
+            )
+        );
     }
 
-    /**
-     * Returns a Command object that represents the action of moving the climber up.
-     *
-     * @return the Command object for moving the climber up
-     */
-    public Command climberUp() {
-        return climber.readyClimb();
+    public Command offIntake() {
+        return Commands.runOnce(
+            () -> intake.setSpeed(0), intake
+        ).alongWith(
+            Commands.runOnce(
+                () -> intake.setTiltSpeed(0.75)
+            ).andThen(
+                Commands.waitSeconds(0.5)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0))
+            )
+        );
     }
 
-    /**
-     * Returns a command to initiate the climber's descent.
-     *
-     * @return the command to initiate the climber's descent
-     */
-    public Command climberDown() {
-        return climber.climb();
+    public Command ejectIntake() {
+        return Commands.startEnd(
+            () -> intake.setSpeed(-0.4),
+            () -> intake.setSpeed(0)  
+        );
     }
 
     // /**
@@ -191,37 +205,63 @@ return swerve.rotateToSpeaker(xbox);
     //     return intake.startPickup();
     // }
 
-    /**
-     * Returns a Command object that represents the action of getting the shooter ready.
-     *
-     * @return a Command object representing the action of getting the shooter ready
-     * @author sal and gre
-     * @param sal
-     */
-    public Command readyShooter() {
-        return shooter.readySpeaker();
-    }
+    // /**
+    //  * Returns a Command object that represents the end of the pick-up process.
+    //  * This command is composed of two sequential commands: readyHandoff() and eject().
+    //  *
+    //  * @return The Command object representing the end of the pick-up process.
+    //  */
+    // public Command endPickUp() {
+    //     return intake.readyHandoff().andThen(intake.eject());
+    // // }
 
-    /**
-     * Returns a Command object that represents the action of getting ready for amplification.
-     * This command is composed of two sub-commands: one for the arm to go to the amplification position,
-     * and one for the shooter to get ready for amplification.
-     *
-     * @return The Command object representing the action of getting ready for amplification.
-     */
-    public Command readyAmp() {
-        return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
-    }
+    // /**
+    //  * Returns a Command object that represents the action of moving the climber up.
+    //  *
+    //  * @return the Command object for moving the climber up
+    //  */
+    // public Command climberUp() {
+    //     return climber.readyClimb();
+    // }
 
+    // /**
+    //  * Returns a command to initiate the climber's descent.
+    //  *
+    //  * @return the command to initiate the climber's descent
+    //  */
+    // public Command climberDown() {
+    //     return climber.climb();
+    // }
 
-    public Command aligntoShooter() {
-            Translation2d coordinates = swerve.getEstimatorPose().getTranslation();
-            double x= coordinates.getX();
-            double y = coordinates.getY();
-            double angle = Math.atan(5.547868/Math.sqrt(Math.pow(-0.0381-x,2))+ Math.pow(1.451102-y, 2));
-            return Commands.startEnd(
-                () -> swerve.driveAngleCentric(0, 0, new Rotation2d(-0.0381-x, 1.451102-y));
-                () -> shooter.pivot(new Rotation2d(angle));
-            )
-    }
+    // /**
+    //  * Executes the shoot command.
+    //  *
+    //  * @return the shoot command
+    //  */
+    // public Command shoot() {
+    //     return shooter.shoot();
+    // }
+
+    // /**
+    //  * Returns a Command object that represents the action of getting the shooter ready.
+    //  *
+    //  * @return a Command object representing the action of getting the shooter ready
+    //  * @author sal and gre
+    //  * @param sal
+    //  */
+    // public Command readyShooter() {
+    //     return shooter.readySpeaker();
+    // }
+
+    // /**
+    //  * Returns a Command object that represents the action of getting ready for amplification.
+    //  * This command is composed of two sub-commands: one for the arm to go to the amplification position,
+    //  * and one for the shooter to get ready for amplification.
+    //  *
+    //  * @return The Command object representing the action of getting ready for amplification.
+    //  */
+    // public Command readyAmp() {
+    //     return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
+    // }
+
 }
