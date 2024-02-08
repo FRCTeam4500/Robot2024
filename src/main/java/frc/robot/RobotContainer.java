@@ -16,9 +16,9 @@ import frc.robot.subsystems.swerve.CommandSwerve;
 
 public class RobotContainer {
 	private CommandXboxController xbox;
-	// private CommandSwerve swerve;
-	private CommandJoystick flightSim;
-    private Superstructure structure;
+	private CommandSwerve swerve;
+	// private CommandJoystick flightSim;
+    // private Superstructure structure;
 	private Command autoCommand;
 	private SendableChooser<Command> autonChooser;
 
@@ -27,11 +27,11 @@ public class RobotContainer {
 
 	public RobotContainer() {
         DriverStation.silenceJoystickConnectionWarning(true);
-		structure = Superstructure.getInstance();
 		// setupAuto();
-		// swerve = CommandSwerve.getInstance();
+		swerve = CommandSwerve.getInstance();
 		setupDriveController();
-		setupOperatorController();
+
+		// setupOperatorController();
 		// structure.debugToShuffleboard();
 	}
 /**
@@ -49,24 +49,12 @@ public class RobotContainer {
 
 	private void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
-		// swerve.setDefaultCommand(swerve.robotCentricDrive(xbox));
-		structure.setDefaultDrive(xbox);
+		swerve.setDefaultCommand(swerve.robotCentricDrive(xbox));
 		// structure.setDefaultDrive(xbox);
 
-		Trigger resetGyroButton = xbox.a();
-		Trigger alignSpeaker = xbox.rightTrigger();
-		resetGyroButton.onTrue(structure.resetGyro());
-		alignSpeaker.whileTrue(structure.alignToSpeaker(xbox));
-	}
+		// Trigger resetGyroButton = xbox.a();
 
-	private void setupOperatorController() {
-		flightSim = new CommandJoystick(1);
-		Trigger intakeButton = flightSim.button(2);
-		Trigger ejectButton = flightSim.button(1);
-
-		intakeButton.onTrue(structure.runIntake());
-		intakeButton.onFalse(structure.offIntake());
-		ejectButton.whileTrue(structure.ejectIntake());
+		// resetGyroButton.onTrue(structure.resetGyro());
 	}
 
 	// private void setupOperatorController() {

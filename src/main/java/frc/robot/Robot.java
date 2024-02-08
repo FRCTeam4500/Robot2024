@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.vision.AprilTagVision;
@@ -29,10 +28,6 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
-		Logger.processInputs("Swerve", SwerveDrive.getInstance());
-		Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
-		Logger.processInputs("Piece Vision", GamePieceVision.getInstance());
-		Logger.processInputs("Intake", CommandIntake.getInstance());
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.SparkMaxMotor;
 import frc.robot.utilities.ExtendedMath;
@@ -36,7 +35,6 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     // Hardware
     private SparkMaxMotor tiltMotor;
     private SparkMaxMotor outputMotor;
-    private DigitalInput limitSwitch;
     // private DigitalInput noteLimitSwitch;
     // private DigitalInput zeroingLimitSwitch;
     // State
@@ -51,8 +49,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     protected Intake() {
         tiltMotor = new SparkMaxMotor(INTAKE_TILT_ID, MotorType.kBrushless);
         outputMotor = new SparkMaxMotor(INTAKE_OUTPUT_ID, MotorType.kBrushless);
-        limitSwitch = new DigitalInput(9);
         // noteLimitSwitch = new DigitalInput(INTAKE_NOTE_LIMIT_SWITCH_ID);
+        // zeroingLimitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
         targetState = IntakeState.Stow;
     }
 
@@ -62,14 +60,6 @@ public class Intake extends SubsystemBase implements LoggableInputs {
 
     public void setSpeed(double output) {
         outputMotor.set(output);
-    }
-
-    public void coastTilt() {
-        tiltMotor.set(0);
-    }
-
-    public void setTiltSpeed(double output) {
-        tiltMotor.set(output);
     }
 
     /**
@@ -111,15 +101,13 @@ public class Intake extends SubsystemBase implements LoggableInputs {
      */
     @Override
     public void periodic() {
-        if (limitSwitch != null) {
-            if (!limitSwitch.get()) {
-                tiltMotor.getEncoder().setPosition(0);
-            }
-        }
-        
         // If the limit switch is triggered (if we're stowed), reset the encoder
         // of the arm motor. This is so that the arm motor will be constantly
         // corrected throughout the match
+        // if (zeroingLimitSwitch.get()) {
+        //     tiltMotor.getEncoder()
+        //         .setPosition(IntakeState.Stow.tilt.getRotations());
+        // }
     }
 
     /**
@@ -134,8 +122,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     public void toLog(LogTable table) {
         table.put("Current Tilt (deg)", tiltMotor.getAngle().getDegrees());
         table.put("Current Output (%)", outputMotor.getOutput());
-        // table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
-        // table.put("Target Output (%)", outputMotor.getOutput());
+        table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
+        table.put("Target Output (%)", outputMotor.getOutput());
     }
 
     /**

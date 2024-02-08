@@ -20,12 +20,12 @@ public class SwerveConstants {
     /** Angle rotations per motor rotation */
     public static final double ANGLE_RATIO = 1/6.75;
 
-    public static final double MAX_LINEAR_SPEED_MPS = 5.0;
+    public static final double MAX_LINEAR_SPEED_MPS = 4.;
     public static final double WHEEL_DIAMETER_METERS = 0.1016;
 
     /* Sensitivities */
-    public static final double MAX_FORWARD_SENSITIVITY = 5;
-    public static final double MAX_SIDEWAYS_SENSITIVITY = 5;
+    public static final double MAX_FORWARD_SENSITIVITY = 4;
+    public static final double MAX_SIDEWAYS_SENSITIVITY = 4;
     public static final double MAX_ROTATIONAL_SENSITIVITY = 3.5;
     public static final double MIN_SENSITIVITY = 0.2;
 
