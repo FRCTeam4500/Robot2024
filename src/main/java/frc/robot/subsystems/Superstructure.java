@@ -41,12 +41,15 @@ public class Superstructure {
     private CommandIntake intake;
     private CommandArm arm;
     private CommandShooter2 shooter;
+    // private CommandClimber climber;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
         arm = CommandArm.getInstance();
         shooter = CommandShooter2.getInstance();
+        // climber = CommandClimber.getInstance();
+        configurePathPlanner();
         displayToShuffleboard();
         debugToShuffleboard();
     }
@@ -99,7 +102,7 @@ public class Superstructure {
 
     /**
      * Drives the superstructure in angle-centric mode using the given Xbox controller.
-     *
+     * Hi
      * @param xbox the Xbox controller used for driving
      * @return the command to drive the superstructure in angle-centric mode
      */
@@ -140,6 +143,7 @@ public class Superstructure {
     {
         return swerve.rotateToSpeaker(xbox);
     }
+
     /**
      * Resets the gyro and returns a Command object.
      *
@@ -149,33 +153,43 @@ public class Superstructure {
         return swerve.resetGyro();
     }
 
-    // public boolean gyroConnected() {
-    //     return swerve.gyroConnected();
-    // }
+    public boolean gyroConnected() {
+        return swerve.gyroConnected();
+    }
 
     public Command runIntake() {
         return Commands.runOnce(
-            () -> {
-                intake.setTilt(Rotation2d.fromRotations(-88));
-                intake.setSpeed(0.3);
-            }
+            () -> intake.setSpeed(0.3), intake
+        ).alongWith(
+            Commands.runOnce(
+                () -> intake.setTiltSpeed(-0.75)
+            ).andThen(
+                Commands.waitSeconds(0.6)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(-0.25))
+            ).andThen(
+                Commands.waitSeconds(0.1)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0.1))
+            ).andThen(
+                Commands.waitSeconds(0.05)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0))
+            )
         );
     }
 
     public Command offIntake() {
         return Commands.runOnce(
-            () -> {
-                intake.setTilt(Rotation2d.fromRotations(-2));
-                intake.setSpeed(0);
-            }
-        ).andThen(
-            Commands.waitSeconds(2)
-        ).andThen(
-            Commands.runOnce(() -> intake.setSpeed(-0.4))
-        ).andThen(
-            Commands.waitSeconds(1)
-        ).andThen(
-            Commands.runOnce(() -> intake.setSpeed(0))
+            () -> intake.setSpeed(0), intake
+        ).alongWith(
+            Commands.runOnce(
+                () -> intake.setTiltSpeed(0.75)
+            ).andThen(
+                Commands.waitSeconds(0.5)
+            ).andThen(
+                Commands.runOnce(() -> intake.setTiltSpeed(0))
+            )
         );
     }
 

@@ -62,9 +62,11 @@ public class RobotContainer {
 	private void setupOperatorController() {
 		flightSim = new CommandJoystick(1);
 		Trigger intakeButton = flightSim.button(2);
+		Trigger ejectButton = flightSim.button(1);
 
 		intakeButton.onTrue(structure.runIntake());
 		intakeButton.onFalse(structure.offIntake());
+		ejectButton.whileTrue(structure.ejectIntake());
 	}
 
 	// private void setupOperatorController() {

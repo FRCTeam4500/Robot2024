@@ -68,6 +68,10 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         tiltMotor.set(0);
     }
 
+    public void setTiltSpeed(double output) {
+        tiltMotor.set(output);
+    }
+
     /**
      * Sets the state of the intake
      * Doesn't return anything (return type is void)
@@ -130,8 +134,8 @@ public class Intake extends SubsystemBase implements LoggableInputs {
     public void toLog(LogTable table) {
         table.put("Current Tilt (deg)", tiltMotor.getAngle().getDegrees());
         table.put("Current Output (%)", outputMotor.getOutput());
-        table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
-        table.put("Target Output (%)", outputMotor.getOutput());
+        // table.put("Target Tilt (deg)", targetState.tilt.getDegrees());
+        // table.put("Target Output (%)", outputMotor.getOutput());
     }
 
     /**

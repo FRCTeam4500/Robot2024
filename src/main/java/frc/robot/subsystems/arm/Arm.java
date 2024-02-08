@@ -15,7 +15,7 @@ import frc.robot.hardware.TalonSRXMotor;
 /**
  * @author Max
  * @author Yijia
- * @author Oliver (not) The Smart
+ * @author Oliver (not) The Short
  */
 public class Arm extends SubsystemBase implements LoggableInputs {
 

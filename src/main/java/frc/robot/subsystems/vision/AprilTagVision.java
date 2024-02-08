@@ -101,7 +101,7 @@ public class AprilTagVision extends SubsystemBase implements LoggableInputs {
         table.put("Tag ID", getTagId(0));
         table.put("Sees tag", seesTag());
         Logger.recordOutput(
-            "Robot Pose", 
+            "Vision Robot Pose", 
             getRobotPose(new Pose2d())
         );
         Logger.recordOutput(
