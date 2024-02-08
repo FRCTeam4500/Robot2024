@@ -39,17 +39,17 @@ public class Superstructure {
 
     private CommandSwerve swerve;
     private CommandIntake intake;
-    private CommandArm arm;
-    private CommandShooter2 shooter;
+    // private CommandArm arm;
+    // private CommandShooter2 shooter;
     // private CommandClimber climber;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
-        arm = CommandArm.getInstance();
-        shooter = CommandShooter2.getInstance();
+        // arm = CommandArm.getInstance();
+        // shooter = CommandShooter2.getInstance();
         // climber = CommandClimber.getInstance();
-        configurePathPlanner();
+        // configurePathPlanner();
         displayToShuffleboard();
         debugToShuffleboard();
     }
@@ -102,7 +102,7 @@ public class Superstructure {
 
     /**
      * Drives the superstructure in angle-centric mode using the given Xbox controller.
-     * Hi
+     *
      * @param xbox the Xbox controller used for driving
      * @return the command to drive the superstructure in angle-centric mode
      */
@@ -138,12 +138,10 @@ public class Superstructure {
     public Command driveToPiece() {
         return swerve.driveToPiece();
     }
-
     public Command alignToSpeaker(CommandXboxController xbox)
     {
-        return swerve.rotateToSpeaker(xbox);
+return swerve.rotateToSpeaker(xbox);
     }
-
     /**
      * Resets the gyro and returns a Command object.
      *
@@ -153,9 +151,9 @@ public class Superstructure {
         return swerve.resetGyro();
     }
 
-    public boolean gyroConnected() {
-        return swerve.gyroConnected();
-    }
+    // public boolean gyroConnected() {
+    //     return swerve.gyroConnected();
+    // }
 
     public Command runIntake() {
         return Commands.runOnce(
@@ -200,12 +198,12 @@ public class Superstructure {
         );
     }
 
-    /**
-     * Start the intake to pick up a game piece.
-     */
-    public Command startPickUp() {
-        return intake.startPickup();
-    }
+    // /**
+    //  * Start the intake to pick up a game piece.
+    //  */
+    // public Command startPickUp() {
+    //     return intake.startPickup();
+    // }
 
     // /**
     //  * Returns a Command object that represents the end of the pick-up process.
