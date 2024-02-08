@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -196,6 +197,18 @@ return swerve.rotateToSpeaker(xbox);
             () -> intake.setSpeed(-0.4),
             () -> intake.setSpeed(0)  
         );
+    }
+
+    public Command aligntoShooter() {
+            Translation2d coordinates = swerve.getEstimatorPose().getTranslation();
+            double x= coordinates.getX();
+            double y = coordinates.getY();
+            double angle = Math.atan(5.547868/Math.sqrt(Math.pow(-0.0381-x,2))+ Math.pow(1.451102-y, 2));
+            return Commands.startEnd(
+                () -> swerve.driveAngleCentric(0, 0, new Rotation2d(-0.0381-x, 1.451102-y)),
+                // () -> shooter.pivot(new Rotation2d(angle))
+                () -> {}
+            );
     }
 
     // /**
