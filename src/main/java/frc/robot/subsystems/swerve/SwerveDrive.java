@@ -11,10 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.NavX;
 import frc.robot.subsystems.vision.AprilTagVision;
@@ -102,10 +100,18 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
 		if (tagVision.seesTag()) {
-			poseEstimator.addVisionMeasurement(
-				tagVision.getRobotPose(getEstimatorPose()),
-                Timer.getFPGATimestamp()
-            );
+			if (DriverStation.isAutonomous()) {
+				poseEstimator.addVisionMeasurement(
+					tagVision.getRobotPose(getEstimatorPose()),
+					Timer.getFPGATimestamp()
+            	);
+			} else {
+				poseEstimator.addVisionMeasurement(
+					new Pose2d(tagVision.getRobotPose(getEstimatorPose()).getTranslation(), gyro.getOffsetedAngle()), 
+					Timer.getFPGATimestamp()
+				);
+			}
+			
 		}
 	}
 

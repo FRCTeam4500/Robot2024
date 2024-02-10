@@ -7,8 +7,6 @@
 
 package frc.robot.utilities;
 
-import org.w3c.dom.ranges.RangeException;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -9,24 +9,29 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Telescope extends SubsystemBase {
+    private static Telescope instance;
+    public static synchronized Telescope getInstance() {
+        if (instance == null) instance = new Telescope();
+        return instance;
+    }
+
+    public static final double AMP = 3000;
+    public static final double SUBWOOFER = 3000;
+
     private TalonSRX extensionMotor;
-    public Telescope() {
+    private Telescope() {
         extensionMotor = new TalonSRX(12);
         extensionMotor.config_kP(0, 1);
         extensionMotor.configPeakOutputForward(0.6);
         extensionMotor.configPeakOutputReverse(-0.6);
     }
 
-    public Command goZero() {
-        return Commands.runOnce(
-            () -> extensionMotor.set(ControlMode.Position, 100), this
-        );
+    public Command extend(double extension) {
+        return Commands.runOnce(() -> extensionMotor.set(ControlMode.Position, extension), this);
     }
 
-    public Command goAmp() {
-        return Commands.runOnce(
-            () -> extensionMotor.set(ControlMode.Position, 3000), this
-        );
+    public Command coast() {
+        return Commands.runOnce(() -> extensionMotor.set(ControlMode.PercentOutput, 0), this);
     }
 
     @Override

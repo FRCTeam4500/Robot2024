@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -9,11 +8,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Shooter4.Shooter4;
-import frc.robot.subsystems.arm.CommandArm;
-import frc.robot.subsystems.intake.CommandIntake;
-import frc.robot.subsystems.shooter.CommandShooter;
-import frc.robot.subsystems.shooter2.CommandShooter2;
+import frc.robot.subsystems.arm.Telescope;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.CommandSwerve;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
@@ -39,26 +36,20 @@ public class Superstructure {
     }
 
     private CommandSwerve swerve;
-    private CommandIntake intake;
-    private CommandArm arm;
-    private Shooter4 shooter;
-    // private CommandClimber climber;
+    private Intake intake;
+    private Telescope arm;
+    private Shooter shooter;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
-        intake = CommandIntake.getInstance();
-        arm = CommandArm.getInstance();
-        shooter = Shooter4.getInstance();
-        // climber = CommandClimber.getInstance();
+        intake = Intake.getInstance();
+        arm = Telescope.getInstance();
+        shooter = Shooter.getInstance();
         configurePathPlanner();
         displayToShuffleboard();
         debugToShuffleboard();
     }
-
-    /**
-     * Configures the path planner for the superstructure.
-     * This method sets up the necessary components and parameters for the path planner.
-     */
+    
     public void configurePathPlanner() {
         AutoBuilder.configureHolonomic(
             swerve::getOdometryPose,
@@ -82,74 +73,39 @@ public class Superstructure {
         ShuffleboardTab display = Shuffleboard.getTab("Display");
         display.addBoolean("Gyro", () -> swerve.gyroConnected());
     }
-
-    /**
-     * Displays the debug information of to Shuffleboard (initSendable)
-     */
+    
     public void debugToShuffleboard() {
         ShuffleboardTab debug = Shuffleboard.getTab("Debug");
         debug.add(swerve);
         debug.add(intake);
+        debug.add(arm);
+        debug.add(shooter);
     }
-
-    /**
-     * Sets the default drive command for the superstructure.
-     *
-     * @param xbox The Xbox controller used for driving.
-     */
+    
     public void setDefaultDrive(CommandXboxController xbox) {
         swerve.setDefaultCommand(angleCentricDrive(xbox));
     }
-
-    /**
-     * Drives the superstructure in angle-centric mode using the given Xbox controller.
-     * Hi
-     * @param xbox the Xbox controller used for driving
-     * @return the command to drive the superstructure in angle-centric mode
-     */
+    
     public Command angleCentricDrive(CommandXboxController xbox) {
         return swerve.angleCentricDrive(xbox);
     }
-
-    /**
-     * Aligns the superstructure to a game piece based on input from the Xbox controller.
-     *
-     * @param xbox The Xbox controller used to control the alignment.
-     * @return The command to align the superstructure to the game piece.
-     */
+    
     public Command alignToPiece(CommandXboxController xbox) {
         return swerve.alignToPiece(xbox);
     }
-
-    /**
-     * Drives the robot to a specified target pose relative to the april tag.
-     *
-     * @param targetPose The target pose to drive to relative to the april tag.
-     * @return The command to drive to the target pose.
-     */
+    
     public Command driveToTag(Pose2d targetPose) {
         return swerve.driveToTag(targetPose);
     }
-
-    /**
-     * Drives the robot to a piece.
-     *
-     * @return the command to drive to the piece
-     */
+    
     public Command driveToPiece() {
         return swerve.driveToPiece();
     }
 
-    public Command alignToSpeaker(CommandXboxController xbox)
-    {
+    public Command alignToSpeaker(CommandXboxController xbox) {
         return swerve.rotateToSpeaker(xbox);
     }
 
-    /**
-     * Resets the gyro and returns a Command object.
-     *
-     * @return The Command object that resets the gyro.
-     */
     public Command resetGyro() {
         return swerve.resetGyro();
     }
@@ -158,113 +114,48 @@ public class Superstructure {
         return swerve.gyroConnected();
     }
 
-    public Command runIntake() {
-        return Commands.runOnce(
-            () -> intake.setSpeed(0.3), intake
-        ).alongWith(
-            Commands.runOnce(
-                () -> intake.setTiltSpeed(-0.75)
-            ).andThen(
-                Commands.waitSeconds(0.6)
-            ).andThen(
-                Commands.runOnce(() -> intake.setTiltSpeed(-0.25))
-            ).andThen(
-                Commands.waitSeconds(0.1)
-            ).andThen(
-                Commands.runOnce(() -> intake.setTiltSpeed(0.1))
-            ).andThen(
-                Commands.waitSeconds(0.05)
-            ).andThen(
-                Commands.runOnce(() -> intake.setTiltSpeed(0))
-            )
-        );
-    }
-
-    public Command offIntake() {
-        return Commands.runOnce(
-            () -> intake.setSpeed(0), intake
-        ).alongWith(
-            Commands.runOnce(
-                () -> intake.setTiltSpeed(0.75)
-            ).andThen(
-                Commands.waitSeconds(0.5)
-            ).andThen(
-                Commands.runOnce(() -> intake.setTiltSpeed(0))
-            )
-        );
-    }
-
-    public Command ejectIntake() {
-        return Commands.startEnd(
-            () -> intake.setSpeed(-0.4),
-            () -> intake.setSpeed(0)
-        );
-    }
-
-    /**
-     * Start the intake to pick up a game piece.
-     */
-    public Command startPickUp() {
-        return intake.startPickup();
-    }
-
-    /**
-     * Returns a Command object that represents the end of the pick-up process.
-     * This command is composed of two sequential commands: readyHandoff() and eject().
-     *
-     * @return The Command object representing the end of the pick-up process.
-     */
-    public Command endPickUp() {
-        return intake.readyHandoff().andThen(intake.eject());
-    }
-
-    // /**
-    //  * Returns a Command object that represents the action of moving the climber up.
-    //  *
-    //  * @return the Command object for moving the climber up
-    //  */
-    // public Command climberUp() {
-    //     return climber.readyClimb();
-    // }
-
-    // /**
-    //  * Returns a command to initiate the climber's descent.
-    //  *
-    //  * @return the command to initiate the climber's descent
-    //  */
-    // public Command climberDown() {
-    //     return climber.climb();
-    // }
-
-    /**
-     * Executes the shoot command.
-     *
-     * @return the shoot command
-     */
-    public Command shoot() {
-        return shooter.shoot();
-    }
-
-    /**
-     * Returns a Command object that represents the action of getting the shooter ready.
-     *
-     * @return a Command object representing the action of getting the shooter ready
-     * @author sal and gre
-     * @param sal
-     */
-    public Command readyShooter() {
-        return shooter.readySpeaker();
-    }
-
-    /**
-     * Returns a Command object that represents the action of getting ready for amplification.
-     * This command is composed of two sub-commands: one for the arm to go to the amplification position,
-     * and one for the shooter to get ready for amplification.
-     *
-     * @return The Command object representing the action of getting ready for amplification.
-     */
     public Command readyAmp() {
-        return arm.goToAmpCommand().alongWith(shooter.readyAmp());//ppap
+        return arm.extend(Telescope.AMP)
+            .andThen(shooter.shoot(Shooter.AMP_SPEED, Shooter.AMP_SPEED))
+            .andThen(shooter.pivot(Shooter.AMP_TILT));
     }
 
+    public Command groundIntake() {
+        return intake.tilt(Intake.GROUND_TILT)
+            .andThen(intake.run(Intake.PICKUP_SPEED));
+    }
+
+    public Command handoff() {
+        return intake.run(Intake.OFF_SPEED)
+            .andThen(intake.tilt(Intake.HANDOFF_TILT))
+            .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
+            .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
+            .andThen(arm.coast())
+            .andThen(Commands.waitSeconds(1.8))
+            .andThen(intake.run(Intake.HANDOFF_SPEED))
+            .andThen(shooter.waitTillNote().withTimeout(3))
+            .andThen(stow());
+    }
+
+    public Command readySubwoofer() {
+        return arm.extend(Telescope.SUBWOOFER)
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
+            .andThen(shooter.shoot(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED));
+    }
+
+    public Command shoot() {
+        return shooter.load(-1)
+            .andThen(Commands.waitSeconds(3))
+            .andThen(shooter.load(Shooter.LOADER_OFF_SPEED));
+    }
+
+    public Command stow() {
+        return intake.tilt(Intake.STOW_TILT)
+            .andThen(intake.run(Intake.OFF_SPEED))
+            .andThen(arm.coast())
+            .andThen(shooter.shoot(Shooter.OFF_SPEED, Shooter.OFF_SPEED))
+            .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
+            .andThen(shooter.pivot(Shooter.STOW_TILT));
+    }
 }

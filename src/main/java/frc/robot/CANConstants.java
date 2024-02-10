@@ -19,5 +19,5 @@ public class CANConstants {
     public static final int CLIMBER_ID = 100;
     public static final int SHOOTER_PIVOT_ID = 15;
     public static final int ARM_EXTENSION_MOTOR_ID = 12;
-    public static final int GAMEPIECE_LIDAR_CHANNEL = 0;
+    public static final int LOADER_LIDAR_CHANNEL = 1;
 }
