@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Shooter4.Shooter4;
 import frc.robot.subsystems.arm.CommandArm;
 import frc.robot.subsystems.intake.CommandIntake;
 import frc.robot.subsystems.shooter.CommandShooter;
@@ -40,14 +41,14 @@ public class Superstructure {
     private CommandSwerve swerve;
     private CommandIntake intake;
     private CommandArm arm;
-    private CommandShooter2 shooter;
+    private Shooter4 shooter;
     // private CommandClimber climber;
 
     public Superstructure() {
         swerve = CommandSwerve.getInstance();
         intake = CommandIntake.getInstance();
         arm = CommandArm.getInstance();
-        shooter = CommandShooter2.getInstance();
+        shooter = Shooter4.getInstance();
         // climber = CommandClimber.getInstance();
         configurePathPlanner();
         displayToShuffleboard();
