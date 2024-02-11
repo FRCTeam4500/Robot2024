@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.utilities.ExtendedMath;
 
 public class SwerveModule {
 	private SwerveMotor driveMotor;
@@ -22,10 +21,9 @@ public class SwerveModule {
 	}
 
 	public void drive(SwerveModuleState initialTargetState) {
-		SwerveModuleState targetState = ExtendedMath.optimizeModuleState(
+		SwerveModuleState targetState = SwerveModuleState.optimize(
 			initialTargetState, 
-			getModuleState().angle,
-			angleMotor.hasContinuousRotation()
+			getModuleState().angle
 		);
 		setModuleVelocity(
 			targetState.speedMetersPerSecond * 

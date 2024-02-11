@@ -80,12 +80,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public Command off() {
-        return Commands.runOnce(
-            () -> {
-                leftMotor.set(0);
-                rightMotor.set(0);
-            }  
-        );
+        return shoot(0, 0);
     }
 
     @Override

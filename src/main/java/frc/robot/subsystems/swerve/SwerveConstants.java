@@ -1,16 +1,16 @@
 package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.CANConstants;
-import frc.robot.hardware.SparkMaxMotor;
-import frc.robot.hardware.TalonFXMotor;
-
-import static frc.robot.CANConstants.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkMax;
+
+import static frc.robot.CANConstants.*;
+import static com.ctre.phoenix6.signals.InvertedValue.*;
+import static com.revrobotics.CANSparkLowLevel.MotorType.*;
 
 public class SwerveConstants {
     /** Drive rotations per motor rotation
@@ -30,7 +30,7 @@ public class SwerveConstants {
     public static final double MIN_SENSITIVITY = 0.2;
 
     /* Drive Modes */
-    public static enum DriveMode{
+    public static enum DriveMode {
         AngleCentric,
         RobotCentric,
         AlignToTarget
@@ -44,52 +44,64 @@ public class SwerveConstants {
                 .withKV(0.12));
 
     public static final SwerveMotor FRONT_LEFT_DRIVE_MOTOR =
-        new TalonFXMotor(
-            CANConstants.SWERVE_FRONT_LEFT_DRIVE_ID,
+        SwerveMotor.fromTalonFX(
+            new TalonFX(SWERVE_FRONT_LEFT_DRIVE_ID), 
             driveConfig.withMotorOutput(new MotorOutputConfigs()
-                .withInverted(InvertedValue.Clockwise_Positive))
+                .withInverted(Clockwise_Positive))
         );
     public static final SwerveMotor FRONT_LEFT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_FRONT_LEFT_ANGLE_ID);
+        SwerveMotor.fromSparkMax(
+            new CANSparkMax(SWERVE_FRONT_LEFT_ANGLE_ID, kBrushless), 
+            motor -> {}
+        );
     public static final Translation2d FRONT_LEFT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
         0.2974
     );
 
     public static final SwerveMotor FRONT_RIGHT_DRIVE_MOTOR =
-        new TalonFXMotor(
-            CANConstants.SWERVE_FRONT_RIGHT_DRIVE_ID,
+        SwerveMotor.fromTalonFX(
+            new TalonFX(SWERVE_FRONT_RIGHT_DRIVE_ID), 
             driveConfig.withMotorOutput(new MotorOutputConfigs()
-                .withInverted(InvertedValue.CounterClockwise_Positive))
-        );    
-        public static final SwerveMotor FRONT_RIGHT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_FRONT_RIGHT_ANGLE_ID);
+                .withInverted(CounterClockwise_Positive))
+        );
+    public static final SwerveMotor FRONT_RIGHT_ANGLE_MOTOR =
+        SwerveMotor.fromSparkMax(
+            new CANSparkMax(SWERVE_FRONT_RIGHT_ANGLE_ID, kBrushless), 
+            motor -> {}
+        );
     public static final Translation2d FRONT_RIGHT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
         -0.2974
     );
 
     public static final SwerveMotor BACK_LEFT_DRIVE_MOTOR =
-        new TalonFXMotor(
-            CANConstants.SWERVE_BACK_LEFT_DRIVE_ID,
+        SwerveMotor.fromTalonFX(
+            new TalonFX(SWERVE_BACK_LEFT_DRIVE_ID), 
             driveConfig.withMotorOutput(new MotorOutputConfigs()
-                .withInverted(InvertedValue.Clockwise_Positive))
+                .withInverted(Clockwise_Positive))
         );
     public static final SwerveMotor BACK_LEFT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_BACK_LEFT_ANGLE_ID);
+        SwerveMotor.fromSparkMax(
+            new CANSparkMax(SWERVE_BACK_LEFT_ANGLE_ID, kBrushless), 
+            motor -> {}
+        );
     public static final Translation2d BACK_LEFT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
         0.2974
     );
 
     public static final SwerveMotor BACK_RIGHT_DRIVE_MOTOR =
-        new TalonFXMotor(
-            CANConstants.SWERVE_BACK_RIGHT_DRIVE_ID,
+        SwerveMotor.fromTalonFX(
+            new TalonFX(SWERVE_BACK_RIGHT_DRIVE_ID), 
             driveConfig.withMotorOutput(new MotorOutputConfigs()
-                .withInverted(InvertedValue.CounterClockwise_Positive))
+                .withInverted(CounterClockwise_Positive))
         );
     public static final SwerveMotor BACK_RIGHT_ANGLE_MOTOR =
-        new SparkMaxMotor(SWERVE_BACK_RIGHT_ANGLE_ID);
+        SwerveMotor.fromSparkMax(
+            new CANSparkMax(SWERVE_BACK_RIGHT_ANGLE_ID, kBrushless), 
+            motor -> {}
+        );
     public static final Translation2d BACK_RIGHT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
         -0.2974

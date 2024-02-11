@@ -1,7 +1,6 @@
 package frc.robot;
 
 public class CANConstants {
-    // TODO: Change these!
     public static final int SWERVE_FRONT_LEFT_DRIVE_ID = 8;
     public static final int SWERVE_FRONT_LEFT_ANGLE_ID = 9;
     public static final int SWERVE_FRONT_RIGHT_DRIVE_ID = 2;
@@ -16,7 +15,7 @@ public class CANConstants {
     public static final int SHOOTER_ONE_ID = 13;
     public static final int SHOOTER_TWO_ID = 14;
     public static final int LOADER_ID = 16;
-    public static final int CLIMBER_ID = 100;
+    public static final int CLIMBER_ID = 100; //TODO: Change this!
     public static final int SHOOTER_PIVOT_ID = 15;
     public static final int ARM_EXTENSION_MOTOR_ID = 12;
     public static final int LOADER_LIDAR_CHANNEL = 1;
