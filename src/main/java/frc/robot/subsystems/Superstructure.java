@@ -75,7 +75,7 @@ public class Superstructure {
     }
 
     public void debugToShuffleboard() {
-        ShuffleboardTab debug = Shuffleboard.getTab("Debug");
+        ShuffleboardTab debug = Shuffleboard.getTab("Debug2");
         debug.add(swerve);
         debug.add(intake);
         debug.add(arm);

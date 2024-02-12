@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
     public static final double AMP_TILT = -18;
     public static final double HANDOFF_TILT = -6.15;
     public static final double SUBWOOFER_TILT = 1;
-    public static final double STOW_TILT = 0;
+    public static final double STOW_TILT = -3;
     public static final double SUBWOOFER_LEFT_SPEED = -0.9;
     public static final double SUBWOOFER_RIGHT_SPEED = -0.7;
     public static final double AMP_SPEED = -0.5;

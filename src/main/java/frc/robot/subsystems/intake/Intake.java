@@ -19,9 +19,9 @@ public class Intake extends SubsystemBase {
         return instance;
     }
     
-    public static final double GROUND_TILT = -40;
-    public static final double STOW_TILT = -8.5;
-    public static final double HANDOFF_TILT = 5;
+    public static final double GROUND_TILT = -62;
+    public static final double STOW_TILT = -18;
+    public static final double HANDOFF_TILT = -3;
     public static final double PICKUP_SPEED = 0.3;
     public static final double OFF_SPEED = 0;
     public static final double HANDOFF_SPEED = -0.17;
@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
         tiltMotor = new CANSparkMax(INTAKE_TILT_ID, MotorType.kBrushless);
         limitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
 
-        tiltMotor.getPIDController().setOutputRange(-0.4, 0.4);
+        tiltMotor.getPIDController().setOutputRange(-0.6, 0.6);
         tiltMotor.getPIDController().setP(1);
     }
 

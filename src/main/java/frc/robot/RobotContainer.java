@@ -25,7 +25,7 @@ public class RobotContainer {
 		structure = Superstructure.getInstance();
 		setupDriveController();
 		setupOperatorController();
-		structure.debugToShuffleboard();
+		// structure.debugToShuffleboard();
 	}
 
 	private void setupDriveController() {
