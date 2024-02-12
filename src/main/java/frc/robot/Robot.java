@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.GamePieceVision;
 
@@ -67,12 +67,12 @@ public class Robot extends LoggedRobot {
 			new TimerTask() {
 				public void run() {
 					// TODO: Change these!
-					Logger.processInputs("Swerve", SwerveDrive.getInstance());
+					Logger.processInputs("Swerve", Swerve.getInstance());
 					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
 					Logger.processInputs("Piece Vision", GamePieceVision.getInstance());
 				}
-			}, 
-			10, 
+			},
+			10,
 			20
 		);
 	}

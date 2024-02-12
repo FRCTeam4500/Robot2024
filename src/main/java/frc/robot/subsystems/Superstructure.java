@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.arm.Telescope;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.swerve.CommandSwerve;
+import frc.robot.subsystems.swerve.Swerve;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
@@ -35,13 +35,13 @@ public class Superstructure {
         return instance;
     }
 
-    private CommandSwerve swerve;
+    private Swerve swerve;
     private Intake intake;
     private Telescope arm;
     private Shooter shooter;
 
     public Superstructure() {
-        swerve = CommandSwerve.getInstance();
+        swerve = Swerve.getInstance();
         intake = Intake.getInstance();
         arm = Telescope.getInstance();
         shooter = Shooter.getInstance();
@@ -49,7 +49,7 @@ public class Superstructure {
         displayToShuffleboard();
         debugToShuffleboard();
     }
-    
+
     public void configurePathPlanner() {
         AutoBuilder.configureHolonomic(
             swerve::getOdometryPose,
@@ -73,7 +73,7 @@ public class Superstructure {
         ShuffleboardTab display = Shuffleboard.getTab("Display");
         display.addBoolean("Gyro", () -> swerve.gyroConnected());
     }
-    
+
     public void debugToShuffleboard() {
         ShuffleboardTab debug = Shuffleboard.getTab("Debug");
         debug.add(swerve);
@@ -81,23 +81,23 @@ public class Superstructure {
         debug.add(arm);
         debug.add(shooter);
     }
-    
+
     public void setDefaultDrive(CommandXboxController xbox) {
         swerve.setDefaultCommand(angleCentricDrive(xbox));
     }
-    
+
     public Command angleCentricDrive(CommandXboxController xbox) {
         return swerve.angleCentricDrive(xbox);
     }
-    
+
     public Command alignToPiece(CommandXboxController xbox) {
         return swerve.alignToPiece(xbox);
     }
-    
+
     public Command driveToTag(Pose2d targetPose) {
         return swerve.driveToTag(targetPose);
     }
-    
+
     public Command driveToPiece() {
         return swerve.driveToPiece();
     }

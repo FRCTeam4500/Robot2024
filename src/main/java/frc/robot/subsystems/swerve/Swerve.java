@@ -13,18 +13,30 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.hardware.NavX;
+import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.GamePieceVision;
+import frc.robot.utilities.ExtendedMath;
+
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class SwerveDrive extends SubsystemBase implements LoggableInputs {
-	private static SwerveDrive instance;
+public class Swerve extends SubsystemBase implements LoggableInputs {
+
+	private static Swerve instance;
+	public static synchronized Swerve getInstance() {
+		if (instance == null) instance = new Swerve();
+		return instance;
+	}
+
 	private NavX gyro;
 	private AprilTagVision tagVision;
 	private GamePieceVision pieceVision;
@@ -33,8 +45,10 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 	private SwerveDriveOdometry odometry;
 	private SwerveDrivePoseEstimator poseEstimator;
 	private PIDController anglePID;
+    private Rotation2d targetAngle;
+    private DriveMode driveMode;
 
-	protected SwerveDrive() {
+	protected Swerve() {
 		anglePID = new PIDController(7, 0, 0);
 		anglePID.enableContinuousInput(-Math.PI, Math.PI);
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
@@ -78,15 +92,9 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			getModulePositions(),
 			tagVision.getRobotPose(new Pose2d())
 		);
-        // Shuffleboard.getTab("Display").addBoolean(
-		// 	"Gyro is Connected", 
-		// 	() -> gyro.getAHRS().isConnected()
-		// );
-	}
 
-    public static synchronized SwerveDrive getInstance() {
-		if (instance == null) instance = new SwerveDrive();
-		return instance;
+		targetAngle = getRobotAngle();
+        driveMode = DriveMode.AngleCentric;
 	}
 
 	public boolean gyroConnected() {
@@ -107,11 +115,11 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
             	);
 			} else {
 				poseEstimator.addVisionMeasurement(
-					new Pose2d(tagVision.getRobotPose(getEstimatorPose()).getTranslation(), gyro.getOffsetedAngle()), 
+					new Pose2d(tagVision.getRobotPose(getEstimatorPose()).getTranslation(), gyro.getOffsetedAngle()),
 					Timer.getFPGATimestamp()
 				);
 			}
-			
+
 		}
 	}
 
@@ -121,12 +129,12 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		Rotation2d targetRotation
 	) {
 		driveRobotCentric(
-            ChassisSpeeds.fromFieldRelativeSpeeds(
-                forwardVelocity,
-                sidewaysVelocity,
-                calculateRotationalVelocityToTarget(targetRotation),
-                getRobotAngle()
-            )
+			ChassisSpeeds.fromFieldRelativeSpeeds(
+				forwardVelocity,
+				sidewaysVelocity,
+				calculateRotationalVelocityToTarget(targetRotation),
+				getRobotAngle()
+			)
 		);
 	}
 
@@ -135,14 +143,14 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		double leftVelocity,
 		Rotation2d aligningAngle
 	) {
-		driveRobotCentric(		
+		driveRobotCentric(
 			new ChassisSpeeds(
 				ChassisSpeeds.fromFieldRelativeSpeeds(
 					forwardVelocity,
-					leftVelocity, 
-					0, 
+					leftVelocity,
+					0,
 					getRobotAngle()
-				).vxMetersPerSecond, 
+				).vxMetersPerSecond,
 				pieceVision.getHorizontalOffset(new Rotation2d()).getDegrees() / (pieceVision.getTakenArea(99)),
 				calculateRotationalVelocityToTarget(aligningAngle)
 			)
@@ -162,18 +170,6 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		}
 	}
 
-	public ChassisSpeeds getChassisSpeeds() {
-		return kinematics.toChassisSpeeds(getModuleStates());
-	}
-
-	public Pose2d getEstimatorPose() {
-		return poseEstimator.getEstimatedPosition();
-	}
-
-	public Pose2d getOdometryPose() {
-		return odometry.getPoseMeters();
-	}
-
 	public void resetPose(Pose2d newPose) {
 		odometry.resetPosition(
 			gyro.getUnwrappedAngle(),
@@ -188,10 +184,6 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		resetRobotAngle(newPose.getRotation().plus(Rotation2d.fromDegrees(180)));
 	}
 
-	public Rotation2d getRobotAngle() {
-		return gyro.getOffsetedAngle();
-	}
-
 	public void zeroRobotAngle() {
 		gyro.zero();
 	}
@@ -199,6 +191,136 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 	public void resetRobotAngle(Rotation2d offsetAngle) {
 		gyro.zeroWithOffset(offsetAngle);
 	}
+
+	/* COMMANDS */
+
+	public Command angleCentricDrive(CommandXboxController xbox) {
+        return Commands.run(
+            () -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+                double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
+                if (Math.abs(xbox.getRightY()) > 0.5){
+                    targetAngle = Rotation2d.fromDegrees(90 - 90 * Math.signum(-xbox.getRightY()));
+                }
+                targetAngle = Rotation2d.fromDegrees(
+                    targetAngle.getDegrees() -
+                    xbox.getRightX() * rotationalSens
+                );
+                driveAngleCentric(
+                    -xbox.getLeftY() * forwardSens,
+                    -xbox.getLeftX() * sidewaysSens,
+                    targetAngle
+                );
+            }, this
+        ).beforeStarting(() -> {
+            targetAngle = getRobotAngle();
+            driveMode = DriveMode.AngleCentric;
+        });
+    }
+
+    public Command robotCentricDrive(CommandXboxController xbox) {
+        return Commands.run(() -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+                double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
+
+                driveRobotCentric(new ChassisSpeeds(
+                    -xbox.getLeftY() * forwardSens,
+                    -xbox.getLeftX() * sidewaysSens,
+                    -xbox.getRightX() * rotationalSens
+                ));
+            }, this
+        ).beforeStarting(() -> driveMode = DriveMode.RobotCentric);
+    }
+
+    public Command alignToPiece(CommandXboxController xbox) {
+        return Commands.run(() -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+
+                driveAlignToTarget(
+                    -xbox.getLeftY() * forwardSens,
+                    -xbox.getLeftX() * sidewaysSens,
+                    targetAngle
+                );
+            }, this
+        ).beforeStarting(() -> {
+            targetAngle = getRobotAngle();
+            driveMode = DriveMode.AlignToTarget;
+        });
+    }
+
+    public Command driveToTag(Pose2d targetPose) {
+        return Commands.run(
+			() -> {
+				Pose2d poseDif = tagVision.getRelativeTagPose(targetPose).relativeTo(targetPose);
+				driveRobotCentric(
+                    new ChassisSpeeds(
+						poseDif.getX() * 2,
+						poseDif.getY() * 2,
+						-poseDif.getRotation().getRadians() * 5
+					)
+				);
+			}, this
+		);
+    }
+
+    public Command driveToPiece() {
+        return Commands.run(
+            () -> {
+                if (!pieceVision.seesPiece()) {
+                    driveRobotCentric(new ChassisSpeeds());
+                } else {
+                    Rotation2d diff = pieceVision.getHorizontalOffset(new Rotation2d());
+                    double area = pieceVision.getTakenArea(40);
+                    driveRobotCentric(new ChassisSpeeds(
+                        ExtendedMath.clamp(0, 1, 20 - area),
+                        5 * diff.getRadians(),
+                        0
+                    ));
+                }
+            }, this
+        );
+    }
+
+    /**
+     * turns robot to speaker
+     *
+     * @param xbox
+     *
+     * @author Bennett
+     * @author David
+     */
+    public Command rotateToSpeaker(CommandXboxController xbox)
+    {
+        return Commands.run(() -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+
+                driveAngleCentric(
+                    -xbox.getLeftY() * forwardSens,
+                    -xbox.getLeftX() * sidewaysSens,
+                    ExtendedMath.getAngleToSpeaker(getEstimatorPose())
+                );
+            }, this
+        );
+    }
+
+    public Command resetGyro() {
+        return Commands.runOnce(
+            () -> {
+                zeroRobotAngle();
+                targetAngle = new Rotation2d();
+            }
+        );
+    }
+
+	/* TELEMETRY */
 
 	@Override
 	public void toLog(LogTable table) {
@@ -235,7 +357,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			modules[3].getModuleState().angle.getRadians()
 		);
 		Logger.recordOutput(
-			"Swerve Odometry", 
+			"Swerve Odometry",
 			getOdometryPose()
 		);
 		Logger.recordOutput(
@@ -243,7 +365,7 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 			getEstimatorPose()
 		);
 		Logger.recordOutput(
-			"Module States", 
+			"Module States",
 			getModuleStates()
 		);
 	}
@@ -257,18 +379,38 @@ public class SwerveDrive extends SubsystemBase implements LoggableInputs {
 		builder.addDoubleProperty("Forward Velocity (mps)", () -> getChassisSpeeds().vxMetersPerSecond, null);
 		builder.addDoubleProperty("Sideways Velocity (mps)", () -> getChassisSpeeds().vyMetersPerSecond, null);
 		builder.addDoubleProperty("Rotational Velocity (radps)", () -> getChassisSpeeds().omegaRadiansPerSecond, null);
-		// builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
+		builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
+		builder.addStringProperty("Drive Mode", () -> driveMode.name(), null);
+        builder.addDoubleProperty("Target Angle (Deg)", () -> targetAngle.getDegrees(), null);
 	}
+
+	/* HELPERS AND GETTERS */
 
 	private double calculateRotationalVelocityToTarget(Rotation2d targetRotation) {
 		double rotationalVelocity = anglePID.calculate(
-			getRobotAngle().getRadians(), 
+			getRobotAngle().getRadians(),
 			targetRotation.getRadians()
 		);
 		if (anglePID.atSetpoint()) {
 			rotationalVelocity = 0;
 		}
 		return rotationalVelocity;
+	}
+
+	public Rotation2d getRobotAngle() {
+		return gyro.getOffsetedAngle();
+	}
+
+	public ChassisSpeeds getChassisSpeeds() {
+		return kinematics.toChassisSpeeds(getModuleStates());
+	}
+
+	public Pose2d getEstimatorPose() {
+		return poseEstimator.getEstimatedPosition();
+	}
+
+	public Pose2d getOdometryPose() {
+		return odometry.getPoseMeters();
 	}
 
 	private Translation2d[] getModuleTranslations() {
