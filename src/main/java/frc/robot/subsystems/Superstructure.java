@@ -13,6 +13,7 @@ import frc.robot.subsystems.arm.Telescope;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.utilities.ExtendedMath;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
@@ -112,7 +113,7 @@ public class Superstructure {
 		return Commands.run(() -> {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-                swerve.driveAngleCentric(-(pose.getX() - 1.75) * 5, -(pose.getY() - 8) * 5, Rotation2d.fromDegrees(-90));
+                swerve.driveAngleCentric(ExtendedMath.clamp(-1.5, 1.5, -(pose.getX() - 1.75) * 0.5), ExtendedMath.clamp(-1.5, 1.5, -(pose.getY() - 8) * 1), Rotation2d.fromDegrees(-90));
             } else {
                 swerve.driveAngleCentric(DRIVE_RATIO, ANGLE_RATIO, null);
             }

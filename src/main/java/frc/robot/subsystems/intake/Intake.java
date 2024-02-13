@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase {
     public static final double HANDOFF_TILT = -3;
     public static final double PICKUP_SPEED = 0.3;
     public static final double OFF_SPEED = 0;
-    public static final double HANDOFF_SPEED = -0.17;
+    public static final double HANDOFF_SPEED = -0.5;
 
     private CANSparkMax tiltMotor;
     private CANSparkMax runMotor;
