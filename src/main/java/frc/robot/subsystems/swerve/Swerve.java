@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,6 +29,9 @@ import static frc.robot.subsystems.swerve.SwerveConstants.*;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 
 public class Swerve extends SubsystemBase implements LoggableInputs {
 
@@ -49,7 +53,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
     private DriveMode driveMode;
 
 	protected Swerve() {
-		anglePID = new PIDController(7, 0, 0);
+		anglePID = new PIDController(5, 0, 0);
 		anglePID.enableContinuousInput(-Math.PI, Math.PI);
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
 		anglePID.setSetpoint(0);
@@ -128,12 +132,16 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		double sidewaysVelocity,
 		Rotation2d targetRotation
 	) {
+		Rotation2d addition = new Rotation2d();
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+			addition = Rotation2d.fromDegrees(180);
+		}
 		driveRobotCentric(
 			ChassisSpeeds.fromFieldRelativeSpeeds(
 				forwardVelocity,
 				sidewaysVelocity,
 				calculateRotationalVelocityToTarget(targetRotation),
-				getRobotAngle()
+				getRobotAngle().plus(addition)
 			)
 		);
 	}
@@ -143,13 +151,17 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		double leftVelocity,
 		Rotation2d aligningAngle
 	) {
+		Rotation2d addition = new Rotation2d();
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+			addition = Rotation2d.fromDegrees(180);
+		}
 		driveRobotCentric(
 			new ChassisSpeeds(
 				ChassisSpeeds.fromFieldRelativeSpeeds(
 					forwardVelocity,
 					leftVelocity,
 					0,
-					getRobotAngle()
+					getRobotAngle().plus(addition)
 				).vxMetersPerSecond,
 				pieceVision.getHorizontalOffset(new Rotation2d()).getDegrees() / (pieceVision.getTakenArea(99)),
 				calculateRotationalVelocityToTarget(aligningAngle)
@@ -201,8 +213,9 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
                 double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
+				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
                 if (Math.abs(xbox.getRightY()) > 0.5){
-                    targetAngle = Rotation2d.fromDegrees(90 - 90 * Math.signum(-xbox.getRightY()));
+                    targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
                 }
                 targetAngle = Rotation2d.fromDegrees(
                     targetAngle.getDegrees() -
@@ -314,8 +327,12 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
     public Command resetGyro() {
         return Commands.runOnce(
             () -> {
-                zeroRobotAngle();
-                targetAngle = new Rotation2d();
+				if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+					targetAngle = Rotation2d.fromDegrees(180);
+				} else {
+					targetAngle = new Rotation2d();
+				}
+                resetRobotAngle(targetAngle);
             }
         );
     }

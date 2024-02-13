@@ -33,9 +33,9 @@ public class RobotContainer {
 		structure.setDefaultDrive(xbox);
 
 		Trigger resetGyroButton = xbox.a();
-		Trigger alignSpeaker = xbox.rightTrigger();
+		Trigger alignAmp = xbox.rightTrigger();
 		resetGyroButton.onTrue(structure.resetGyro());
-		alignSpeaker.whileTrue(structure.alignToSpeaker(xbox));
+		alignAmp.whileTrue(structure.driveToAmp());
 	}
 
 	private void setupOperatorController() {
@@ -45,6 +45,7 @@ public class RobotContainer {
 		Trigger stowButton = flightSim.button(10);
 		Trigger ampButton = flightSim.button(5);
 		Trigger subwooferButton = flightSim.button(6);
+		Trigger resetIntakeButton = flightSim.button(12);
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.handoff());
@@ -52,6 +53,7 @@ public class RobotContainer {
 		stowButton.onTrue(structure.stow());
 		ampButton.onTrue(structure.readyAmp());
 		subwooferButton.onTrue(structure.readySubwoofer());
+		resetIntakeButton.onTrue(structure.resetIntake());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {

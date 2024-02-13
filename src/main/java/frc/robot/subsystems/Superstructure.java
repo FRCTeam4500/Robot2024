@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -17,6 +18,7 @@ import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -106,12 +108,27 @@ public class Superstructure {
         return swerve.rotateToSpeaker(xbox);
     }
 
+    public Command driveToAmp() {
+		return Commands.run(() -> {
+            Pose2d pose = swerve.getEstimatorPose();
+            if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+                swerve.driveAngleCentric(-(pose.getX() - 1.75) * 5, -(pose.getY() - 8) * 5, Rotation2d.fromDegrees(-90));
+            } else {
+                swerve.driveAngleCentric(DRIVE_RATIO, ANGLE_RATIO, null);
+            }
+        }, swerve);
+	}
+    
     public Command resetGyro() {
         return swerve.resetGyro();
     }
 
     public boolean gyroConnected() {
         return swerve.gyroConnected();
+    }
+
+    public Command resetIntake() {
+        return intake.reset();
     }
 
     public Command readyAmp() {
