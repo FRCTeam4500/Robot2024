@@ -113,8 +113,8 @@ public class Superstructure {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (2 - pose.getX()) * 1), 
-                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 0.5), 
+                    ExtendedMath.clamp(-1.5, 1.5, (2.2  - pose.getX()) * 1), 
+                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1), 
                     Rotation2d.fromDegrees(-90));
             } else {
                 swerve.driveAngleCentric(0, 0, Rotation2d.fromDegrees(0));

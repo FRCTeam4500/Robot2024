@@ -33,6 +33,7 @@ public class Intake extends SubsystemBase {
         runMotor = new CANSparkMax(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(INTAKE_TILT_ID, MotorType.kBrushless);
         limitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
+        // Wires are backwards, black is signal, white is ground
 
         tiltMotor.getPIDController().setOutputRange(-0.6, 0.6);
         tiltMotor.getPIDController().setP(1);
