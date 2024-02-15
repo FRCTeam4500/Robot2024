@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,9 +25,14 @@ public class RobotContainer {
 	public RobotContainer() {
         DriverStation.silenceJoystickConnectionWarning(true);
 		structure = Superstructure.getInstance();
+		setupAuto();
 		setupDriveController();
 		setupOperatorController();
 		// structure.debugToShuffleboard();
+	}
+
+	private void setupAuto() {
+		autonChooser = AutoBuilder.buildAutoChooser();
 	}
 
 	private void setupDriveController() {
@@ -50,6 +57,7 @@ public class RobotContainer {
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.handoff());
 		shootButton.onTrue(structure.shoot());
+		shootButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
 		ampButton.onTrue(structure.readyAmp());
 		subwooferButton.onTrue(structure.readySubwoofer());

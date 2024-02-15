@@ -30,9 +30,6 @@ import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathConstraints;
-
 public class Swerve extends SubsystemBase implements LoggableInputs {
 
 	private static Swerve instance;

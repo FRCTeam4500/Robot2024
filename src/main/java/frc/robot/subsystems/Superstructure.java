@@ -19,7 +19,6 @@ import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -113,9 +112,12 @@ public class Superstructure {
 		return Commands.run(() -> {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-                swerve.driveAngleCentric(ExtendedMath.clamp(-1.5, 1.5, -(pose.getX() - 1.75) * 0.5), ExtendedMath.clamp(-1.5, 1.5, -(pose.getY() - 8) * 1), Rotation2d.fromDegrees(-90));
+                swerve.driveAngleCentric(
+                    ExtendedMath.clamp(-1.5, 1.5, (2 - pose.getX()) * 1), 
+                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 0.5), 
+                    Rotation2d.fromDegrees(-90));
             } else {
-                swerve.driveAngleCentric(DRIVE_RATIO, ANGLE_RATIO, null);
+                swerve.driveAngleCentric(0, 0, Rotation2d.fromDegrees(0));
             }
         }, swerve);
 	}
@@ -152,6 +154,7 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(1.8))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
             .andThen(shooter.waitTillNote().withTimeout(3))
+            .andThen(Commands.waitSeconds(0.1))
             .andThen(stow());
     }
 
