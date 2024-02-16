@@ -21,7 +21,7 @@ public class Intake extends SubsystemBase {
     
     public static final double GROUND_TILT = -62;
     public static final double STOW_TILT = -18;
-    public static final double HANDOFF_TILT = -3;
+    public static final double HANDOFF_TILT = 0;
     public static final double PICKUP_SPEED = 0.3;
     public static final double OFF_SPEED = 0;
     public static final double HANDOFF_SPEED = -0.5;
@@ -37,6 +37,9 @@ public class Intake extends SubsystemBase {
 
         tiltMotor.getPIDController().setOutputRange(-0.6, 0.6);
         tiltMotor.getPIDController().setP(1);
+
+        runMotor.setSmartCurrentLimit(30);
+        tiltMotor.setSmartCurrentLimit(30);
     }
 
     @Override

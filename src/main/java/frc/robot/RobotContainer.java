@@ -53,6 +53,7 @@ public class RobotContainer {
 		Trigger ampButton = flightSim.button(5);
 		Trigger subwooferButton = flightSim.button(6);
 		Trigger resetIntakeButton = flightSim.button(12);
+		Trigger ejectButton = flightSim.button(8);
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.handoff());
@@ -62,6 +63,7 @@ public class RobotContainer {
 		ampButton.onTrue(structure.readyAmp());
 		subwooferButton.onTrue(structure.readySubwoofer());
 		resetIntakeButton.onTrue(structure.resetIntake());
+		ejectButton.onTrue(structure.eject()).onFalse(structure.stow());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {

@@ -1,6 +1,7 @@
 package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -24,6 +25,7 @@ public class Telescope extends SubsystemBase {
         extensionMotor.config_kP(0, 1);
         extensionMotor.configPeakOutputForward(0.6);
         extensionMotor.configPeakOutputReverse(-0.6);
+        extensionMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, SUBWOOFER, AMP));
     }
 
     public Command extend(double extension) {

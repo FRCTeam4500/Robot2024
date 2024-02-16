@@ -113,7 +113,7 @@ public class Superstructure {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (2.2  - pose.getX()) * 1), 
+                    ExtendedMath.clamp(-1.5, 1.5, (2.1  - pose.getX()) * 3), 
                     ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1), 
                     Rotation2d.fromDegrees(-90));
             } else {
@@ -130,6 +130,16 @@ public class Superstructure {
         return swerve.gyroConnected();
     }
 
+    public Command eject() {
+        return shooter.shoot(
+            Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED
+        ).andThen(
+            Commands.waitSeconds(2)
+        ).andThen(
+            shooter.load(Shooter.LOADER_SHOOT_SPEED)
+        );
+
+    } 
     public Command resetIntake() {
         return intake.reset();
     }
