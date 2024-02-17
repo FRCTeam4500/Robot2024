@@ -51,17 +51,17 @@ public class RobotContainer {
 		Trigger shootButton = flightSim.button(1);
 		Trigger stowButton = flightSim.button(10);
 		Trigger ampButton = flightSim.button(5);
-		Trigger subwooferButton = flightSim.button(6);
+		Trigger speakerButton = flightSim.button(6);
 		Trigger resetIntakeButton = flightSim.button(12);
 		Trigger ejectButton = flightSim.button(8);
 
 		intakeButton.onTrue(structure.groundIntake());
-		intakeButton.onFalse(structure.handoff());
+		intakeButton.onFalse(structure.stow());
 		shootButton.onTrue(structure.shoot());
 		shootButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
 		ampButton.onTrue(structure.readyAmp());
-		subwooferButton.onTrue(structure.readySubwoofer());
+		speakerButton.onTrue(structure.readySubwoofer());
 		resetIntakeButton.onTrue(structure.resetIntake());
 		ejectButton.onTrue(structure.eject()).onFalse(structure.stow());
 	}

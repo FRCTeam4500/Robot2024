@@ -39,13 +39,13 @@ public class Superstructure {
 
     private Swerve swerve;
     private Intake intake;
-    private Telescope arm;
+    private Telescope telescope;
     private Shooter shooter;
 
     public Superstructure() {
         swerve = Swerve.getInstance();
         intake = Intake.getInstance();
-        arm = Telescope.getInstance();
+        telescope = Telescope.getInstance();
         shooter = Shooter.getInstance();
         configurePathPlanner();
         displayToShuffleboard();
@@ -77,10 +77,10 @@ public class Superstructure {
     }
 
     public void debugToShuffleboard() {
-        ShuffleboardTab debug = Shuffleboard.getTab("Debug2");
+        ShuffleboardTab debug = Shuffleboard.getTab("Debug");
         debug.add(swerve);
         debug.add(intake);
-        debug.add(arm);
+        debug.add(telescope);
         debug.add(shooter);
     }
 
@@ -131,12 +131,10 @@ public class Superstructure {
     }
 
     public Command eject() {
-        return shooter.shoot(
+        return shooter.spinUp(
             Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED
         ).andThen(
-            Commands.waitSeconds(2)
-        ).andThen(
-            shooter.load(Shooter.LOADER_SHOOT_SPEED)
+            intake.run(Intake.HANDOFF_SPEED)
         );
 
     } 
@@ -145,8 +143,8 @@ public class Superstructure {
     }
 
     public Command readyAmp() {
-        return arm.extend(Telescope.AMP)
-            .andThen(shooter.shoot(Shooter.AMP_SPEED, Shooter.AMP_SPEED))
+        return telescope.extend(Telescope.AMP)
+            .andThen(shooter.spinUp(Shooter.AMP_SPEED, Shooter.AMP_SPEED))
             .andThen(shooter.pivot(Shooter.AMP_TILT));
     }
 
@@ -160,19 +158,40 @@ public class Superstructure {
             .andThen(intake.tilt(Intake.HANDOFF_TILT))
             .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
-            .andThen(arm.coast())
+            // .andThen(arm.extend(1500))
             .andThen(Commands.waitSeconds(1.8))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
-            .andThen(shooter.waitTillNote().withTimeout(3))
-            .andThen(Commands.waitSeconds(0.1))
+            // .andThen(shooter.waitTillNote().withTimeout(3.889))
+            .andThen(Commands.waitSeconds(3))
+            // .andThen(Commands.waitSeconds(0.1))
+            .andThen(shooter.load(0.15))
+            .andThen(Commands.waitSeconds(0.198))
+            .andThen(stow());
+    }
+
+    public Command prepareToShootEverything() {
+        return intake.run(Intake.OFF_SPEED)
+            .andThen(intake.tilt(Intake.HANDOFF_TILT))
+            .andThen(shooter.pivot(Shooter.HANDOFF_TILT));
+    }
+
+    public Command shootWithEverything() {
+        return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
+            .andThen(telescope.extend(Telescope.SPEAKER))
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(shooter.pivot(Shooter.SPEAKER_TILT))
+            .andThen(Commands.waitSeconds(1.5))
+            .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
+            .andThen(intake.run(Intake.HANDOFF_SPEED))
+            .andThen(Commands.waitSeconds(2))
             .andThen(stow());
     }
 
     public Command readySubwoofer() {
-        return arm.extend(Telescope.SUBWOOFER)
-            .andThen(Commands.waitSeconds(0.5))
-            .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
-            .andThen(shooter.shoot(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED));
+        return telescope.extend(Telescope.SPEAKER)
+            .andThen(Commands.waitSeconds(1))
+            .andThen(shooter.pivot(Shooter.SPEAKER_TILT))
+            .andThen(shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED));
     }
 
     public Command shoot() {
@@ -184,9 +203,11 @@ public class Superstructure {
     public Command stow() {
         return intake.tilt(Intake.STOW_TILT)
             .andThen(intake.run(Intake.OFF_SPEED))
-            .andThen(arm.coast())
-            .andThen(shooter.shoot(Shooter.OFF_SPEED, Shooter.OFF_SPEED))
+            .andThen(telescope.coast())
+            .andThen(shooter.spinUp(Shooter.OFF_SPEED, Shooter.OFF_SPEED))
             .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
-            .andThen(shooter.pivot(Shooter.STOW_TILT));
+            .andThen(shooter.pivot(Shooter.STOW_TILT))
+            .andThen(Commands.waitSeconds(1))
+            .andThen(shooter.coast());
     }
 }

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import static frc.robot.CANConstants.*;
@@ -19,15 +20,15 @@ public class Shooter extends SubsystemBase {
         return instance;
     }
 
-    public static final double AMP_TILT = -18;
-    public static final double HANDOFF_TILT = -7;
-    public static final double SUBWOOFER_TILT = 1;
-    public static final double STOW_TILT = -6.15;
+    public static final double AMP_TILT = -16;//-18;
+    public static final double HANDOFF_TILT = -6;//-7;
+    public static final double SPEAKER_TILT = 0;//1;
+    public static final double STOW_TILT = 0;//-6.15;
     public static final double SUBWOOFER_LEFT_SPEED = -0.9;
     public static final double SUBWOOFER_RIGHT_SPEED = -0.7;
     public static final double AMP_SPEED = -0.5;
     public static final double OFF_SPEED = 0;
-    public static final double LOADER_HANDOFF_SPEED = -0.18;
+    public static final double LOADER_HANDOFF_SPEED = -0.2;
     public static final double LOADER_SHOOT_SPEED = -1;
     public static final double LOADER_OFF_SPEED = 0;
 
@@ -47,11 +48,11 @@ public class Shooter extends SubsystemBase {
         leftMotor.getPIDController().setP(0.3);
         tiltMotor.getPIDController().setP(0.5);
         tiltMotor.getPIDController().setOutputRange(-0.3, 0.3);
+        tiltMotor.setIdleMode(IdleMode.kCoast);
 
         rightMotor.setSmartCurrentLimit(30);
         leftMotor.setSmartCurrentLimit(30);
         tiltMotor.setSmartCurrentLimit(30);
-        loaderMotor.setSmartCurrentLimit(30);
     }
 
     public boolean hasNote() {
@@ -75,17 +76,21 @@ public class Shooter extends SubsystemBase {
         return Commands.waitUntil(() -> hasNote());
     }
 
-    public Command shoot(double left, double right) {
+    public Command spinUp(double left, double right) {
         return Commands.runOnce(
             () -> {
                 leftMotor.set(left);
                 rightMotor.set(right);
-            }
+            }, this
         );
     }
 
     public Command off() {
-        return shoot(0, 0);
+        return spinUp(0, 0);
+    }
+
+    public Command coast() {
+        return Commands.runOnce(() -> tiltMotor.set(0), this);
     }
 
     @Override
