@@ -130,14 +130,6 @@ public class Superstructure {
         return swerve.gyroConnected();
     }
 
-    public Command eject() {
-        return shooter.spinUp(
-            Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED
-        ).andThen(
-            intake.run(Intake.HANDOFF_SPEED)
-        );
-
-    } 
     public Command resetIntake() {
         return intake.reset();
     }
@@ -153,26 +145,16 @@ public class Superstructure {
             .andThen(intake.run(Intake.PICKUP_SPEED));
     }
 
-    public Command handoff() {
-        return intake.run(Intake.OFF_SPEED)
-            .andThen(intake.tilt(Intake.HANDOFF_TILT))
+    public Command handoffAndAmp() {
+        return intake.tilt(Intake.HANDOFF_TILT)
             .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
-            // .andThen(arm.extend(1500))
-            .andThen(Commands.waitSeconds(1.8))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
-            // .andThen(shooter.waitTillNote().withTimeout(3.889))
-            .andThen(Commands.waitSeconds(3))
-            // .andThen(Commands.waitSeconds(0.1))
+            .andThen(Commands.waitSeconds(1.5))
             .andThen(shooter.load(0.15))
-            .andThen(Commands.waitSeconds(0.198))
-            .andThen(stow());
-    }
-
-    public Command prepareToShootEverything() {
-        return intake.run(Intake.OFF_SPEED)
-            .andThen(intake.tilt(Intake.HANDOFF_TILT))
-            .andThen(shooter.pivot(Shooter.HANDOFF_TILT));
+            .andThen(Commands.waitSeconds(0.1))
+            .andThen(shooter.load(0))
+            .andThen(readyAmp());
     }
 
     public Command shootWithEverything() {
@@ -182,21 +164,14 @@ public class Superstructure {
             .andThen(shooter.pivot(Shooter.SPEAKER_TILT))
             .andThen(Commands.waitSeconds(1.5))
             .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
-            .andThen(intake.run(Intake.HANDOFF_SPEED))
+            .andThen(intake.run(Intake.SHOOTING_SPEED))
             .andThen(Commands.waitSeconds(2))
             .andThen(stow());
     }
 
-    public Command readySubwoofer() {
-        return telescope.extend(Telescope.SPEAKER)
-            .andThen(Commands.waitSeconds(1))
-            .andThen(shooter.pivot(Shooter.SPEAKER_TILT))
-            .andThen(shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED));
-    }
-
     public Command shoot() {
         return shooter.load(-1)
-            .andThen(Commands.waitSeconds(3))
+            .andThen(Commands.waitSeconds(1))
             .andThen(shooter.load(Shooter.LOADER_OFF_SPEED));
     }
 
@@ -209,5 +184,13 @@ public class Superstructure {
             .andThen(shooter.pivot(Shooter.STOW_TILT))
             .andThen(Commands.waitSeconds(1))
             .andThen(shooter.coast());
+    }
+
+    public Command confirmIntake() {
+        return intake.run(Intake.PICKUP_SPEED);
+    }
+    
+    public Command offIntake() {
+        return intake.run(Intake.OFF_SPEED);
     }
 }

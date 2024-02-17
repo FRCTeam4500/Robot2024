@@ -50,20 +50,20 @@ public class RobotContainer {
 		Trigger intakeButton = flightSim.button(2);
 		Trigger shootButton = flightSim.button(1);
 		Trigger stowButton = flightSim.button(10);
-		Trigger ampButton = flightSim.button(5);
-		Trigger speakerButton = flightSim.button(6);
+		Trigger readyAmpButton = flightSim.button(5);
 		Trigger resetIntakeButton = flightSim.button(12);
-		Trigger ejectButton = flightSim.button(8);
+		Trigger confirmIntakeButton = flightSim.button(4);
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.stow());
-		shootButton.onTrue(structure.shoot());
+		shootButton.onTrue(structure.shootWithEverything());
 		shootButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
-		ampButton.onTrue(structure.readyAmp());
-		speakerButton.onTrue(structure.readySubwoofer());
+		readyAmpButton.onTrue(structure.handoffAndAmp());
+		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		resetIntakeButton.onTrue(structure.resetIntake());
-		ejectButton.onTrue(structure.eject()).onFalse(structure.stow());
+		confirmIntakeButton.onTrue(structure.confirmIntake());
+		confirmIntakeButton.onFalse(structure.offIntake());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
