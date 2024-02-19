@@ -4,8 +4,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -28,11 +30,11 @@ public class RobotContainer {
 		setupAuto();
 		setupDriveController();
 		setupOperatorController();
-		// structure.debugToShuffleboard();
 	}
 
 	private void setupAuto() {
 		autonChooser = AutoBuilder.buildAutoChooser();
+		Shuffleboard.getTab("Display").add(autonChooser);
 	}
 
 	private void setupDriveController() {
@@ -53,6 +55,7 @@ public class RobotContainer {
 		Trigger readyAmpButton = flightSim.button(5);
 		Trigger resetIntakeButton = flightSim.button(12);
 		Trigger confirmIntakeButton = flightSim.button(4);
+		Trigger ejectButton = flightSim.button(11);
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.stow());
@@ -64,6 +67,8 @@ public class RobotContainer {
 		resetIntakeButton.onTrue(structure.resetIntake());
 		confirmIntakeButton.onTrue(structure.confirmIntake());
 		confirmIntakeButton.onFalse(structure.offIntake());
+		ejectButton.onTrue(structure.ejectFromIntake());
+		ejectButton.onFalse(structure.stow());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
@@ -83,5 +88,6 @@ public class RobotContainer {
 		if (autoCommand != null) {
 			autoCommand.cancel();
 		}
+		CommandScheduler.getInstance().cancelAll();
 	}
 }

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.248376211038137,
-      "y": 4.441815740774339
+      "x": 0.75,
+      "y": 4.42
     },
-    "rotation": 0.0
+    "rotation": -57.27490998571227
   },
   "command": {
     "type": "sequential",
@@ -20,43 +20,43 @@
         {
           "type": "named",
           "data": {
-            "name": "Drive To Piece"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Piece3 to Piece1 with2"
+            "name": "Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Drive To Piece"
+            "name": "Start Intake"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Piece1 to Center"
+            "waitTime": 2.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Drive To Piece"
+            "name": "Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
           }
         }
       ]

@@ -68,7 +68,10 @@ public class Superstructure {
             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
         );
-        NamedCommands.registerCommand("Drive To Piece", driveToPiece().withTimeout(1.5));
+        NamedCommands.registerCommand("Shoot", shootWithEverything());
+        NamedCommands.registerCommand("Start Intake", groundIntake());
+        NamedCommands.registerCommand("Finish Intake", stow().andThen(Commands.waitSeconds(1)));
+        NamedCommands.registerCommand("Stow", stow());
     }
 
     public void displayToShuffleboard() {
@@ -113,7 +116,7 @@ public class Superstructure {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (2.1  - pose.getX()) * 3), 
+                    ExtendedMath.clamp(-1.5, 1.5, (1.9  - pose.getX()) * 3), 
                     ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1), 
                     Rotation2d.fromDegrees(-90));
             } else {
@@ -124,6 +127,12 @@ public class Superstructure {
     
     public Command resetGyro() {
         return swerve.resetGyro();
+    }
+
+    public Command ejectFromIntake() {
+        return intake.tilt(Intake.GROUND_TILT)
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(intake.run(Intake.HANDOFF_SPEED));
     }
 
     public boolean gyroConnected() {
@@ -149,21 +158,24 @@ public class Superstructure {
         return intake.tilt(Intake.HANDOFF_TILT)
             .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
+            .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
             .andThen(Commands.waitSeconds(1.5))
             .andThen(shooter.load(0.15))
             .andThen(Commands.waitSeconds(0.1))
             .andThen(shooter.load(0))
+            .andThen(intake.run(Intake.OFF_SPEED))
             .andThen(readyAmp());
     }
 
     public Command shootWithEverything() {
-        return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
+        return Commands.none()
+            .andThen(shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED))
             .andThen(telescope.extend(Telescope.SPEAKER))
             .andThen(Commands.waitSeconds(0.5))
+            .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
             .andThen(shooter.pivot(Shooter.SPEAKER_TILT))
             .andThen(Commands.waitSeconds(1.5))
-            .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
             .andThen(intake.run(Intake.SHOOTING_SPEED))
             .andThen(Commands.waitSeconds(2))
             .andThen(stow());

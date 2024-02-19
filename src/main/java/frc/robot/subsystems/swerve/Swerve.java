@@ -190,7 +190,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 			getModulePositions(),
 			newPose
 		);
-		resetRobotAngle(newPose.getRotation().plus(Rotation2d.fromDegrees(180)));
+		resetRobotAngle(newPose.getRotation());
 	}
 
 	public void zeroRobotAngle() {

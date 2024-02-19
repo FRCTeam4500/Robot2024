@@ -19,10 +19,10 @@ public class Intake extends SubsystemBase {
         return instance;
     }
     
-    public static final double GROUND_TILT = -62;
+    public static final double GROUND_TILT = -55;
     public static final double STOW_TILT = 0;
     public static final double HANDOFF_TILT = 0;
-    public static final double PICKUP_SPEED = 1;
+    public static final double PICKUP_SPEED = 0.5;
     public static final double OFF_SPEED = 0;
     public static final double HANDOFF_SPEED = -1;
     public static final double SHOOTING_SPEED = -1;
