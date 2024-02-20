@@ -169,8 +169,7 @@ public class Superstructure {
     }
 
     public Command shootWithEverything() {
-        return Commands.none()
-            .andThen(shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED))
+        return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
             .andThen(telescope.extend(Telescope.SPEAKER))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
@@ -196,6 +195,16 @@ public class Superstructure {
             .andThen(shooter.pivot(Shooter.STOW_TILT))
             .andThen(Commands.waitSeconds(1))
             .andThen(shooter.coast());
+    }
+
+    public Command readyShortAmp() {
+        return intake.tilt(Intake.AMP_TILT);
+    }
+
+    public Command fireShortAmp() {
+        return intake.run(Intake.AMP_SPEED)
+            .andThen(Commands.waitSeconds(2))
+            .andThen(stow());
     }
 
     public Command confirmIntake() {
