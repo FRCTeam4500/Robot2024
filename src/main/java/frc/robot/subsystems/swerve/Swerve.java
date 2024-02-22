@@ -288,8 +288,8 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                     Rotation2d diff = pieceVision.getHorizontalOffset(new Rotation2d());
                     double area = pieceVision.getTakenArea(40);
                     driveRobotCentric(new ChassisSpeeds(
-                        ExtendedMath.clamp(0, 1, 20 - area),
-                        5 * diff.getRadians(),
+                        ExtendedMath.clamp(0, 1, 30 - area),
+                        3 * diff.getRadians(),
                         0
                     ));
                 }
@@ -315,7 +315,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 driveAngleCentric(
                     -xbox.getLeftY() * forwardSens,
                     -xbox.getLeftX() * sidewaysSens,
-                    ExtendedMath.getAngleToSpeaker(getEstimatorPose())
+                    ExtendedMath.getSpeakerAngle(getEstimatorPose().getTranslation())
                 );
             }, this
         );

@@ -34,6 +34,7 @@ public class RobotContainer {
 
 	private void setupAuto() {
 		autonChooser = AutoBuilder.buildAutoChooser();
+		autonChooser.addOption("Epic Two Note", structure.epic2Note());
 		Shuffleboard.getTab("Display").add(autonChooser);
 	}
 
@@ -43,8 +44,11 @@ public class RobotContainer {
 
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmp = xbox.rightTrigger();
+		Trigger driveToPieceButton = xbox.rightBumper();
+
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
+		driveToPieceButton.whileTrue(structure.alignToSpeaker(xbox));
 	}
 
 	private void setupOperatorController() {

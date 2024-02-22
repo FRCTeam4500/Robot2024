@@ -51,36 +51,6 @@
         {
           "type": "named",
           "data": {
-            "name": "Start Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Piece3 to Piece1 with2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Pickup Piece"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Stow"
           }
         }

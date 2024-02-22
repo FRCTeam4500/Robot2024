@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.75,
-      "y": 4.42
+      "x": 0.7128326996619087,
+      "y": 6.683484780582127
     },
-    "rotation": -57.27490998571227
+    "rotation": 58.76078511179129
   },
   "command": {
     "type": "sequential",
@@ -16,48 +16,18 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "New New Path"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "Start Shooting"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Source Side to Piece3"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Pickup Piece"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Start Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Piece3 to Piece1 with2"
           }
         },
         {
