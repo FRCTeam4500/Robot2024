@@ -43,9 +43,11 @@ public class RobotContainer {
 
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmp = xbox.rightTrigger();
+		Trigger driveToPieceButton = xbox.rightBumper();
 
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
+		driveToPieceButton.whileTrue(structure.driveToPiece());
 	}
 
 	private void setupOperatorController() {
