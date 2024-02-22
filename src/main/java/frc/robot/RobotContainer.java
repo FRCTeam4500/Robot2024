@@ -34,7 +34,6 @@ public class RobotContainer {
 
 	private void setupAuto() {
 		autonChooser = AutoBuilder.buildAutoChooser();
-		autonChooser.addOption("Epic Two Note", structure.epic2Note());
 		Shuffleboard.getTab("Display").add(autonChooser);
 	}
 

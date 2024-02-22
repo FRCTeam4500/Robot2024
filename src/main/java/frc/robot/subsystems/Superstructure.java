@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -69,23 +68,29 @@ public class Superstructure {
             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
         );
-        NamedCommands.registerCommand("Start Shooting", startShooting());
-        NamedCommands.registerCommand("Shoot", executeShoot().alongWith(
-            // Commands.runOnce(() -> swerve.driveAngleCentric(0, 0, ExtendedMath.getSpeakerAngle(swerve.getEstimatorPose().getTranslation())), swerve)
-            Commands.none()
-        ));
-        NamedCommands.registerCommand("Start Intake", groundIntake().andThen(Commands.waitSeconds(0.5)));
-        NamedCommands.registerCommand("Stow", stow());
-        NamedCommands.registerCommand("Drive To Piece", driveToPiece().withTimeout(2).andThen(
-            Commands.runOnce(() -> swerve.driveRobotCentric(new ChassisSpeeds()), swerve)
-        ));
-        // NamedCommands.registerCommand("Turn To Speaker", );
-        NamedCommands.registerCommand(
-            "Pickup Piece", 
-            groundIntake()
-                .andThen(Commands.waitSeconds(1.5))
-                .andThen(driveToPiece().withTimeout(1.5))
-                .andThen(Commands.runOnce(() -> swerve.driveRobotCentric(new ChassisSpeeds()), swerve))
+        NamedCommands.registerCommand("Ready Shot", 
+            shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
+                .andThen(telescope.extend(Telescope.SPEAKER))
+                .andThen(intake.tilt(Intake.HANDOFF_TILT))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
+                .andThen(shooter.pivot(Shooter.SPEAKER_TILT))
+        );
+        NamedCommands.registerCommand("Shoot", 
+            intake.run(Intake.SHOOTING_SPEED)
+                .andThen(Commands.waitSeconds(1))
+                .andThen(intake.run(Intake.OFF_SPEED))
+        );
+        NamedCommands.registerCommand("Start Intake",
+            intake.tilt(Intake.GROUND_TILT)
+                .andThen(intake.run(Intake.PICKUP_SPEED))
+        );
+        NamedCommands.registerCommand("Finish Intake", 
+            intake.run(Intake.OFF_SPEED)
+                .andThen(intake.tilt(Intake.HANDOFF_TILT))
+        );
+        NamedCommands.registerCommand("Stow", 
+            stow()
         );
     }
 
@@ -140,24 +145,6 @@ public class Superstructure {
 
     public Command alignToSpeaker(CommandXboxController xbox) {
         return swerve.rotateToSpeaker(xbox);
-    }
-
-    public Command epic2Note() {
-        return shootWithEverything()
-            .andThen(groundIntake())
-            .andThen(Commands.waitSeconds(1))
-            .andThen(Commands.run(() -> swerve.driveRobotCentric(new ChassisSpeeds(
-                1, 0, 0
-            )), swerve))
-            .andThen(Commands.waitSeconds(1))
-            .andThen(Commands.run(() -> swerve.driveRobotCentric(new ChassisSpeeds(
-                -1, 0, 0
-            )), swerve))
-            .andThen(Commands.waitSeconds(1))
-            .andThen(Commands.run(() -> swerve.driveRobotCentric(new ChassisSpeeds(
-                0, 0, 0
-            )), swerve))
-            .andThen(shootWithEverything());
     }
 
     public Command driveToAmp() {
