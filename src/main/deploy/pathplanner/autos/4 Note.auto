@@ -18,9 +18,27 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -31,12 +49,6 @@
                 "type": "path",
                 "data": {
                   "pathName": "To Piece 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Start Intake"
                 }
               }
             ]

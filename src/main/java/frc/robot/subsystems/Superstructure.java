@@ -59,7 +59,7 @@ public class Superstructure {
             swerve::getChassisSpeeds,
             swerve::driveRobotCentric,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(5.0),
+                new PIDConstants(7.5),
                 new PIDConstants(5.0),
                 MAX_LINEAR_SPEED_MPS,
                 0.39878808909,
@@ -78,7 +78,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand("Shoot", 
             intake.run(Intake.SHOOTING_SPEED)
-                .andThen(Commands.waitSeconds(1))
+                .andThen(Commands.waitSeconds(.75))
                 .andThen(intake.run(Intake.OFF_SPEED))
         );
         NamedCommands.registerCommand("Start Intake",
