@@ -24,14 +24,14 @@ public class Shooter extends SubsystemBase {
     public static final double HANDOFF_TILT = -6;//-7;
     public static final double SPEAKER_TILT = -1;//1;
     public static final double STOW_TILT = 0;//-6.15;
-    public static final double SUBWOOFER_LEFT_SPEED =  -0.9;
-    public static final double SUBWOOFER_RIGHT_SPEED = -0.7;
-    public static final double AMP_SPEED = -0.5;
+    public static final double SUBWOOFER_LEFT_SPEED =  1;
+    public static final double SUBWOOFER_RIGHT_SPEED = 1;
+    public static final double AMP_SPEED = 0.5;
     public static final double OFF_SPEED = 0;
     public static final double LOADER_HANDOFF_SPEED = -0.2;
     public static final double LOADER_SHOOT_SPEED = -1;
     public static final double LOADER_OFF_SPEED = 0;
-
+    
     private CANSparkMax tiltMotor;
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
