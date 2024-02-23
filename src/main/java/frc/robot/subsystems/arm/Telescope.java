@@ -17,7 +17,7 @@ public class Telescope extends SubsystemBase {
     }
 
     public static final double AMP = 3000;
-    public static final double SPEAKER = 3000;
+    public static final double SPEAKER = 3500;
 
     private TalonSRX extensionMotor;
     private Telescope() {
