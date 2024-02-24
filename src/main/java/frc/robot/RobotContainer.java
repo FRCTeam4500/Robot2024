@@ -46,8 +46,8 @@ public class RobotContainer {
 		Trigger driveToPieceButton = xbox.rightBumper();
 
 		resetGyroButton.onTrue(structure.resetGyro());
-		alignAmp.whileTrue(structure.driveToAmp());
-		driveToPieceButton.whileTrue(structure.driveToPiece());
+		// alignAmp.whileTrue(structure.driveToAmp());
+		// driveToPieceButton.whileTrue(structure.driveToPiece());
 	}
 
 	private void setupOperatorController() {
@@ -63,10 +63,10 @@ public class RobotContainer {
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.stow());
-		shootButton.onTrue(structure.shootWithEverything());
-		shootButton.onFalse(structure.stow());
+		shootButton.onTrue(structure.readyShoot());
+		shootButton.onFalse(structure.actuallyShoot());
 		stowButton.onTrue(structure.stow());
-		readyAmpButton.onTrue(structure.handoffAndAmp());
+		readyAmpButton.onTrue(structure.handoff().andThen(structure.readyAmp()));
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		resetIntakeButton.onTrue(structure.resetIntake());
 		confirmIntakeButton.onTrue(structure.confirmIntake());
