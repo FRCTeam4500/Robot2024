@@ -46,8 +46,8 @@ public class RobotContainer {
 		Trigger driveToPieceButton = xbox.rightBumper();
 
 		resetGyroButton.onTrue(structure.resetGyro());
-		// alignAmp.whileTrue(structure.driveToAmp());
-		// driveToPieceButton.whileTrue(structure.driveToPiece());
+		alignAmp.whileTrue(structure.driveToAmp());
+		driveToPieceButton.whileTrue(structure.driveToPiece());
 	}
 
 	private void setupOperatorController() {
@@ -56,25 +56,21 @@ public class RobotContainer {
 		Trigger shootButton = flightSim.button(1);
 		Trigger stowButton = flightSim.button(10);
 		Trigger readyAmpButton = flightSim.button(5);
-		Trigger resetIntakeButton = flightSim.button(12);
 		Trigger confirmIntakeButton = flightSim.button(4);
 		Trigger ejectButton = flightSim.button(11);
-		Trigger ampFromIntakeButton = flightSim.button(12);
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.stow());
-		shootButton.onTrue(structure.readyShoot());
-		shootButton.onFalse(structure.actuallyShoot());
+
+		shootButton.onTrue(structure.handoff().andThen(structure.readyShoot()));
+		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
 		stowButton.onTrue(structure.stow());
 		readyAmpButton.onTrue(structure.handoff().andThen(structure.readyAmp()));
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
-		resetIntakeButton.onTrue(structure.resetIntake());
 		confirmIntakeButton.onTrue(structure.confirmIntake());
 		confirmIntakeButton.onFalse(structure.offIntake());
 		ejectButton.onTrue(structure.ejectFromIntake());
 		ejectButton.onFalse(structure.stow());
-		ampFromIntakeButton.onTrue(structure.readyShortAmp());
-		ampFromIntakeButton.onFalse(structure.fireShortAmp());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {

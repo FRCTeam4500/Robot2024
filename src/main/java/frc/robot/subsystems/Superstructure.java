@@ -191,12 +191,6 @@ public class Superstructure {
             .andThen(shooter.pivot(Shooter.SPEAKER_TILT));
     }
 
-    public Command actuallyShoot() {
-        return shooter.load(Shooter.LOADER_SHOOT_SPEED)
-            .andThen(Commands.waitSeconds(2))
-            .andThen(stow());
-    }
-
     public Command groundIntake() {
         return intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED));
@@ -213,6 +207,7 @@ public class Superstructure {
             .andThen(shooter.spinUp(-0.15, -0.15 ))
             .andThen(Commands.waitSeconds(0.15))
             .andThen(shooter.load(0))
+            .andThen(shooter.spinUp(0, 0))
             .andThen(intake.run(Intake.OFF_SPEED));
     }
 
@@ -230,7 +225,7 @@ public class Superstructure {
 
     public Command shoot() {
         return shooter.load(-1)
-            .andThen(Commands.waitSeconds(1))
+            .andThen(Commands.waitSeconds(0.9))
             .andThen(shooter.load(Shooter.LOADER_OFF_SPEED));
     }
 
