@@ -61,16 +61,18 @@ public class RobotContainer {
 
 		intakeButton.onTrue(structure.groundIntake());
 		intakeButton.onFalse(structure.stow());
-
 		shootButton.onTrue(structure.handoff().andThen(structure.readyShoot()));
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		stowButton.onTrue(structure.stow());
 		readyAmpButton.onTrue(structure.handoff().andThen(structure.readyAmp()));
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		confirmIntakeButton.onTrue(structure.confirmIntake());
 		confirmIntakeButton.onFalse(structure.offIntake());
 		ejectButton.onTrue(structure.ejectFromIntake());
 		ejectButton.onFalse(structure.stow());
+		stowButton.onTrue(structure.stow());
+		new Trigger(() -> structure.gyroConnected())
+			.onTrue(structure.angleCentricDrive(xbox))
+			.onFalse(structure.robotCentricDrive(xbox));
 	}
 
 	public Command rumbleCommand(double timeSeconds) {

@@ -131,6 +131,10 @@ public class Superstructure {
         return swerve.angleCentricDrive(xbox);
     }
 
+    public Command robotCentricDrive(CommandXboxController xbox) {
+        return swerve.robotCentricDrive(xbox);
+    }
+
     public Command alignToPiece(CommandXboxController xbox) {
         return swerve.alignToPiece(xbox);
     }
@@ -188,6 +192,7 @@ public class Superstructure {
     public Command readyShoot() {
         return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
             .andThen(telescope.extend(Telescope.SPEAKER))
+            .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.pivot(Shooter.SPEAKER_TILT));
     }
 
