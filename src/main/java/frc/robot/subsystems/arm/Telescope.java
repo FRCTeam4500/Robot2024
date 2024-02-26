@@ -17,7 +17,9 @@ public class Telescope extends SubsystemBase {
     }
 
     public static final double AMP = 3000;
-    public static final double SPEAKER = 3500;
+    public static final double SUBWOOFER = 3500;
+    public static final double HANDOFF = 2000;
+    public static final double STAGE = 3000;
 
     private TalonSRX extensionMotor;
     private Telescope() {
@@ -25,7 +27,7 @@ public class Telescope extends SubsystemBase {
         extensionMotor.config_kP(0, 1);
         extensionMotor.configPeakOutputForward(0.6);
         extensionMotor.configPeakOutputReverse(-0.6);
-        extensionMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, SPEAKER, AMP));
+        extensionMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, SUBWOOFER, AMP));
     }
 
     public Command extend(double extension) {

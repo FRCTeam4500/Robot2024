@@ -58,18 +58,23 @@ public class RobotContainer {
 		Trigger readyAmpButton = flightSim.button(5);
 		Trigger confirmIntakeButton = flightSim.button(4);
 		Trigger ejectButton = flightSim.button(11);
+		Trigger handoffButton = flightSim.button(12);
+		Trigger farShootButton = flightSim.button(3);
 
-		intakeButton.onTrue(structure.groundIntake());
+		intakeButton.onTrue(structure.teleopIntake());
 		intakeButton.onFalse(structure.stow());
-		shootButton.onTrue(structure.handoff().andThen(structure.readyShoot()));
+		shootButton.onTrue(structure.readyShoot());
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		readyAmpButton.onTrue(structure.handoff().andThen(structure.readyAmp()));
+		farShootButton.onTrue(structure.readyFarShot());
+		farShootButton.onFalse(structure.shoot().andThen(structure.stow()));
+		readyAmpButton.onTrue(structure.readyAmp());
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		confirmIntakeButton.onTrue(structure.confirmIntake());
 		confirmIntakeButton.onFalse(structure.offIntake());
 		ejectButton.onTrue(structure.ejectFromIntake());
 		ejectButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
+		handoffButton.onTrue(structure.handoff());
 		new Trigger(() -> structure.gyroConnected())
 			.onTrue(structure.angleCentricDrive(xbox))
 			.onFalse(structure.robotCentricDrive(xbox));
