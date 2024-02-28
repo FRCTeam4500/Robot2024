@@ -89,12 +89,12 @@ public class Superstructure {
                 .andThen(handoff())
                 .andThen(readyShoot())
         );
-        NamedCommands.registerCommand("Fire", 
+        NamedCommands.registerCommand("Fire",
             shooter.load(Shooter.LOADER_SHOOT_SPEED)
                 .andThen(Commands.waitSeconds(.75))
                 .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
         );
-        NamedCommands.registerCommand("Stow", 
+        NamedCommands.registerCommand("Stow",
             stow()
         );
     }
@@ -235,10 +235,29 @@ public class Superstructure {
             .andThen(intake.run(Intake.OFF_SPEED));
     }
 
-    public Command teleopIntake() {
+    public Command teleopStartIntake() {
         return shooter.pivot(Shooter.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.5))
             .andThen(groundIntake());
+    }
+
+    /**
+     * @author Owen Wohl - Courtesy Of
+     */
+    public Command teleopEndIntake() {
+        return intake.run(Intake.PICKUP_SPEED)
+            .andThen(intake.tilt(Intake.HANDOFF_TILT))
+            .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
+            .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
+            .andThen(Commands.waitSeconds(1.5))
+            .andThen(intake.run(Intake.HANDOFF_SPEED))
+            .andThen(Commands.waitSeconds(1.5))
+            .andThen(shooter.load(0.25))
+            .andThen(shooter.spinUp(-0.15, -0.15 ))
+            .andThen(Commands.waitSeconds(0.15))
+            .andThen(shooter.load(0))
+            .andThen(shooter.spinUp(0, 0))
+            .andThen(intake.run(Intake.OFF_SPEED));
     }
 
     public Command shootWithEverything() {
