@@ -292,7 +292,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
             }, this
         ).beforeStarting(() -> {
             targetAngle = getRobotAngle();
-            driveMode = DriveMode.AngleCentric;
+            driveMode = DriveMode.XanderDrive;
         });
 	}
 
