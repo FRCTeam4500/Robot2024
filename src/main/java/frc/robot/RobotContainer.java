@@ -81,11 +81,8 @@ public class RobotContainer {
 		ejectButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
-		new Trigger(() -> structure.gyroConnected())
-			.onTrue(structure.angleCentricDrive(xbox))
-			.onFalse(structure.robotCentricDrive(xbox));
-			
-		}
+	}
+	
 	public Command rumbleCommand(double timeSeconds) {
 		return Commands.startEnd(
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0.5),
