@@ -143,6 +143,25 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		);
 	}
 
+	public void driveFieldCentric(
+		double forwardVelocity,
+		double sidewaysVelocity,
+		double rotationalVelocity
+	) {
+		Rotation2d addition = new Rotation2d();
+		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+			addition = Rotation2d.fromDegrees(180);
+		}
+		driveRobotCentric(
+			ChassisSpeeds.fromFieldRelativeSpeeds(
+				forwardVelocity,
+				sidewaysVelocity,
+				rotationalVelocity,
+				getRobotAngle().plus(addition)
+			)
+		);
+	}
+
 	public void driveAlignToTarget(
 		double forwardVelocity,
 		double leftVelocity,
@@ -211,7 +230,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
                 double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
 				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
-                if (Math.abs(xbox.getRightY()) > 0.5){
+                if (Math.abs(xbox.getRightY()) > 0.5) {
                     targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
                 }
 				if (xbox.getHID().getRightStickButton()) {
@@ -233,6 +252,49 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
             driveMode = DriveMode.AngleCentric;
         });
     }
+
+	public Command fieldCentricDrive(CommandXboxController xbox) {
+		return Commands.run(
+			() -> {
+				double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+                double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
+				driveFieldCentric(
+					-xbox.getLeftY() * forwardSens,
+					-xbox.getLeftX() * sidewaysSens,
+					-xbox.getRightX() * rotationalSens
+				);
+			}
+		).beforeStarting(() -> {
+			driveMode = DriveMode.FieldCentric;
+		});
+	}
+
+	public Command xanderDrive(CommandXboxController xbox) {
+		return Commands.run(
+            () -> {
+                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
+                if (Math.abs(xbox.getRightY()) > 0.5)
+                    targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
+				else if (xbox.getHID().getRightStickButton())
+					targetAngle = Rotation2d.fromDegrees(-90);
+				else if (xbox.leftBumper().getAsBoolean())
+					targetAngle = Rotation2d.fromDegrees(90);
+				driveAngleCentric(
+					-xbox.getLeftY() * forwardSens,
+					-xbox.getLeftX() * sidewaysSens,
+					targetAngle
+				);
+            }, this
+        ).beforeStarting(() -> {
+            targetAngle = getRobotAngle();
+            driveMode = DriveMode.AngleCentric;
+        });
+	}
 
     public Command robotCentricDrive(CommandXboxController xbox) {
         return Commands.run(() -> {
