@@ -211,7 +211,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
                 double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
 				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
-                if (Math.abs(xbox.getRightY()) > 0.5){
+                if (Math.abs(xbox.getRightY()) > 0.5) {
                     targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
                 }
 				if (xbox.getHID().getRightStickButton()) {
@@ -233,6 +233,29 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
             driveMode = DriveMode.AngleCentric;
         });
     }
+
+	public Command fieldCentricDrive(CommandXboxController xbox) {
+		return Commands.run(
+			() -> {
+				double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+                double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
+                double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+                double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
+				driveRobotCentric(
+					ChassisSpeeds.fromFieldRelativeSpeeds(
+						new ChassisSpeeds(
+							-xbox.getLeftY() * forwardSens,
+							-xbox.getLeftX() * sidewaysSens,
+							-xbox.getRightX() * rotationalSens
+						), 
+						getRobotAngle()
+					)
+				);
+			}
+		).beforeStarting(() -> {
+			driveMode = DriveMode.FieldCentric;
+		});
+	}
 
     public Command robotCentricDrive(CommandXboxController xbox) {
         return Commands.run(() -> {

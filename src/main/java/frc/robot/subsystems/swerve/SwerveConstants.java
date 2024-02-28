@@ -31,7 +31,8 @@ public class SwerveConstants {
     public static enum DriveMode {
         AngleCentric,
         RobotCentric,
-        AlignToTarget
+        AlignToTarget,
+        FieldCentric
     }
     public static final TalonFXConfiguration driveConfig =
         new TalonFXConfiguration()

@@ -123,8 +123,12 @@ public class Superstructure {
         debug.add(shooter);
     }
 
+    public void switchDriveCommand(Command driveCommand) {
+        swerve.setDefaultCommand(driveCommand);
+    }
+
     public void setDefaultDrive(CommandXboxController xbox) {
-        swerve.setDefaultCommand(angleCentricDrive(xbox));
+        switchDriveCommand(angleCentricDrive(xbox));
     }
 
     public Command angleCentricDrive(CommandXboxController xbox) {
@@ -133,6 +137,10 @@ public class Superstructure {
 
     public Command robotCentricDrive(CommandXboxController xbox) {
         return swerve.robotCentricDrive(xbox);
+    }
+
+    public Command fieldCentricDrive(CommandXboxController xbox) {
+        return swerve.fieldCentricDrive(xbox);
     }
 
     public Command alignToPiece(CommandXboxController xbox) {

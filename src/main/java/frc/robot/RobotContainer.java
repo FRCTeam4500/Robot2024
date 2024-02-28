@@ -44,10 +44,16 @@ public class RobotContainer {
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmp = xbox.rightTrigger();
 		Trigger driveToPieceButton = xbox.rightBumper();
+		Trigger robotCentricButton = xbox.x();
+		Trigger fieldCentricButton = xbox.y();
+		Trigger angleCentricButton = xbox.b();
 
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
 		driveToPieceButton.whileTrue(structure.driveToPiece());
+		robotCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.robotCentricDrive(xbox))));
+		fieldCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.fieldCentricDrive(xbox))));
+		angleCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.angleCentricDrive(xbox))));
 	}
 
 	private void setupOperatorController() {
