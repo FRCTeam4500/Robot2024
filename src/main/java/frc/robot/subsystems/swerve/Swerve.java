@@ -261,8 +261,8 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
                 double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
 				driveFieldCentric(
-					-xbox.getLeftY() * forwardSens, 
-					-xbox.getLeftX() * sidewaysSens, 
+					-xbox.getLeftY() * forwardSens,
+					-xbox.getLeftX() * sidewaysSens,
 					-xbox.getRightX() * rotationalSens
 				);
 			}
@@ -271,35 +271,24 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		});
 	}
 
-	public Command assistedFieldCentricDrive(CommandXboxController xbox) {
+	public Command xanderDrive(CommandXboxController xbox) {
 		return Commands.run(
             () -> {
                 double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
-                double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
-				boolean forceTurn = false;
 				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
-                if (Math.abs(xbox.getRightY()) > 0.5) {
+                if (Math.abs(xbox.getRightY()) > 0.5)
                     targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
-					forceTurn = true;
-                } 
-				if (xbox.getHID().getRightStickButton()) {
+				else if (xbox.getHID().getRightStickButton())
 					targetAngle = Rotation2d.fromDegrees(-90);
-					forceTurn = true;
-				}
-				if (xbox.leftBumper().getAsBoolean() || forceTurn)
-					driveAngleCentric(
-						-xbox.getLeftY() * forwardSens,
-						-xbox.getLeftX() * sidewaysSens,
-						targetAngle
-					);
-				else
-					driveFieldCentric(
-						-xbox.getLeftY() * forwardSens, 
-						-xbox.getLeftX() * sidewaysSens, 
-						-xbox.getRightX() * rotationalSens
-					);
+				else if (xbox.leftBumper().getAsBoolean())
+					targetAngle = Rotation2d.fromDegrees(90);
+				driveAngleCentric(
+					-xbox.getLeftY() * forwardSens,
+					-xbox.getLeftX() * sidewaysSens,
+					targetAngle
+				);
             }, this
         ).beforeStarting(() -> {
             targetAngle = getRobotAngle();

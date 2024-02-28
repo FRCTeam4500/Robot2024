@@ -68,7 +68,7 @@ public class Superstructure {
             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
         );
-        NamedCommands.registerCommand("Ready Shot", 
+        NamedCommands.registerCommand("Ready Shot",
             shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
                 .andThen(intake.tilt(Intake.HANDOFF_TILT))
@@ -76,7 +76,7 @@ public class Superstructure {
                 .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
                 .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
         );
-        NamedCommands.registerCommand("Shoot", 
+        NamedCommands.registerCommand("Shoot",
             intake.run(Intake.SHOOTING_SPEED)
                 .andThen(Commands.waitSeconds(.75))
                 .andThen(intake.run(Intake.OFF_SPEED))
@@ -85,11 +85,11 @@ public class Superstructure {
             intake.tilt(Intake.GROUND_TILT)
                 .andThen(intake.run(Intake.PICKUP_SPEED))
         );
-        NamedCommands.registerCommand("Finish Intake", 
+        NamedCommands.registerCommand("Finish Intake",
             intake.run(Intake.OFF_SPEED)
                 .andThen(intake.tilt(Intake.HANDOFF_TILT))
         );
-        NamedCommands.registerCommand("Stow", 
+        NamedCommands.registerCommand("Stow",
             stow()
         );
     }
@@ -125,12 +125,12 @@ public class Superstructure {
 
     public void switchDriveCommand(Command driveCommand) {
         swerve.removeDefaultCommand();
-        swerve.getCurrentCommand().cancel();
+        if (swerve.getCurrentCommand() != null) swerve.getCurrentCommand().cancel();
         swerve.setDefaultCommand(driveCommand);
     }
 
     public void setDefaultDrive(CommandXboxController xbox) {
-        switchDriveCommand(angleCentricDrive(xbox));
+        switchDriveCommand(xanderDriveCommand(xbox));
     }
 
     public Command angleCentricDrive(CommandXboxController xbox) {
@@ -145,8 +145,8 @@ public class Superstructure {
         return swerve.fieldCentricDrive(xbox);
     }
 
-    public Command assistedFieldCentricDriveCommand(CommandXboxController xbox) {
-        return swerve.assistedFieldCentricDrive(xbox);
+    public Command xanderDriveCommand(CommandXboxController xbox) {
+        return swerve.xanderDrive(xbox);
     }
 
     public Command alignToPiece(CommandXboxController xbox) {
@@ -170,15 +170,15 @@ public class Superstructure {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (1.9  - pose.getX()) * 3), 
-                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1), 
+                    ExtendedMath.clamp(-1.5, 1.5, (1.9  - pose.getX()) * 3),
+                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
                     Rotation2d.fromDegrees(-90));
             } else {
                 swerve.driveAngleCentric(0, 0, Rotation2d.fromDegrees(0));
             }
         }, swerve);
 	}
-    
+
     public Command resetGyro() {
         return swerve.resetGyro();
     }
@@ -286,7 +286,7 @@ public class Superstructure {
     public Command confirmIntake() {
         return intake.run(Intake.PICKUP_SPEED);
     }
-    
+
     public Command offIntake() {
         return intake.run(Intake.OFF_SPEED);
     }
