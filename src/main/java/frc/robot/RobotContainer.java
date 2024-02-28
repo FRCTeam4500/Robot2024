@@ -66,6 +66,7 @@ public class RobotContainer {
 		Trigger ejectButton = flightSim.button(11);
 		Trigger handoffButton = flightSim.button(6);
 		Trigger farShootButton = flightSim.button(3);
+		Trigger confimHandoffButton = flightSim.button(12);
 
 		intakeButton.onTrue(structure.teleopIntake());
 		intakeButton.onFalse(structure.stow());
@@ -81,8 +82,9 @@ public class RobotContainer {
 		ejectButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
+		confimHandoffButton.onTrue(structure.backOut());
 	}
-	
+
 	public Command rumbleCommand(double timeSeconds) {
 		return Commands.startEnd(
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0.5),

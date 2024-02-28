@@ -295,4 +295,12 @@ public class Superstructure {
     public Command offIntake() {
         return intake.run(Intake.OFF_SPEED);
     }
+
+    public Command backOut() {
+        return shooter.load(0.25)
+            .andThen(shooter.spinUp(-0.15, -0.15 ))
+            .andThen(Commands.waitSeconds(0.15))
+            .andThen(shooter.load(0))
+            .andThen(shooter.spinUp(0, 0));
+    }
 }
