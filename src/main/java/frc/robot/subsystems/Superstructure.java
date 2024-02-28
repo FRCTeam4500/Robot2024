@@ -124,6 +124,8 @@ public class Superstructure {
     }
 
     public void switchDriveCommand(Command driveCommand) {
+        swerve.removeDefaultCommand();
+        swerve.getCurrentCommand().cancel();
         swerve.setDefaultCommand(driveCommand);
     }
 
@@ -141,6 +143,10 @@ public class Superstructure {
 
     public Command fieldCentricDrive(CommandXboxController xbox) {
         return swerve.fieldCentricDrive(xbox);
+    }
+
+    public Command assistedFieldCentricDriveCommand(CommandXboxController xbox) {
+        return swerve.assistedFieldCentricDrive(xbox);
     }
 
     public Command alignToPiece(CommandXboxController xbox) {

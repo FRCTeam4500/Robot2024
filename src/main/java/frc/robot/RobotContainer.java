@@ -52,7 +52,7 @@ public class RobotContainer {
 		alignAmp.whileTrue(structure.driveToAmp());
 		driveToPieceButton.whileTrue(structure.driveToPiece());
 		robotCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.robotCentricDrive(xbox))));
-		fieldCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.fieldCentricDrive(xbox))));
+		fieldCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.assistedFieldCentricDriveCommand(xbox))));
 		angleCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.angleCentricDrive(xbox))));
 	}
 
