@@ -73,10 +73,9 @@ public class Superstructure {
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
                 .andThen(intake.tilt(Intake.HANDOFF_TILT))
                 .andThen(Commands.waitSeconds(0.5))
-                .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
                 .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
         );
-        NamedCommands.registerCommand("Shoot", 
+        NamedCommands.registerCommand("Shoot", // NOT shoot
             intake.run(Intake.SHOOTING_SPEED)
                 .andThen(Commands.waitSeconds(.75))
                 .andThen(intake.run(Intake.OFF_SPEED))
@@ -87,7 +86,13 @@ public class Superstructure {
         );
         NamedCommands.registerCommand("Finish Intake", 
             intake.run(Intake.OFF_SPEED)
-                .andThen(intake.tilt(Intake.HANDOFF_TILT))
+                .andThen(handoff())
+                .andThen(readyShoot())
+        );
+        NamedCommands.registerCommand("Fire", 
+            shooter.load(Shooter.LOADER_SHOOT_SPEED)
+                .andThen(Commands.waitSeconds(.75))
+                .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
         );
         NamedCommands.registerCommand("Stow", 
             stow()

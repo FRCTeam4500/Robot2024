@@ -2,6 +2,7 @@ package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -39,7 +40,12 @@ public class SwerveConstants {
                 .withKP(0.11)
                 .withKI(0.5)
                 .withKD(0.0001)
-                .withKV(0.12));
+                .withKV(0.12))
+            .withCurrentLimits(new CurrentLimitsConfigs()
+                .withSupplyCurrentLimit(25)
+                .withSupplyCurrentLimitEnable(true)
+            );
+
 
     public static final SwerveMotor FRONT_LEFT_DRIVE_MOTOR =
         SwerveMotor.fromTalonFX(

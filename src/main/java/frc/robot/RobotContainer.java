@@ -58,7 +58,7 @@ public class RobotContainer {
 		Trigger readyAmpButton = flightSim.button(5);
 		Trigger confirmIntakeButton = flightSim.button(4);
 		Trigger ejectButton = flightSim.button(11);
-		Trigger handoffButton = flightSim.button(12);
+		Trigger handoffButton = flightSim.button(6);
 		Trigger farShootButton = flightSim.button(3);
 
 		intakeButton.onTrue(structure.teleopIntake());
@@ -78,8 +78,8 @@ public class RobotContainer {
 		new Trigger(() -> structure.gyroConnected())
 			.onTrue(structure.angleCentricDrive(xbox))
 			.onFalse(structure.robotCentricDrive(xbox));
-	}
-
+			
+		}
 	public Command rumbleCommand(double timeSeconds) {
 		return Commands.startEnd(
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0.5),
