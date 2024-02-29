@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.35,
-      "y": 5.55
+      "y": 5.6
     },
     "rotation": 0
   },
@@ -14,163 +14,43 @@
         {
           "type": "named",
           "data": {
-            "name": "Ready Shot"
+            "name": "Subwoofer Shoot + Intake"
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "To Piece 2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Start Intake"
+            "name": "Finish Intake + Far Shot + Intake"
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "To Piece 2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "From Piece2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Finish Intake"
-                }
-              }
-            ]
+            "pathName": "Piece2 To Piece1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "Finish Intake + Far Shot + Intake"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "To Piece1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Start Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "From Piece1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Finish Intake"
-                }
-              }
-            ]
+            "pathName": "Piece2 To Piece3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "To Piece3"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Start Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "From Piece3"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Finish Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stow"
+            "name": "Finish Intake + Far Shot + Intake"
           }
         }
       ]

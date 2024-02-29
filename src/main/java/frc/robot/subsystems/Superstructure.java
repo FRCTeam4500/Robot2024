@@ -68,51 +68,30 @@ public class Superstructure {
             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
         );
-        NamedCommands.registerCommand("Ready Shot",
-            shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
+        NamedCommands.registerCommand(
+            "Subwoofer Shoot + Intake",
+            shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)        
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
-                .andThen(intake.tilt(Intake.HANDOFF_TILT))
+                .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
+                .andThen(intake.tilt(Intake.GROUND_TILT))
+                .andThen(intake.run(Intake.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(telescope.extend(Telescope.STAGE))
+                .andThen(shooter.pivot(Shooter.STAGE_TILT))
         );
-        NamedCommands.registerCommand("Shoot", // NOT shoot
-            intake.run(Intake.SHOOTING_SPEED)
-                .andThen(Commands.waitSeconds(.75))
-                .andThen(intake.run(Intake.OFF_SPEED))
-        );
-        NamedCommands.registerCommand("Start Intake",
-            intake.tilt(Intake.GROUND_TILT)
+        NamedCommands.registerCommand(
+            "Finish Intake + Far Shot + Intake",
+            intake.tilt(Intake.HANDOFF_TILT)
+                .andThen(Commands.waitSeconds(1.5))
+                .andThen(intake.run(Intake.SHOOTING_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.tilt(Intake.GROUND_TILT))
                 .andThen(intake.run(Intake.PICKUP_SPEED))
         );
-        NamedCommands.registerCommand("Finish Intake",
-            intake.run(Intake.OFF_SPEED)
-                .andThen(handoff())
-                .andThen(readyShoot())
-        );
-        NamedCommands.registerCommand("Fire", 
-            shooter.load(Shooter.LOADER_SHOOT_SPEED)
-                .andThen(Commands.waitSeconds(.75))
-                .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
-        );
-        NamedCommands.registerCommand("Stow", 
-            stow()
-        );
-    }
-
-    public Command startShooting() {
-        return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
-            .andThen(telescope.extend(Telescope.SUBWOOFER))
-            .andThen(Commands.waitSeconds(0.5))
-            .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
-            .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT));
-    }
-
-    public Command executeShoot() {
-        return intake.tilt(Intake.HANDOFF_TILT)
-            .andThen(intake.run(Intake.OFF_SPEED))
-            .andThen(Commands.waitSeconds(1))
-            .andThen(intake.run(Intake.HANDOFF_SPEED))
-            .andThen(Commands.waitSeconds(1));
     }
 
     public void displayToShuffleboard() {
@@ -128,14 +107,19 @@ public class Superstructure {
         debug.add(shooter);
     }
 
-    public void switchDriveCommand(Command driveCommand) {
-        swerve.removeDefaultCommand();
-        if (swerve.getCurrentCommand() != null) swerve.getCurrentCommand().cancel();
-        swerve.setDefaultCommand(driveCommand);
+    public Command shootWithEverything() {
+        return intake.tilt(Intake.HANDOFF_TILT)
+            .andThen(telescope.extend(Telescope.STAGE))
+            .andThen(shooter.spinUp(1, 1))
+            .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
+            .andThen(shooter.pivot(Shooter.STAGE_TILT))
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(intake.run(Intake.HANDOFF_SPEED))
+            .andThen(Commands.waitSeconds(1));
     }
 
     public void setDefaultDrive(CommandXboxController xbox) {
-        switchDriveCommand(xanderDriveCommand(xbox));
+        swerve.setDefaultCommand(xanderDriveCommand(xbox));
     }
 
     public Command angleCentricDrive(CommandXboxController xbox) {
@@ -198,10 +182,6 @@ public class Superstructure {
         return swerve.gyroConnected();
     }
 
-    public Command resetIntake() {
-        return intake.reset();
-    }
-
     public Command readyAmp() {
         return telescope.extend(Telescope.AMP)
             .andThen(shooter.spinUp(Shooter.AMP_SPEED, Shooter.AMP_SPEED))
@@ -238,19 +218,9 @@ public class Superstructure {
     public Command teleopIntake() {
         return shooter.pivot(Shooter.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.5))
-            .andThen(groundIntake());
-    }
-
-    public Command shootWithEverything() {
-        return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
-            .andThen(telescope.extend(Telescope.SUBWOOFER))
-            .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
-            .andThen(Commands.waitSeconds(0.5))
-            .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
-            .andThen(Commands.waitSeconds(1.5))
-            .andThen(intake.run(Intake.SHOOTING_SPEED))
-            .andThen(Commands.waitSeconds(2))
-            .andThen(stow());
+            .andThen(intake.tilt(Intake.GROUND_TILT)
+            .andThen(intake.run(Intake.PICKUP_SPEED))
+        );
     }
 
     public Command shoot() {
@@ -276,16 +246,6 @@ public class Superstructure {
             .andThen(telescope.extend(Telescope.SUBWOOFER))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.pivot(Shooter.STAGE_TILT));
-    }
-
-    public Command readyShortAmp() {
-        return intake.tilt(Intake.AMP_TILT);
-    }
-
-    public Command fireShortAmp() {
-        return intake.run(Intake.AMP_SPEED)
-            .andThen(Commands.waitSeconds(2))
-            .andThen(stow());
     }
 
     public Command confirmIntake() {

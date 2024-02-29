@@ -44,16 +44,10 @@ public class RobotContainer {
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmp = xbox.rightTrigger();
 		Trigger driveToPieceButton = xbox.rightBumper();
-		Trigger robotCentricButton = xbox.x();
-		Trigger fieldCentricButton = xbox.y();
-		Trigger angleCentricButton = xbox.b();
 
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
 		driveToPieceButton.whileTrue(structure.driveToPiece());
-		robotCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.robotCentricDrive(xbox))));
-		fieldCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.xanderDriveCommand(xbox))));
-		angleCentricButton.onTrue(Commands.runOnce(() -> structure.switchDriveCommand(structure.angleCentricDrive(xbox))));
 	}
 
 	private void setupOperatorController() {
@@ -72,8 +66,10 @@ public class RobotContainer {
 		intakeButton.onFalse(structure.stow());
 		shootButton.onTrue(structure.readyShoot());
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		farShootButton.onTrue(structure.readyFarShot());
-		farShootButton.onFalse(structure.shoot().andThen(structure.stow()));
+		// farShootButton.onTrue(structure.readyFarShot());
+		// farShootButton.onFalse(structure.shoot().andThen(structure.stow()));
+		farShootButton.onTrue(structure.shootWithEverything());
+		farShootButton.onFalse(structure.stow());
 		readyAmpButton.onTrue(structure.readyAmp());
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		confirmIntakeButton.onTrue(structure.confirmIntake());

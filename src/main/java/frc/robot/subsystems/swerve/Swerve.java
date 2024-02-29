@@ -462,6 +462,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
 		builder.addStringProperty("Drive Mode", () -> driveMode.name(), null);
         builder.addDoubleProperty("Target Angle (Deg)", () -> targetAngle.getDegrees(), null);
+		builder.addDoubleProperty("Forward Meters", () -> getOdometryPose().getX(), null);
 	}
 
 	/* HELPERS AND GETTERS */
