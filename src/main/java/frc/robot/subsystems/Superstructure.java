@@ -227,7 +227,8 @@ public class Superstructure {
     }
 
     public Command teleopEndIntake() {
-        return intake.tilt(Intake.STOW_TILT);
+        return intake.tilt(Intake.STOW_TILT)
+            .andThen(intake.run(0));
     }
 
     public Command shoot() {

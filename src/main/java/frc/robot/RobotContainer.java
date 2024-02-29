@@ -58,9 +58,9 @@ public class RobotContainer {
 		Trigger readyAmpButton = flightSim.button(5);
 		Trigger confirmIntakeButton = flightSim.button(4);
 		Trigger ejectButton = flightSim.button(11);
-		Trigger handoffButton = flightSim.button(12);
+		Trigger handoffButton = flightSim.button(6);
 		Trigger farShootButton = flightSim.button(3);
-		Trigger confimHandoffButton = flightSim.button(6);
+		Trigger confimHandoffButton = flightSim.button(12);
 
 		intakeButton.onTrue(structure.teleopStartIntake());
 		intakeButton.onFalse(structure.teleopEndIntake());
