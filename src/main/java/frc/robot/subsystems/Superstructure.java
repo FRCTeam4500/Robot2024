@@ -215,7 +215,7 @@ public class Superstructure {
             .andThen(intake.run(Intake.OFF_SPEED));
     }
 
-    public Command teleopIntake() {
+    public Command teleopStartIntake() {
         return shooter.pivot(Shooter.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.tilt(Intake.GROUND_TILT)
