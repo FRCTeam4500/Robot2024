@@ -55,6 +55,7 @@ public class Climber extends SubsystemBase implements LoggableInputs {
         table.put("Motor extension (deg)", motor.getEncoder().getPosition());
         table.put("Target State", targetState.name());
     }
+
     @Override
     public void fromLog(LogTable table) {
 

@@ -70,7 +70,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Subwoofer Shoot + Intake",
-            shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)        
+            shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
                 .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
                 .andThen(Commands.waitSeconds(0.5))
@@ -270,5 +270,9 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(0.15))
             .andThen(shooter.load(0))
             .andThen(shooter.spinUp(0, 0));
+    }
+
+    public Command zeroIntake() {
+        return intake.zeroIntake(0.2);
     }
 }

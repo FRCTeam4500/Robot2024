@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
         if (instance == null) instance = new Intake();
         return instance;
     }
-    
+
     public static final double GROUND_TILT = -55;
     public static final double STOW_TILT = 0;
     public static final double HANDOFF_TILT = 0;
@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
     public Intake() {
         runMotor = new CANSparkMax(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(INTAKE_TILT_ID, MotorType.kBrushless);
-        
+
         // Wires are backwards, black is signal, white is ground
         limitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
 
@@ -58,6 +58,12 @@ public class Intake extends SubsystemBase {
             () -> tiltMotor.getPIDController().setReference(angle, ControlType.kPosition),
             this
         );
+    }
+
+    public Command zeroIntake(double output) {
+        return Commands.run(
+            () -> tiltMotor.set(output)
+        ).until(() -> !limitSwitch.get()).withTimeout(2).andThen(() -> tiltMotor.set(0));
     }
 
     public Command run(double output) {
