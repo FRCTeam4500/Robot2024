@@ -284,6 +284,10 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 					targetAngle = Rotation2d.fromDegrees(-90);
 				else if (xbox.leftBumper().getAsBoolean())
 					targetAngle = Rotation2d.fromDegrees(90);
+				else if (xbox.povLeft().getAsBoolean()) 
+					targetAngle = targetAngle.plus(Rotation2d.fromDegrees(1));
+				else if (xbox.povRight().getAsBoolean())
+					targetAngle = targetAngle.minus(Rotation2d.fromDegrees(1));
 				driveAngleCentric(
 					-xbox.getLeftY() * forwardSens,
 					-xbox.getLeftX() * sidewaysSens,
