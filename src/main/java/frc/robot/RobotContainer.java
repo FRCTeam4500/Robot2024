@@ -66,10 +66,8 @@ public class RobotContainer {
 		intakeButton.onFalse(structure.teleopEndIntake());
 		shootButton.onTrue(structure.readyShoot());
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		// farShootButton.onTrue(structure.readyFarShot());
-		// farShootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		farShootButton.onTrue(structure.shootWithEverything());
-		farShootButton.onFalse(structure.stow());
+		farShootButton.onTrue(structure.readyFarShot());
+		farShootButton.onFalse(structure.shoot().andThen(structure.stow()));
 		readyAmpButton.onTrue(structure.readyAmp());
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		confirmIntakeButton.onTrue(structure.confirmIntake());

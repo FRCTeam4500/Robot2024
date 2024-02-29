@@ -163,7 +163,10 @@ public class Superstructure {
                     ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
                     Rotation2d.fromDegrees(-90));
             } else {
-                swerve.driveAngleCentric(0, 0, Rotation2d.fromDegrees(0));
+                swerve.driveAngleCentric(
+                    ExtendedMath.clamp(-1.5, 1.5, (14.1  - pose.getX()) * 3),
+                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
+                    Rotation2d.fromDegrees(-90));
             }
         }, swerve);
 	}
@@ -221,6 +224,10 @@ public class Superstructure {
             .andThen(intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED))
         );
+    }
+
+    public Command teleopEndIntake() {
+        return intake.tilt(Intake.STOW_TILT);
     }
 
     public Command shoot() {
