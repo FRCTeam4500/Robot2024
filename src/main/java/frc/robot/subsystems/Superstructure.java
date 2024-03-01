@@ -273,9 +273,6 @@ public class Superstructure {
     }
 
     public Command zeroIntake() {
-        return shooter.pivot(Shooter.HANDOFF_TILT)
-            .andThen(Commands.waitSeconds(0.5)) 
-            .andThen(intake.zeroIntake(0.2))
-            .andThen(shooter.pivot(Shooter.STOW_TILT));
+        return intake.zeroIntake(0.2);
     }
 }

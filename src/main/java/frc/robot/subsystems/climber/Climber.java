@@ -1,28 +1,65 @@
 package frc.robot.subsystems.climber;
 
+import frc.robot.utilities.ExtendedMath;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static frc.robot.CANConstants.CLIMBER_ID;
+import static frc.robot.subsystems.climber.ClimberConstants.*;
+import static com.revrobotics.CANSparkLowLevel.MotorType.*;
+
+import org.littletonrobotics.junction.LogTable;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.CANConstants;
+/**
+ * @author Gasya
+ * @author Ashwin
+ * @author Bennett
+ */
+public class Climber extends SubsystemBase implements LoggableInputs {
 
-public class Climber extends SubsystemBase {
+    private CANSparkMax motor;
+    private ClimberState targetState;
+
     private static Climber instance;
     public static synchronized Climber getInstance() {
-        if (instance == null) instance = new Climber();
+        if (instance == null) instance = new Climber ();
         return instance;
+
     }
 
-    private CANSparkMax climbingMotor;
+    /**
+     * @author Gasya
+     * @author Ashwin
+     * @author Bennett
+     */
     public Climber() {
-        climbingMotor = new CANSparkMax(CANConstants.CLIMBER_ID, MotorType.kBrushless);
-        climbingMotor.getPIDController().setP(1);
+        motor = new CANSparkMax(CLIMBER_ID, kBrushless);
+        targetState = ClimberState.Lowhook;
     }
 
-    public Command extend(double extension) {
-        return Commands.runOnce(() -> climbingMotor.getPIDController().setReference(extension, ControlType.kPosition));
+    public void setState(ClimberState state) {
+        motor.getPIDController().setReference(state.tilt.getRotations(), ControlType.kVelocity);
+        targetState = state;
     }
+
+    public boolean atTargetState() {
+        return ExtendedMath.within(Rotation2d.fromRotations(motor.getEncoder().getPosition()), targetState.tilt, climberTiltThreshold);
+    }
+
+    @Override
+    public void toLog(LogTable table) {
+        table.put("Motor extension (deg)", motor.getEncoder().getPosition());
+        table.put("Target State", targetState.name());
+    }
+
+    @Override
+    public void fromLog(LogTable table) {
+
+    }
+
+
 }
