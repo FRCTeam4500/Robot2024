@@ -1,65 +1,59 @@
 package frc.robot.subsystems.climber;
 
-import frc.robot.utilities.ExtendedMath;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import static frc.robot.CANConstants.CLIMBER_ID;
-import static frc.robot.subsystems.climber.ClimberConstants.*;
-import static com.revrobotics.CANSparkLowLevel.MotorType.*;
-
-import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
+import frc.robot.CANConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
-/**
- * @author Gasya
- * @author Ashwin
- * @author Bennett
- */
-public class Climber extends SubsystemBase implements LoggableInputs {
-
-    private CANSparkMax motor;
-    private ClimberState targetState;
-
+public class Climber extends  SubsystemBase{
+    
     private static Climber instance;
-    public static synchronized Climber getInstance() {
-        if (instance == null) instance = new Climber ();
+    public static synchronized Climber getInstance() //synchronized is a safety measure
+    {
+        if(instance == null)
+        {
+            instance = new Climber();
+        }
         return instance;
+    }
+    private CANSparkMax climbMotor;
+    public static final double ZERO = 0.0;
+    public static final double EXTENDED = 1000.0;
+    public static final double RETRACTED = -200.0;
+
+    private Climber()
+    {
+        climbMotor = new CANSparkMax(CANConstants.CLIMBER_ID, MotorType.kBrushless);
+        climbMotor.setIdleMode(IdleMode.kBrake);
 
     }
+    public Command extend(double extension)
+    {
+        return Commands.runOnce(()->{//this is a lamda
+            climbMotor.getPIDController().setReference(extension, ControlType.kPosition);
+        }, this);//this refers to a Climber object we weill make in the future
 
-    /**
-     * @author Gasya
-     * @author Ashwin
-     * @author Bennett
-     */
-    public Climber() {
-        motor = new CANSparkMax(CLIMBER_ID, kBrushless);
-        targetState = ClimberState.Lowhook;
-    }
-
-    public void setState(ClimberState state) {
-        motor.getPIDController().setReference(state.tilt.getRotations(), ControlType.kVelocity);
-        targetState = state;
-    }
-
-    public boolean atTargetState() {
-        return ExtendedMath.within(Rotation2d.fromRotations(motor.getEncoder().getPosition()), targetState.tilt, climberTiltThreshold);
-    }
-
+    }    
     @Override
-    public void toLog(LogTable table) {
-        table.put("Motor extension (deg)", motor.getEncoder().getPosition());
-        table.put("Target State", targetState.name());
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("Climb Extension", ()->{
+            return climbMotor.getEncoder().getPosition();
+        }, null);
+    }
+    public Command debugRun(double output)
+    {
+        return Commands.runOnce(()->{
+            climbMotor.set(output);
+        }, this);
     }
 
-    @Override
-    public void fromLog(LogTable table) {
-
-    }
 
 
 }

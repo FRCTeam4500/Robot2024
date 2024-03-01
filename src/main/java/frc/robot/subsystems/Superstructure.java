@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.arm.Telescope;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
@@ -28,7 +30,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
  * It is responsible for coordinating the different subsystems and commands
  * to perform various actions and tasks.
  *
- * @author Borian Vassilev Schonhuth
+ * 
  */
 public class Superstructure {
     private static Superstructure instance;
@@ -41,15 +43,19 @@ public class Superstructure {
     private Intake intake;
     private Telescope telescope;
     private Shooter shooter;
+    private Climber climber;
 
     public Superstructure() {
         swerve = Swerve.getInstance();
         intake = Intake.getInstance();
         telescope = Telescope.getInstance();
         shooter = Shooter.getInstance();
+        climber = Climber.getInstance();
         configurePathPlanner();
         displayToShuffleboard();
         debugToShuffleboard();
+
+
     }
 
     public void configurePathPlanner() {
@@ -275,4 +281,26 @@ public class Superstructure {
     public Command zeroIntake() {
         return intake.zeroIntake(0.2);
     }
+    public Command climberUp()
+    {
+        return climber.extend(Climber.EXTENDED);
+    
+    }
+    public Command climberDown()
+    {
+        return climber.extend(Climber.RETRACTED);
+    }
+    public Command climberZero()
+    {
+        return climber.extend(Climber.ZERO);
+    }
+    public void debugRunCommand(CommandJoystick flightSim)
+    {
+        climber.setDefaultCommand(Commands.run(()->{
+            climber.debugRun(flightSim.getY());
+        }));
+    }
+    
+
+
 }
