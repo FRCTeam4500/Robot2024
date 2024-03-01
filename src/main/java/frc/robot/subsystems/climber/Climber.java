@@ -25,13 +25,14 @@ public class Climber extends  SubsystemBase{
     }
     private CANSparkMax climbMotor;
     public static final double ZERO = 0.0;
-    public static final double EXTENDED = 1000.0;
-    public static final double RETRACTED = -200.0;
+    public static final double EXTENDED = -160;
+    public static final double RETRACTED = 40;
 
     private Climber()
     {
         climbMotor = new CANSparkMax(CANConstants.CLIMBER_ID, MotorType.kBrushless);
         climbMotor.setIdleMode(IdleMode.kBrake);
+        climbMotor.getPIDController().setP(1);
 
     }
     public Command extend(double extension)
@@ -47,11 +48,9 @@ public class Climber extends  SubsystemBase{
             return climbMotor.getEncoder().getPosition();
         }, null);
     }
-    public Command debugRun(double output)
+    public void debugRun(double output)
     {
-        return Commands.runOnce(()->{
-            climbMotor.set(output);
-        }, this);
+        climbMotor.set(output);
     }
 
 

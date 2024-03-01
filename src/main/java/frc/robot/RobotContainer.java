@@ -83,6 +83,7 @@ public class RobotContainer {
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
 		confimHandoffButton.onTrue(structure.backOut());
+		// structure.debugRunCommand(flightSim);
 		
 	}
 

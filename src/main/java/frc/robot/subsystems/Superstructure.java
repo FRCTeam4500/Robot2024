@@ -111,6 +111,7 @@ public class Superstructure {
         debug.add(intake);
         debug.add(telescope);
         debug.add(shooter);
+        debug.add(climber);
     }
 
     public Command shootWithEverything() {
@@ -281,26 +282,25 @@ public class Superstructure {
     public Command zeroIntake() {
         return intake.zeroIntake(0.2);
     }
-    public Command climberUp()
-    {
-        return climber.extend(Climber.EXTENDED);
-    
+
+    public Command climberUp() {
+        return shooter.pivot(Shooter.AMP_TILT)
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(climber.extend(Climber.EXTENDED));
     }
-    public Command climberDown()
-    {
+
+    public Command climberDown() {
         return climber.extend(Climber.RETRACTED);
     }
-    public Command climberZero()
-    {
+
+    public Command climberZero() {
         return climber.extend(Climber.ZERO);
     }
-    public void debugRunCommand(CommandJoystick flightSim)
-    {
+    
+    public void debugRunCommand(CommandJoystick flightSim) {
         climber.setDefaultCommand(Commands.run(()->{
             climber.debugRun(flightSim.getY());
-        }));
+        }, climber));
     }
-    
-
 
 }
