@@ -247,12 +247,14 @@ public class Superstructure {
         return intake.tilt(Intake.STOW_TILT)
             .andThen(intake.run(Intake.OFF_SPEED))
             .andThen(telescope.coast())
+            .andThen(climber.extend(Climber.ZERO))
             .andThen(shooter.spinUp(Shooter.OFF_SPEED, Shooter.OFF_SPEED))
             .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.pivot(Shooter.STOW_TILT))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.coast());
+            
     }
 
     public Command readyFarShot() {

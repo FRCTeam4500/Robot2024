@@ -31,7 +31,7 @@ public class Climber extends  SubsystemBase{
     {
         climbMotor = new CANSparkMax(CANConstants.CLIMBER_ID, MotorType.kBrushless);
         climbMotor.setIdleMode(IdleMode.kBrake);
-        climbMotor.getPIDController().setP(1);
+        climbMotor.getPIDController().setP(2);
 
     }
     public Command extend(double extension)
