@@ -62,12 +62,10 @@ public class RobotContainer {
 		Trigger handoffButton = flightSim.button(6);
 		Trigger farShootButton = flightSim.button(3);
 		Trigger confimHandoffButton = flightSim.button(12);
-		Trigger climberZeroButton = flightSim.button(8);
-		Trigger climberUpButton = flightSim.button(9);//change later
+		Trigger climberUpButton = flightSim.button(8);
 		Trigger climberDownButton = flightSim.button(7);
 		climberUpButton.onTrue(structure.climberUp());
 		climberDownButton.onTrue(structure.climberDown());
-		climberZeroButton.onTrue(structure.climberZero());
 		intakeButton.onTrue(structure.teleopStartIntake());
 		intakeButton.onFalse(structure.teleopEndIntake());
 		shootButton.onTrue(structure.readyShoot());
@@ -83,8 +81,6 @@ public class RobotContainer {
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
 		confimHandoffButton.onTrue(structure.backOut());
-		// structure.debugRunCommand(flightSim);
-		
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
