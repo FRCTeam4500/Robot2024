@@ -159,23 +159,60 @@ public class Superstructure {
     public Command alignToSpeaker(CommandXboxController xbox) {
         return swerve.rotateToSpeaker(xbox);
     }
-
-    public Command driveToAmp() {
-		return Commands.run(() -> {
+    public Command driveToPose(Pose2d bluePose, Pose2d redPose, double forwardScale, double sidewaysScale) {
+        return Commands.run(() -> {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (1.9  - pose.getX()) * 3),
-                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
-                    Rotation2d.fromDegrees(-90));
+                    ExtendedMath.clamp(-1.5, 1.5, (bluePose.getX()  - pose.getX()) * forwardScale),
+                    ExtendedMath.clamp(-1.5, 1.5, (bluePose.getY() - pose.getY()) * sidewaysScale),
+                    bluePose.getRotation());
             } else {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (14.1  - pose.getX()) * 3),
-                    ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
-                    Rotation2d.fromDegrees(-90));
+                    ExtendedMath.clamp(-1.5, 1.5, (redPose.getX()  - pose.getX()) * forwardScale),
+                    ExtendedMath.clamp(-1.5, 1.5, (redPose.getY() - pose.getY()) * sidewaysScale),
+                    redPose.getRotation());
             }
         }, swerve);
+    }
+
+    public Command driveToAmp() {
+        return driveToPose(
+            new Pose2d(1.9, 7.7, Rotation2d.fromDegrees(-90)), 
+            new Pose2d(14.1, 7.7, Rotation2d.fromDegrees(-90)), 
+            3, 1
+        );
+		// return Commands.run(() -> {
+        //     Pose2d pose = swerve.getEstimatorPose();
+        //     if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+        //         swerve.driveAngleCentric(
+        //             ExtendedMath.clamp(-1.5, 1.5, (1.9  - pose.getX()) * 3),
+        //             ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
+        //             Rotation2d.fromDegrees(-90));
+        //     } else {
+        //         swerve.driveAngleCentric(
+        //             ExtendedMath.clamp(-1.5, 1.5, (14.1  - pose.getX()) * 3),
+        //             ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
+        //             Rotation2d.fromDegrees(-90));
+        //     }
+        // }, swerve);
 	}
+
+    public Command driveToSubwoofer() {
+        return driveToPose(
+            new Pose2d(1.40, 5.6, Rotation2d.fromDegrees(0)),
+            new Pose2d(14.5, 5.6, Rotation2d.fromDegrees(180)),
+            2, 3  
+        );
+    }
+
+    public Command driveToFarShot() {
+        return driveToPose(
+            new Pose2d(2.3, 5.9, Rotation2d.fromDegrees(0)), 
+            new Pose2d(13.7, 5.9, Rotation2d.fromDegrees(180)), // 16 max
+            2, 3
+        );
+    }
 
     public Command resetGyro() {
         return swerve.resetGyro();
