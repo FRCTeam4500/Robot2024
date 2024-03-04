@@ -200,7 +200,7 @@ public class Superstructure {
 
     public Command driveToSubwoofer() {
         return driveToPose(
-            new Pose2d(1.40, 5.6, Rotation2d.fromDegrees(0)),
+            new Pose2d(1.723, 7.505, Rotation2d.fromRadians(0.775)),
             new Pose2d(14.5, 5.6, Rotation2d.fromDegrees(180)),
             2, 3  
         );
