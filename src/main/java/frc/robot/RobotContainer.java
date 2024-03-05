@@ -44,13 +44,11 @@ public class RobotContainer {
 
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmp = xbox.rightTrigger();
-		Trigger driveToPieceButton = xbox.rightBumper();
 		Trigger alignSubwooferButton = xbox.povDown();
 		Trigger alignFarShotButton = xbox.povUp();
 
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
-		driveToPieceButton.whileTrue(structure.driveToPiece());
 		alignSubwooferButton.whileTrue(structure.driveToSubwoofer());
 		alignFarShotButton.whileTrue(structure.driveToFarShot());
 	}

@@ -22,6 +22,7 @@ public class Climber extends  SubsystemBase{
         }
         return instance;
     }
+
     private CANSparkMax climbMotor;
     public static final double ZERO = 0.0;
     public static final double EXTENDED = -160;
@@ -34,6 +35,7 @@ public class Climber extends  SubsystemBase{
         climbMotor.getPIDController().setP(2);
 
     }
+
     public Command extend(double extension)
     {
         return Commands.runOnce(()->{//this is a lamda
@@ -41,12 +43,14 @@ public class Climber extends  SubsystemBase{
         }, this);//this refers to a Climber object we weill make in the future
 
     }    
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Climb Extension", ()->{
             return climbMotor.getEncoder().getPosition();
         }, null);
     }
+    
     public void debugRun(double output)
     {
         climbMotor.set(output);
