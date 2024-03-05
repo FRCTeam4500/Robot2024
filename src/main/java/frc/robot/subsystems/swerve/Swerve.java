@@ -277,6 +277,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
+				double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
 				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
                 if (Math.abs(xbox.getRightY()) > 0.5)
                     targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
@@ -284,10 +285,11 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 					targetAngle = Rotation2d.fromDegrees(-90);
 				else if (xbox.leftBumper().getAsBoolean())
 					targetAngle = Rotation2d.fromDegrees(90);
-				else if (xbox.povLeft().getAsBoolean()) 
-					targetAngle = targetAngle.plus(Rotation2d.fromDegrees(1));
-				else if (xbox.povRight().getAsBoolean())
-					targetAngle = targetAngle.minus(Rotation2d.fromDegrees(1));
+				else 
+					targetAngle = Rotation2d.fromDegrees(
+						targetAngle.getDegrees() -
+						xbox.getRightX() * rotationalSens
+					);
 				driveAngleCentric(
 					-xbox.getLeftY() * forwardSens,
 					-xbox.getLeftX() * sidewaysSens,

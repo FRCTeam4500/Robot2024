@@ -71,7 +71,7 @@ public class RobotContainer {
 		climberUpButton.onTrue(structure.climberUp());
 		climberDownButton.onTrue(structure.climberDown());
 		intakeButton.onTrue(structure.teleopStartIntake());
-		intakeButton.onFalse(structure.teleopEndIntake());
+		intakeButton.onFalse(structure.stow());
 		shootButton.onTrue(structure.readyShoot());
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
 		farShootButton.onTrue(structure.readyFarShot());
