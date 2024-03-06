@@ -97,6 +97,14 @@ public class Superstructure {
                 .andThen(intake.tilt(Intake.GROUND_TILT))
                 .andThen(intake.run(Intake.PICKUP_SPEED))
         );
+        NamedCommands.registerCommand(
+            "Finish Intake + Far Shot",
+            intake.tilt(Intake.HANDOFF_TILT)
+                .andThen(Commands.waitSeconds(1.5))
+                .andThen(intake.run(Intake.SHOOTING_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(stow())
+        );
     }
 
     public void displayToShuffleboard() {
