@@ -30,9 +30,28 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Finish Intaking"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "From Far 4"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Finish Intaking"
+            "name": "Subwoofer Shot + Stow"
           }
         }
       ]

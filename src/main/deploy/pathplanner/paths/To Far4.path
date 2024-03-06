@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2661242113706055,
-        "y": 3.6701591646125156
+        "x": 0.8302773426424676,
+        "y": 3.5252257455879086
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.125456967402666,
-        "y": 1.8697329921350239
+        "x": 1.9306931140552677,
+        "y": 1.674969138787625
       },
       "prevControl": {
-        "x": 1.674202475552125,
-        "y": 2.0639437860960155
+        "x": 1.1711140860004143,
+        "y": 2.191093350158231
       },
       "nextControl": {
-        "x": 2.89477418812489,
-        "y": 1.5386344414444473
+        "x": 2.623443264182657,
+        "y": 1.2042542931882452
       },
       "isLocked": false,
       "linkedName": null
@@ -36,31 +36,42 @@
         "y": 0.983557459404363
       },
       "prevControl": {
-        "x": 4.449233192653812,
-        "y": 0.913564199607642
+        "x": 4.447350662912255,
+        "y": 0.9451917217177438
       },
       "nextControl": {
-        "x": 6.267840673285142,
-        "y": 1.053550719201084
+        "x": 6.283665236369619,
+        "y": 1.022510230073842
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.724917751140366,
-        "y": 2.356642625503519
+        "x": 8.0,
+        "y": 2.4
       },
       "prevControl": {
-        "x": 6.390785355710689,
-        "y": 1.5288962487770767
+        "x": 7.01644254059564,
+        "y": 1.3190606139219392
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -60.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 2.45,
+      "rotationDegrees": 15.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -72,7 +83,7 @@
   "goalEndState": {
     "velocity": 0,
     "rotation": 15.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": null,
