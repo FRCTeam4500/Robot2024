@@ -105,6 +105,27 @@ public class Superstructure {
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(stow())
         );
+        NamedCommands.registerCommand(
+            "Subwoofer Shot + Stow",
+            shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
+                .andThen(telescope.extend(Telescope.SUBWOOFER))
+                .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(stow())
+        );
+        NamedCommands.registerCommand(
+            "Start Intaking", 
+            teleopStartIntake()
+        );
+        NamedCommands.registerCommand(
+            "Finish Intaking", 
+            stow()
+                .andThen(handoff())
+        );
     }
 
     public void displayToShuffleboard() {
