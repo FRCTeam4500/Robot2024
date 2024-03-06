@@ -11,6 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -216,6 +217,12 @@ public class ExtendedMath {
 	public static boolean within(Pose2d a, Pose2d b, Pose2d threshold) {
 		return within(a.getTranslation(), b.getTranslation(), threshold.getTranslation())
 			&& within(a.getRotation(), b.getRotation(), threshold.getRotation());
+	}
+
+	public static boolean within(ChassisSpeeds a, ChassisSpeeds b, ChassisSpeeds threshold) {
+		return within(a.vxMetersPerSecond, b.vxMetersPerSecond, threshold.vxMetersPerSecond)
+			&& within(a.vyMetersPerSecond, b.vyMetersPerSecond, threshold.vyMetersPerSecond)
+			&& within(a.omegaRadiansPerSecond, b.omegaRadiansPerSecond, threshold.omegaRadiansPerSecond);
 	}
 	/** 
 	 * @author Bennett

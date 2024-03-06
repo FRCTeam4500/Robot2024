@@ -59,7 +59,7 @@ public class Superstructure {
 
     public void configurePathPlanner() {
         AutoBuilder.configureHolonomic(
-            swerve::getOdometryPose,
+            swerve::getEstimatorPose,
             swerve::resetPose,
             swerve::getChassisSpeeds,
             swerve::driveRobotCentric,
