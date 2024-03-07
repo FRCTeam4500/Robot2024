@@ -84,8 +84,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			// tagVision.getRobotPose(new Pose2d())
-			new Pose2d(8, 4, getRobotAngle())
+			tagVision.getRobotPose(new Pose2d())
 		);
 		poseEstimator = new SwerveDrivePoseEstimator(
 			kinematics,
