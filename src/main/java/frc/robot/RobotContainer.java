@@ -46,7 +46,7 @@ public class RobotContainer {
 
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
-		alignSubwooferButton.whileTrue(structure.driveToSubwoofer());
+		alignSubwooferButton.whileTrue(structure.driveToAmpShot());
 		alignFarShotButton.whileTrue(structure.driveToFarShot());
 	}
 
