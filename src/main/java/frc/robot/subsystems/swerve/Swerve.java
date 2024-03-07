@@ -402,44 +402,12 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 
 	@Override
 	public void toLog(LogTable table) {
-		table.put(
-			"Front Left Module Velocity (M/S)",
-			modules[0].getModuleState().speedMetersPerSecond
-		);
-		table.put(
-			"Front Left Module Angle (Radians)",
-			modules[0].getModuleState().angle.getRadians()
-		);
-		table.put(
-			"Front Right Module Velocity (M/S)",
-			modules[1].getModuleState().speedMetersPerSecond
-		);
-		table.put(
-			"Front Right Module Angle (Radians)",
-			modules[1].getModuleState().angle.getRadians()
-		);
-		table.put(
-			"Back Left Module Velocity (M/S)",
-			modules[2].getModuleState().speedMetersPerSecond
-		);
-		table.put(
-			"Back Left Module Angle (Radians)",
-			modules[2].getModuleState().angle.getRadians()
-		);
-		table.put(
-			"Back Right Module Velocity (M/S)",
-			modules[3].getModuleState().speedMetersPerSecond
-		);
-		table.put(
-			"Back Right Module Angle (Radians)",
-			modules[3].getModuleState().angle.getRadians()
-		);
 		Logger.recordOutput(
-			"Swerve Odometry",
+			"Odometric Pose",
 			getOdometryPose()
 		);
 		Logger.recordOutput(
-			"Odometyry + Vision Pose Estimation",
+			"Estimated Pose",
 			getEstimatorPose()
 		);
 		Logger.recordOutput(

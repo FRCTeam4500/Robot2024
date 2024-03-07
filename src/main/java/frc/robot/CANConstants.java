@@ -15,7 +15,7 @@ public class CANConstants {
     public static final int SHOOTER_ONE_ID = 13;
     public static final int SHOOTER_TWO_ID = 14;
     public static final int LOADER_ID = 16;
-    public static final int CLIMBER_ID = 17; //TODO: Change this!
+    public static final int CLIMBER_ID = 17;
     public static final int SHOOTER_PIVOT_ID = 15;
     public static final int ARM_EXTENSION_MOTOR_ID = 12;
     public static final int LOADER_LIDAR_CHANNEL = 1;

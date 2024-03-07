@@ -12,7 +12,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.CANConstants.*;
 
-public class Intake extends SubsystemBase {
+import org.littletonrobotics.junction.LogTable;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
+public class Intake extends SubsystemBase implements LoggableInputs {
     private static Intake instance;
     public static synchronized Intake getInstance() {
         if (instance == null) instance = new Intake();
@@ -82,7 +85,16 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Speed", () -> runMotor.getEncoder().getVelocity(), null);
+        builder.addDoubleProperty("Speed", () -> runMotor.get(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
     }
+
+    @Override
+    public void toLog(LogTable table) {
+        table.put("Output", runMotor.get());
+        table.put("Tilt", tiltMotor.getEncoder().getPosition());
+    }
+
+    @Override
+    public void fromLog(LogTable table) {}
 }

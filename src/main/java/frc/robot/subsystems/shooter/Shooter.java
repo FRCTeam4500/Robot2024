@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,8 +11,10 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import static frc.robot.CANConstants.*;
 
-public class Shooter extends SubsystemBase {
+import org.littletonrobotics.junction.LogTable;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
 
+public class Shooter extends SubsystemBase implements LoggableInputs {
     private static Shooter instance;
     public static synchronized Shooter getInstance() {
         if (instance == null) instance = new Shooter();
@@ -37,13 +38,11 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
     private CANSparkMax loaderMotor;
-    private AnalogInput lidar;
     private Shooter() {
         rightMotor = new CANSparkMax(SHOOTER_ONE_ID, MotorType.kBrushless);
         leftMotor = new CANSparkMax(SHOOTER_TWO_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(SHOOTER_PIVOT_ID, MotorType.kBrushless);
         loaderMotor = new CANSparkMax(LOADER_ID, MotorType.kBrushless);
-        lidar = new AnalogInput(LOADER_LIDAR_CHANNEL);
 
         rightMotor.getPIDController().setP(0.3);
         leftMotor.getPIDController().setP(0.3);
@@ -54,10 +53,6 @@ public class Shooter extends SubsystemBase {
         rightMotor.setSmartCurrentLimit(30);
         leftMotor.setSmartCurrentLimit(30);
         tiltMotor.setSmartCurrentLimit(30);
-    }
-
-    public boolean hasNote() {
-        return lidar.getValue() < 2200;
     }
 
     public Command pivot(double angle) {
@@ -71,10 +66,6 @@ public class Shooter extends SubsystemBase {
         return Commands.runOnce(
             () -> loaderMotor.set(output), this
         );
-    }
-
-    public Command waitTillNote() {
-        return Commands.waitUntil(() -> hasNote());
     }
 
     public Command spinUp(double left, double right) {
@@ -100,6 +91,16 @@ public class Shooter extends SubsystemBase {
         builder.addDoubleProperty("Right Speed", () -> rightMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Loader Speed", () -> loaderMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
-        builder.addDoubleProperty("LIDAR Measurement", () -> lidar.getValue(), null);
     }
+
+    @Override
+    public void toLog(LogTable table) {
+        table.put("Left Speed", leftMotor.getEncoder().getVelocity());
+        table.put("Right Speed", rightMotor.getEncoder().getVelocity());
+        table.put("Loader Speed", loaderMotor.getEncoder().getVelocity());
+        table.put("Tilt", tiltMotor.getEncoder().getPosition());
+    }
+
+    @Override
+    public void fromLog(LogTable table) {}
 }

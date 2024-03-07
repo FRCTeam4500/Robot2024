@@ -28,8 +28,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
  * The Superstructure class represents the overall structure of the robot.
  * It is responsible for coordinating the different subsystems and commands
  * to perform various actions and tasks.
- *
- * 
  */
 public class Superstructure {
     private static Superstructure instance;
@@ -51,10 +49,6 @@ public class Superstructure {
         shooter = Shooter.getInstance();
         climber = Climber.getInstance();
         configurePathPlanner();
-        displayToShuffleboard();
-        debugToShuffleboard();
-
-
     }
 
     public void configurePathPlanner() {
@@ -119,18 +113,13 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Start Intaking", 
-            teleopStartIntake()
+            startIntake()
         );
         NamedCommands.registerCommand(
             "Finish Intaking", 
             stow()
                 .andThen(handoff())
         );
-    }
-
-    public void displayToShuffleboard() {
-        ShuffleboardTab display = Shuffleboard.getTab("Display");
-        display.addBoolean("Gyro", () -> swerve.gyroConnected());
     }
 
     public void debugToShuffleboard() {
@@ -211,20 +200,6 @@ public class Superstructure {
             new Pose2d(14.1, 7.7, Rotation2d.fromDegrees(-90)), 
             3, 1
         );
-		// return Commands.run(() -> {
-        //     Pose2d pose = swerve.getEstimatorPose();
-        //     if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-        //         swerve.driveAngleCentric(
-        //             ExtendedMath.clamp(-1.5, 1.5, (1.9  - pose.getX()) * 3),
-        //             ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
-        //             Rotation2d.fromDegrees(-90));
-        //     } else {
-        //         swerve.driveAngleCentric(
-        //             ExtendedMath.clamp(-1.5, 1.5, (14.1  - pose.getX()) * 3),
-        //             ExtendedMath.clamp(-1.5, 1.5, (7.7 - pose.getY()) * 1),
-        //             Rotation2d.fromDegrees(-90));
-        //     }
-        // }, swerve);
 	}
 
     public Command driveToSubwoofer() {
@@ -253,10 +228,6 @@ public class Superstructure {
             .andThen(intake.run(Intake.HANDOFF_SPEED));
     }
 
-    public boolean gyroConnected() {
-        return swerve.gyroConnected();
-    }
-
     public Command readyAmp() {
         return telescope.extend(Telescope.AMP)
             .andThen(shooter.spinUp(Shooter.AMP_SPEED, Shooter.AMP_SPEED))
@@ -268,11 +239,6 @@ public class Superstructure {
             .andThen(telescope.extend(Telescope.SUBWOOFER))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT));
-    }
-
-    public Command groundIntake() {
-        return intake.tilt(Intake.GROUND_TILT)
-            .andThen(intake.run(Intake.PICKUP_SPEED));
     }
 
     public Command handoff() {
@@ -290,17 +256,12 @@ public class Superstructure {
             .andThen(intake.run(Intake.OFF_SPEED));
     }
 
-    public Command teleopStartIntake() {
+    public Command startIntake() {
         return shooter.pivot(Shooter.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED))
         );
-    }
-
-    public Command teleopEndIntake() {
-        return intake.tilt(Intake.STOW_TILT)
-            .andThen(intake.run(0));
     }
 
     public Command shoot() {
@@ -346,10 +307,6 @@ public class Superstructure {
             .andThen(shooter.spinUp(0, 0));
     }
 
-    public Command zeroIntake() {
-        return intake.zeroIntake(0.2);
-    }
-
     public Command climberUp() {
         return shooter.pivot(Shooter.AMP_TILT)
             .andThen(intake.tilt(Intake.GROUND_TILT))
@@ -362,5 +319,4 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(2))
             .andThen(shooter.pivot(Shooter.STOW_TILT));
     }
-
 }

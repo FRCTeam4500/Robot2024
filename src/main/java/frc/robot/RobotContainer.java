@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,12 +29,10 @@ public class RobotContainer {
 		setupAuto();
 		setupDriveController();
 		setupOperatorController();
-		
 	}
 
 	private void setupAuto() {
-		autonChooser = AutoBuilder.buildAutoChooser();
-		Shuffleboard.getTab("Display").add(autonChooser);
+		Shuffleboard.getTab("Display").add(AutoBuilder.buildAutoChooser());
 	}
 
 	private void setupDriveController() {
@@ -68,7 +65,7 @@ public class RobotContainer {
 		Trigger climberDownButton = flightSim.button(7);
 		climberUpButton.onTrue(structure.climberUp());
 		climberDownButton.onTrue(structure.climberDown());
-		intakeButton.onTrue(structure.teleopStartIntake());
+		intakeButton.onTrue(structure.startIntake());
 		intakeButton.onFalse(structure.stow());
 		shootButton.onTrue(structure.readyShoot());
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
@@ -102,6 +99,5 @@ public class RobotContainer {
 		if (autoCommand != null) {
 			autoCommand.cancel();
 		}
-		CommandScheduler.getInstance().cancelAll();
 	}
 }

@@ -6,12 +6,15 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANConstants;
 
+import org.littletonrobotics.junction.LogTable;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class Climber extends  SubsystemBase{
+public class Climber extends SubsystemBase implements LoggableInputs {
     
     private static Climber instance;
     public static synchronized Climber getInstance() //synchronized is a safety measure
@@ -50,12 +53,12 @@ public class Climber extends  SubsystemBase{
             return climbMotor.getEncoder().getPosition();
         }, null);
     }
-    
-    public void debugRun(double output)
-    {
-        climbMotor.set(output);
+
+    @Override
+    public void toLog(LogTable table) {
+        table.put("Extension", climbMotor.getEncoder().getPosition());
     }
 
-
-
+    @Override
+    public void fromLog(LogTable table) {}
 }

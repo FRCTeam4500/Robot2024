@@ -1,5 +1,8 @@
 package frc.robot.subsystems.arm;
 
+import org.littletonrobotics.junction.LogTable;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -9,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Telescope extends SubsystemBase {
+public class Telescope extends SubsystemBase implements LoggableInputs {
     private static Telescope instance;
     public static synchronized Telescope getInstance() {
         if (instance == null) instance = new Telescope();
@@ -42,4 +45,12 @@ public class Telescope extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Position", () -> extensionMotor.getSelectedSensorPosition(), null);
     }
+
+    @Override
+    public void toLog(LogTable table) {
+        table.put("Extension", extensionMotor.getSelectedSensorPosition());
+    }
+
+    @Override
+    public void fromLog(LogTable table) {}
 }

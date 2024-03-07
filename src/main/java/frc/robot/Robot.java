@@ -2,9 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.arm.Telescope;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.vision.AprilTagVision;
-import frc.robot.subsystems.vision.GamePieceVision;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -67,10 +70,12 @@ public class Robot extends LoggedRobot {
 		new Timer().schedule(
 			new TimerTask() {
 				public void run() {
-					// TODO: Change these!
 					Logger.processInputs("Swerve", Swerve.getInstance());
 					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
-					Logger.processInputs("Piece Vision", GamePieceVision.getInstance());
+					Logger.processInputs("Intake", Intake.getInstance());
+					Logger.processInputs("Shooter", Shooter.getInstance());
+					Logger.processInputs("Climber", Climber.getInstance());
+					Logger.processInputs("Telescope", Telescope.getInstance());
 				}
 			},
 			10,

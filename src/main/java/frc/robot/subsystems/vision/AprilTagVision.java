@@ -104,10 +104,6 @@ public class AprilTagVision extends SubsystemBase implements LoggableInputs {
             "Vision Robot Pose", 
             getRobotPose(new Pose2d())
         );
-        Logger.recordOutput(
-            "Relative Tag Pose",
-            getRelativeTagPose(new Pose2d())
-        );
     }
 
     @Override
