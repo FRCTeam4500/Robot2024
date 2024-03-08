@@ -72,7 +72,7 @@ public class Superstructure {
             shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
                 .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
-                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.zeroIntake().alongWith(Commands.waitSeconds(0.5)))
                 .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
                 .andThen(intake.tilt(Intake.GROUND_TILT))
                 .andThen(intake.run(Intake.PICKUP_SPEED))
@@ -213,7 +213,7 @@ public class Superstructure {
     public Command driveToFarShot() {
         return driveToPose(
             new Pose2d(2.3, 5.9, Rotation2d.fromDegrees(0)), 
-            new Pose2d(13.7, 5.9, Rotation2d.fromDegrees(180)), // 16 max
+            new Pose2d(13.7, 5.9, Rotation2d.fromDegrees(180)), // 16 max of field
             2, 3
         );
     }
@@ -226,6 +226,12 @@ public class Superstructure {
         return intake.tilt(Intake.GROUND_TILT)
             .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.run(Intake.HANDOFF_SPEED));
+    }
+
+    public Command zeroIntake() {
+        return shooter.pivot(Shooter.HANDOFF_TILT)
+        .andThen(Commands.waitSeconds(0.25))
+        .andThen(intake.zeroIntake());
     }
 
     public Command readyAmp() {
