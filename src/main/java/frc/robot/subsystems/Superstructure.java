@@ -72,7 +72,7 @@ public class Superstructure {
             shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
                 .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
-                .andThen(intake.zeroIntake().raceWith(Commands.waitSeconds(0.5)))
+                .andThen(intake.zeroIntake().raceWith(Commands.waitSeconds(0.8)))
                 .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
                 .andThen(intake.tilt(Intake.GROUND_TILT))
                 .andThen(intake.run(Intake.PICKUP_SPEED))
@@ -84,7 +84,8 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Finish Intake + Far Shot + Intake",
-            intake.tilt(Intake.HANDOFF_TILT)
+            intake.zeroIntake().raceWith(Commands.waitSeconds(1.324))
+            .andThen(intake.tilt(Intake.HANDOFF_TILT))
                 .andThen(Commands.waitSeconds(1.5))
                 .andThen(intake.run(Intake.SHOOTING_SPEED))
                 .andThen(Commands.waitSeconds(0.5))
