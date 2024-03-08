@@ -63,9 +63,9 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         );
     }
 
-    public Command zeroIntake(double output) {
+    public Command zeroIntake() {
         return Commands.run(
-            () -> tiltMotor.set(output)
+            () -> tiltMotor.set(0.2)
         ).until(() -> !limitSwitch.get()).withTimeout(2).andThen(() -> tiltMotor.set(0));
     }
 

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -40,11 +41,13 @@ public class RobotContainer {
 		xbox = new CommandXboxController(DRIVER_PORT);
 		structure.setDefaultDrive(xbox);
 
+		Trigger cancelAllButton = xbox.start();
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmp = xbox.rightTrigger();
 		Trigger alignSubwooferButton = xbox.povDown();
 		Trigger alignFarShotButton = xbox.povUp();
 
+		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
 		alignSubwooferButton.whileTrue(structure.driveToAmpShot());
@@ -82,8 +85,7 @@ public class RobotContainer {
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
 		confimHandoffButton.onTrue(structure.backOut());
-		zeroIntakeButton.onTrue(structure.zeroIntake());
-		zeroIntakeButton.onFalse(structure.stow());
+		zeroIntakeButton.whileTrue(structure.zeroIntake()).onFalse(structure.stow());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
