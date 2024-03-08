@@ -23,8 +23,8 @@ public class SwerveConstants {
     public static final double WHEEL_DIAMETER_METERS = 0.1016;
 
     /* Sensitivities */
-    public static final double MAX_FORWARD_SENSITIVITY = 5;
-    public static final double MAX_SIDEWAYS_SENSITIVITY = 5;
+    public static final double MAX_FORWARD_SENSITIVITY = 6;
+    public static final double MAX_SIDEWAYS_SENSITIVITY = 6;
     public static final double MAX_ROTATIONAL_SENSITIVITY = 3.5;
     public static final double MIN_SENSITIVITY = 0.2;
 

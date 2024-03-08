@@ -186,13 +186,13 @@ public class Superstructure {
             Pose2d pose = swerve.getEstimatorPose();
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (bluePose.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-1.5, 1.5, (bluePose.getY() - pose.getY()) * sidewaysScale),
+                    ExtendedMath.clamp(-3, 3, (bluePose.getX()  - pose.getX()) * forwardScale),
+                    ExtendedMath.clamp(-3, 3, (bluePose.getY() - pose.getY()) * sidewaysScale),
                     bluePose.getRotation());
             } else {
                 swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-1.5, 1.5, (redPose.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-1.5, 1.5, (redPose.getY() - pose.getY()) * sidewaysScale),
+                    ExtendedMath.clamp(-3, 3, (redPose.getX()  - pose.getX()) * forwardScale),
+                    ExtendedMath.clamp(-3, 3, (redPose.getY() - pose.getY()) * sidewaysScale),
                     redPose.getRotation());
             }
         }, swerve);
@@ -260,7 +260,7 @@ public class Superstructure {
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
-            .andThen(Commands.waitSeconds(1.5))
+            .andThen(Commands.waitSeconds(1))
             .andThen(shooter.load(0.25))
             .andThen(shooter.spinUp(-0.15, -0.15 ))
             .andThen(Commands.waitSeconds(0.15))
