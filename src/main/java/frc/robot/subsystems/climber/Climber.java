@@ -35,7 +35,8 @@ public class Climber extends SubsystemBase implements LoggableInputs {
     {
         climbMotor = new CANSparkMax(CANConstants.CLIMBER_ID, MotorType.kBrushless);
         climbMotor.setIdleMode(IdleMode.kBrake);
-        climbMotor.getPIDController().setP(2);
+        climbMotor.getPIDController().setP(5);
+        climbMotor.getPIDController().setOutputRange(-1, 1);
 
     }
 

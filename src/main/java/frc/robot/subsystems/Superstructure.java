@@ -227,7 +227,10 @@ public class Superstructure {
     }
 
     public Command ejectFromIntake() {
-        return intake.tilt(Intake.GROUND_TILT)
+        return 
+            shooter.pivot(Shooter.HANDOFF_TILT)
+            .andThen(Commands.waitSeconds(0.25))
+            .andThen(intake.tilt(Intake.GROUND_TILT))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.run(Intake.HANDOFF_SPEED));
     }

@@ -44,7 +44,7 @@ public class SwerveConstants {
                 .withKD(0.0001)
                 .withKV(0.12))
             .withCurrentLimits(new CurrentLimitsConfigs()
-                .withSupplyCurrentLimit(25)
+                .withSupplyCurrentLimit(35)
                 .withSupplyCurrentLimitEnable(true)
             );
 

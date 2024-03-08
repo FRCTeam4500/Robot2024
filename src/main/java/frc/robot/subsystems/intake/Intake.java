@@ -42,7 +42,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         // Wires are backwards, black is signal, white is ground
         limitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
 
-        tiltMotor.getPIDController().setOutputRange(-0.7, 0.7);
+        tiltMotor.getPIDController().setOutputRange(-0.75, 0.75);
         tiltMotor.getPIDController().setP(5);
 
         runMotor.setSmartCurrentLimit(30);
