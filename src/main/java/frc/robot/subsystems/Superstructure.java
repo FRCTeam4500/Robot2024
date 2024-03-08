@@ -71,7 +71,7 @@ public class Superstructure {
             "Subwoofer Shoot + Intake",
             shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
                 .andThen(telescope.extend(Telescope.SUBWOOFER))
-                .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
+                .andThen(shooter.pivot(Shooter.HANDOFF_TILT).alongWith(zeroIntake()))
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(shooter.pivot(Shooter.SUBWOOFER_TILT))
                 .andThen(intake.tilt(Intake.GROUND_TILT))
@@ -94,6 +94,10 @@ public class Superstructure {
         NamedCommands.registerCommand(
             "Finish Intake + Far Shot",
             intake.tilt(Intake.HANDOFF_TILT)
+                .andThen(telescope.extend(Telescope.STAGE))
+                .andThen(shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED))
+                .andThen(shooter.pivot(Shooter.STAGE_TILT))
+                .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
                 .andThen(Commands.waitSeconds(1.5))
                 .andThen(intake.run(Intake.SHOOTING_SPEED))
                 .andThen(Commands.waitSeconds(0.5))
@@ -129,6 +133,10 @@ public class Superstructure {
         debug.add(telescope);
         debug.add(shooter);
         debug.add(climber);
+    }
+
+    public Command zeroIntake() {
+        return intake.zeroIntake(0.2);
     }
 
     public Command shootWithEverything() {

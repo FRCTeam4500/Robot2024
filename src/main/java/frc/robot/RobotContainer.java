@@ -32,7 +32,8 @@ public class RobotContainer {
 	}
 
 	private void setupAuto() {
-		Shuffleboard.getTab("Display").add(AutoBuilder.buildAutoChooser());
+		autonChooser = AutoBuilder.buildAutoChooser();
+		Shuffleboard.getTab("Display").add(autonChooser);
 	}
 
 	private void setupDriveController() {
@@ -63,6 +64,7 @@ public class RobotContainer {
 		Trigger confimHandoffButton = flightSim.button(12);
 		Trigger climberUpButton = flightSim.button(8);
 		Trigger climberDownButton = flightSim.button(7);
+		Trigger zeroIntakeButton = flightSim.povDown();
 		climberUpButton.onTrue(structure.climberUp());
 		climberDownButton.onTrue(structure.climberDown());
 		intakeButton.onTrue(structure.startIntake());
@@ -80,6 +82,8 @@ public class RobotContainer {
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
 		confimHandoffButton.onTrue(structure.backOut());
+		zeroIntakeButton.onTrue(structure.zeroIntake());
+		zeroIntakeButton.onFalse(structure.stow());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
