@@ -289,7 +289,8 @@ public class Superstructure {
             .andThen(climber.extend(Climber.ZERO))
             .andThen(shooter.spinUp(Shooter.OFF_SPEED, Shooter.OFF_SPEED))
             .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
-            .andThen(Commands.waitSeconds(0.75))
+            .andThen(Commands.waitSeconds(0.25))
+            .andThen(zeroIntake())
             .andThen(shooter.pivot(Shooter.STOW_TILT))
             .andThen(Commands.waitSeconds(0.25))
             .andThen(shooter.coast());
