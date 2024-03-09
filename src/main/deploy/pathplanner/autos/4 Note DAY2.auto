@@ -44,13 +44,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Piece2 To Piece3"
+            "pathName": "Piece2 to Piece3"
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Finish Intake + Far Shot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Finish Intake + Far Shot"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Piece3 to Far Shot"
+                }
+              }
+            ]
           }
         }
       ]
