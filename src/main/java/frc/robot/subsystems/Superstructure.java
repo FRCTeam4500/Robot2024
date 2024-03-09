@@ -84,9 +84,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Finish Intake + Far Shot + Intake",
-            intake.zeroIntake().raceWith(Commands.waitSeconds(1.324))
-            .andThen(intake.tilt(Intake.HANDOFF_TILT))
-                .andThen(Commands.waitSeconds(1.5))
+            intake.zeroIntake().raceWith(Commands.waitSeconds(1.512))
                 .andThen(intake.run(Intake.SHOOTING_SPEED))
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(intake.tilt(Intake.GROUND_TILT))
