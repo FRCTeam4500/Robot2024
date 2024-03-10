@@ -35,10 +35,11 @@ public class SwerveModule {
 
 	public SwerveModuleState getModuleState() {
 		return new SwerveModuleState(
-			driveMotor.getAngularVelocity().getRadians() *
-			SwerveConstants.DRIVE_RATIO *
-			SwerveConstants.WHEEL_DIAMETER_METERS /
-			2,
+			driveMotor.getAngularVelocity()
+				.times(SwerveConstants.DRIVE_RATIO)
+				.times(Math.PI)
+				.times(SwerveConstants.WHEEL_DIAMETER_METERS)
+				.getRotations(),
 			new Rotation2d(angleMotor.getAngle().getRadians() * SwerveConstants.ANGLE_RATIO)
 		);
 	}

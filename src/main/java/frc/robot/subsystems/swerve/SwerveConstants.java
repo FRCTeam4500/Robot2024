@@ -19,7 +19,7 @@ public class SwerveConstants {
     /** Angle rotations per motor rotation */
     public static final double ANGLE_RATIO = 1/6.75;
 
-    public static final double MAX_LINEAR_SPEED_MPS = 5.0;
+    public static final double MAX_LINEAR_SPEED_MPS = 6;
     public static final double WHEEL_DIAMETER_METERS = 0.1016;
 
     /* Sensitivities */
