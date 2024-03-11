@@ -71,7 +71,7 @@ public class RobotContainer {
 		climberUpButton.onTrue(structure.climberUp());
 		climberDownButton.onTrue(structure.climberDown());
 		intakeButton.onTrue(structure.startIntake());
-		intakeButton.onFalse(structure.stow());
+		intakeButton.onFalse(structure.handoff());
 		shootButton.onTrue(structure.readyShoot());
 		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
 		farShootButton.onTrue(structure.readyFarShot());
@@ -80,7 +80,7 @@ public class RobotContainer {
 		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
 		confirmIntakeButton.onTrue(structure.confirmIntake());
 		confirmIntakeButton.onFalse(structure.offIntake());
-		ejectButton.onTrue(structure.ejectFromIntake());
+		ejectButton.onTrue(structure.ejectLoader());
 		ejectButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());

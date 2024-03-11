@@ -254,12 +254,12 @@ public class Superstructure {
     }
 
     public Command handoff() {
-        return intake.tilt(Intake.HANDOFF_TILT)
+        return intake.run(Intake.PICKUP_SPEED)
             .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
+            .andThen(intake.zeroIntake())
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
-            .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
-            .andThen(Commands.waitSeconds(1))
+            .andThen(Commands.waitSeconds(0.6))
             .andThen(shooter.load(0.25))
             .andThen(shooter.spinUp(-0.15, -0.15 ))
             .andThen(Commands.waitSeconds(0.15))
@@ -274,6 +274,13 @@ public class Superstructure {
             .andThen(intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED))
         );
+    }
+
+    public Command ejectLoader() {
+        return shooter.pivot(Shooter.HANDOFF_TILT)
+            .andThen(shooter.load(1))
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(shooter.load(0));
     }
 
     public Command shoot() {
@@ -294,7 +301,6 @@ public class Superstructure {
             .andThen(shooter.pivot(Shooter.STOW_TILT))
             .andThen(Commands.waitSeconds(0.25))
             .andThen(shooter.coast());
-            
     }
 
     public Command readyFarShot() {
