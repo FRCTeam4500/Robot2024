@@ -227,6 +227,7 @@ public class ExtendedMath {
 	/** 
 	 * @author Bennett
 	 * @author David
+	 * @deprecated <strong>Use {@link ExtendedMath#getSpeakerAngle(Translation2d) getSpeakerAngle} instead <p> </strong>
 	 * takes in current position of robot and finds angle to speaker based off our alliance
 	*/
 	public static Rotation2d getAngleToSpeaker(Pose2d currentPose) {
@@ -244,11 +245,9 @@ public class ExtendedMath {
 	}
 
 	public static Rotation2d getSpeakerAngle(Translation2d current, Alliance currentAlliance) {
-		if (currentAlliance == Alliance.Blue) {
-			return new Translation2d(0, 5.6).minus(current).getAngle().plus(Rotation2d.fromDegrees(180));
-		} else {
-			return new Translation2d(16, 5.6).minus(current).getAngle().plus(Rotation2d.fromDegrees(180));
-		}
+		return new Translation2d(
+			currentAlliance == Alliance.Blue ? 0 : 16, 5.6
+		).minus(current).getAngle().plus(Rotation2d.fromDegrees(180));
 	}
 
 	public static Rotation2d getSpeakerAngle(Translation2d current) {

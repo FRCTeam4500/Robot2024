@@ -146,7 +146,7 @@ public class Superstructure {
     }
 
     public void setDefaultDrive(CommandXboxController xbox) {
-        swerve.setDefaultCommand(xanderDriveCommand(xbox));
+        swerve.setDefaultCommand(angleCentricDrive(xbox));
     }
 
     public Command angleCentricDrive(CommandXboxController xbox) {
@@ -161,16 +161,8 @@ public class Superstructure {
         return swerve.fieldCentricDrive(xbox);
     }
 
-    public Command xanderDriveCommand(CommandXboxController xbox) {
-        return swerve.xanderDrive(xbox);
-    }
-
     public Command alignToPiece(CommandXboxController xbox) {
         return swerve.alignToPiece(xbox);
-    }
-
-    public Command driveToTag(Pose2d targetPose) {
-        return swerve.driveToTag(targetPose);
     }
 
     public Command driveToPiece() {
@@ -180,6 +172,7 @@ public class Superstructure {
     public Command alignToSpeaker(CommandXboxController xbox) {
         return swerve.rotateToSpeaker(xbox);
     }
+    
     public Command driveToPose(Pose2d bluePose, Pose2d redPose, double forwardScale, double sidewaysScale) {
         return Commands.run(() -> {
             Pose2d pose = swerve.getEstimatorPose();

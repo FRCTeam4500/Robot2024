@@ -28,8 +28,8 @@ public class Climber extends SubsystemBase implements LoggableInputs {
 
     private CANSparkMax climbMotor;
     public static final double ZERO = 0.0;
-    public static final double EXTENDED = -160;
-    public static final double RETRACTED = 40;
+    public static final double EXTENDED = -130;
+    public static final double RETRACTED = 30;
 
     private Climber()
     {
