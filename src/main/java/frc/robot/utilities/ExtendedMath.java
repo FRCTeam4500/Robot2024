@@ -243,11 +243,15 @@ public class ExtendedMath {
 			wrongAngle + Math.PI/2);
 	}
 
-	public static Rotation2d getSpeakerAngle(Translation2d current) {
-		if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+	public static Rotation2d getSpeakerAngle(Translation2d current, Alliance currentAlliance) {
+		if (currentAlliance == Alliance.Blue) {
 			return new Translation2d(0, 5.6).minus(current).getAngle().plus(Rotation2d.fromDegrees(180));
 		} else {
 			return new Translation2d(16, 5.6).minus(current).getAngle().plus(Rotation2d.fromDegrees(180));
 		}
+	}
+
+	public static Rotation2d getSpeakerAngle(Translation2d current) {
+		return getSpeakerAngle(current, DriverStation.getAlliance().orElse(Alliance.Blue));
 	}
 } 
