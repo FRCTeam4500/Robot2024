@@ -49,6 +49,7 @@ public class Superstructure {
         shooter = Shooter.getInstance();
         climber = Climber.getInstance();
         configurePathPlanner();
+        debugToShuffleboard();
     }
 
     public void configurePathPlanner() {
@@ -300,7 +301,9 @@ public class Superstructure {
         return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
             .andThen(telescope.extend(Telescope.SUBWOOFER))
             .andThen(Commands.waitSeconds(0.5))
-            .andThen(shooter.pivot(Shooter.STAGE_TILT));
+            // .andThen(shooter.pivot(Shooter.STAGE_TILT));
+            // .andThen(shooter.pivot(-3.1));
+            .andThen(shooter.pivotForSpeaker());
     }
 
     public Command confirmIntake() {

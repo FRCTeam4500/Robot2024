@@ -240,9 +240,9 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 				double angleCoefficient = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? 1 : -1;
                 if (Math.abs(xbox.getRightY()) > 0.5)
                     targetAngle = Rotation2d.fromDegrees(90 + angleCoefficient * 90 * Math.signum(-xbox.getRightY()));
-				else if (xbox.rightStick().getAsBoolean())
+				else if (xbox.getHID().getRightStickButton())
 					targetAngle = Rotation2d.fromDegrees(-90);
-				else if (xbox.leftBumper().getAsBoolean())
+				else if (xbox.getHID().getLeftBumper())
 					targetAngle = Rotation2d.fromDegrees(90);
 				else 
 					targetAngle = Rotation2d.fromDegrees(
@@ -379,6 +379,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
 		builder.addStringProperty("Drive Mode", () -> driveMode.name(), null);
         builder.addDoubleProperty("Target Angle (deg)", () -> targetAngle.getDegrees(), null);
+		builder.addDoubleProperty("Distance To Speaker", () -> getEstimatorPose().getTranslation().getDistance(new Translation2d(16, 5.6)), null);
 	}
 
 	/* HELPERS AND GETTERS */

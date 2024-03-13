@@ -1,9 +1,14 @@
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.swerve.Swerve;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -60,6 +65,14 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
             () -> tiltMotor.getPIDController().setReference(angle, ControlType.kPosition),
             this
         );
+    }
+
+    public Command pivotForSpeaker() {
+        double distance = Swerve.getInstance().getEstimatorPose().getTranslation().getDistance(new Translation2d(
+            DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
+        ));
+        // return pivot(-2.4871 * distance + 3.43399);
+        return pivot(0.718945 * Math.pow(distance, 2) - 5.39035 * distance + 5.99467);
     }
 
     public Command load(double output) {

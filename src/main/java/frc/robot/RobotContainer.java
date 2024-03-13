@@ -46,12 +46,14 @@ public class RobotContainer {
 		Trigger alignAmp = xbox.rightTrigger();
 		Trigger alignSubwooferButton = xbox.povDown();
 		Trigger alignFarShotButton = xbox.povUp();
+		Trigger alignSpeakerButton = xbox.b();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignAmp.whileTrue(structure.driveToAmp());
 		alignSubwooferButton.whileTrue(structure.driveToAmpShot());
 		alignFarShotButton.whileTrue(structure.driveToFarShot());
+		alignSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
 	}
 
 	private void setupOperatorController() {

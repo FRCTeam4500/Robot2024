@@ -58,7 +58,7 @@ public class SwerveConstants {
     public static final SwerveMotor FRONT_LEFT_ANGLE_MOTOR =
         SwerveMotor.fromSparkMax(
             new CANSparkMax(SWERVE_FRONT_LEFT_ANGLE_ID, kBrushless),
-            motor -> {}
+            motor -> motor.getPIDController().setP(0.7)
         );
     public static final Translation2d FRONT_LEFT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
@@ -74,7 +74,7 @@ public class SwerveConstants {
     public static final SwerveMotor FRONT_RIGHT_ANGLE_MOTOR =
         SwerveMotor.fromSparkMax(
             new CANSparkMax(SWERVE_FRONT_RIGHT_ANGLE_ID, kBrushless),
-            motor -> {}
+            motor -> motor.getPIDController().setP(0.8)
         );
     public static final Translation2d FRONT_RIGHT_MODULE_TRANSLATION = new Translation2d(
         0.2974,
@@ -90,7 +90,7 @@ public class SwerveConstants {
     public static final SwerveMotor BACK_LEFT_ANGLE_MOTOR =
         SwerveMotor.fromSparkMax(
             new CANSparkMax(SWERVE_BACK_LEFT_ANGLE_ID, kBrushless),
-            motor -> {}
+            motor -> motor.getPIDController().setP(0.75)
         );
     public static final Translation2d BACK_LEFT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
@@ -106,7 +106,7 @@ public class SwerveConstants {
     public static final SwerveMotor BACK_RIGHT_ANGLE_MOTOR =
         SwerveMotor.fromSparkMax(
             new CANSparkMax(SWERVE_BACK_RIGHT_ANGLE_ID, kBrushless),
-            motor -> {}
+            motor -> motor.getPIDController().setP(0.8)
         );
     public static final Translation2d BACK_RIGHT_MODULE_TRANSLATION = new Translation2d(
         -0.2974,
