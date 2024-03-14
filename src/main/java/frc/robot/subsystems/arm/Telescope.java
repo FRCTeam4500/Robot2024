@@ -30,7 +30,7 @@ public class Telescope extends SubsystemBase implements LoggableInputs {
         extensionMotor.config_kP(0, 1);
         extensionMotor.configPeakOutputForward(0.6);
         extensionMotor.configPeakOutputReverse(-0.6);
-        extensionMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, SUBWOOFER, AMP));
+        extensionMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 31, 0.1));
     }
 
     public Command extend(double extension) {
