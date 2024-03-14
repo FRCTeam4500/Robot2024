@@ -106,9 +106,9 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		SwerveModulePosition[] modulePositions = getModulePositions();
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
-		if (
-			tagVision.seesTag() &&
-			ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5))
+		if (tagVision.seesTag() &&
+			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5))
+			|| !DriverStation.isAutonomous())
 		) {	
 			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d()), Timer.getFPGATimestamp());
 		}
