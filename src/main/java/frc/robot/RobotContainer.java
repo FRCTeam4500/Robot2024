@@ -43,51 +43,50 @@ public class RobotContainer {
 
 		Trigger cancelAllButton = xbox.start();
 		Trigger resetGyroButton = xbox.a();
-		Trigger alignAmp = xbox.rightTrigger();
-		Trigger alignSubwooferButton = xbox.povDown();
+		Trigger alignAmpButton = xbox.rightTrigger();
+		Trigger alignAmpShotButton = xbox.povDown();
 		Trigger alignFarShotButton = xbox.povUp();
-		Trigger alignSpeakerButton = xbox.b();
+		Trigger faceSpeakerButton = xbox.b();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
-		alignAmp.whileTrue(structure.driveToAmp());
-		alignSubwooferButton.whileTrue(structure.driveToAmpShot());
+		alignAmpButton.whileTrue(structure.driveToAmp());
+		alignAmpShotButton.whileTrue(structure.driveToAmpShot());
 		alignFarShotButton.whileTrue(structure.driveToFarShot());
-		alignSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
+		faceSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
 	}
 
 	private void setupOperatorController() {
 		flightSim = new CommandJoystick(OPERATOR_PORT);
 		Trigger intakeButton = flightSim.button(2);
-		Trigger shootButton = flightSim.button(1);
+		Trigger subwooferShotButton = flightSim.button(1);
 		Trigger stowButton = flightSim.button(10);
-		Trigger readyAmpButton = flightSim.button(5);
-		Trigger confirmIntakeButton = flightSim.button(4);
+		Trigger ampButton = flightSim.button(5);
 		Trigger ejectButton = flightSim.button(11);
 		Trigger handoffButton = flightSim.button(6);
-		Trigger farShootButton = flightSim.button(3);
-		Trigger confimHandoffButton = flightSim.button(12);
+		Trigger variableShotButton = flightSim.button(3);
+		Trigger unstickShooterButton = flightSim.button(12);
 		Trigger climberUpButton = flightSim.button(8);
 		Trigger climberDownButton = flightSim.button(7);
 		Trigger zeroIntakeButton = flightSim.povDown();
+
 		climberUpButton.onTrue(structure.climberUp());
 		climberDownButton.onTrue(structure.climberDown());
 		intakeButton.onTrue(structure.startIntake());
 		intakeButton.onFalse(structure.handoff());
-		shootButton.onTrue(structure.readyShoot());
-		shootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		farShootButton.onTrue(structure.readyFarShot());
-		farShootButton.onFalse(structure.shoot().andThen(structure.stow()));
-		readyAmpButton.onTrue(structure.readyAmp());
-		readyAmpButton.onFalse(structure.shoot().andThen(structure.stow()));
-		confirmIntakeButton.onTrue(structure.confirmIntake());
-		confirmIntakeButton.onFalse(structure.offIntake());
+		subwooferShotButton.onTrue(structure.readySubwooferShot());
+		subwooferShotButton.onFalse(structure.shoot());
+		variableShotButton.onTrue(structure.readyVariableShot());
+		variableShotButton.onFalse(structure.shoot());
+		ampButton.onTrue(structure.readyAmp());
+		ampButton.onFalse(structure.shoot());
 		ejectButton.onTrue(structure.ejectLoader());
 		ejectButton.onFalse(structure.stow());
 		stowButton.onTrue(structure.stow());
 		handoffButton.onTrue(structure.handoff());
-		confimHandoffButton.onTrue(structure.backOut());
-		zeroIntakeButton.whileTrue(structure.zeroIntake()).onFalse(structure.stow());
+		unstickShooterButton.onTrue(structure.backOut());
+		zeroIntakeButton.whileTrue(structure.zeroIntake());
+		zeroIntakeButton.onFalse(structure.stow());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {

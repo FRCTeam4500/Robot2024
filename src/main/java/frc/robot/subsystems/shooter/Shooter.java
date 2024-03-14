@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -43,6 +44,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
     private CANSparkMax loaderMotor;
+    private InterpolatingDoubleTreeMap angleCalculator;
     private Shooter() {
         rightMotor = new CANSparkMax(SHOOTER_ONE_ID, MotorType.kBrushless);
         leftMotor = new CANSparkMax(SHOOTER_TWO_ID, MotorType.kBrushless);
@@ -58,6 +60,13 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         rightMotor.setSmartCurrentLimit(30);
         leftMotor.setSmartCurrentLimit(30);
         tiltMotor.setSmartCurrentLimit(30);
+
+        angleCalculator.put(0.94, 1.5);
+        angleCalculator.put(2.09, -2.2);
+        angleCalculator.put(1.7, -1.0);
+        angleCalculator.put(3.09, -3.75);
+        angleCalculator.put(1.37, 0.03);
+        angleCalculator.put(2.52, -3.1);
     }
 
     public Command pivot(double angle) {
@@ -68,11 +77,14 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
     }
 
     public Command pivotForSpeaker() {
-        double distance = Swerve.getInstance().getEstimatorPose().getTranslation().getDistance(new Translation2d(
-            DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
-        ));
-        // return pivot(-2.4871 * distance + 3.43399);
-        return pivot(0.718945 * Math.pow(distance, 2) - 5.39035 * distance + 5.99467);
+        return Commands.run(
+            () -> {
+                double distance = Swerve.getInstance().getEstimatorPose().getTranslation().getDistance(new Translation2d(
+                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
+                ));
+                tiltMotor.getPIDController().setReference(angleCalculator.get(distance), ControlType.kPosition);
+            }, this
+        );
     }
 
     public Command load(double output) {

@@ -240,7 +240,7 @@ public class Superstructure {
             .andThen(shooter.pivot(Shooter.AMP_TILT));
     }
 
-    public Command readyShoot() {
+    public Command readySubwooferShot() {
         return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
             .andThen(telescope.extend(Telescope.SUBWOOFER))
             .andThen(Commands.waitSeconds(0.5))
@@ -254,17 +254,13 @@ public class Superstructure {
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
             .andThen(Commands.waitSeconds(0.6))
-            .andThen(shooter.load(0.25))
-            .andThen(shooter.spinUp(-0.15, -0.15 ))
-            .andThen(Commands.waitSeconds(0.15))
-            .andThen(shooter.load(0))
-            .andThen(shooter.spinUp(0, 0))
+            .andThen(backOut())
             .andThen(intake.run(Intake.OFF_SPEED));
     }
 
     public Command startIntake() {
         return shooter.pivot(Shooter.HANDOFF_TILT)
-            .andThen(Commands.waitSeconds(0.5))
+            .andThen(Commands.waitSeconds(0.3))
             .andThen(intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED))
         );
@@ -274,13 +270,16 @@ public class Superstructure {
         return shooter.pivot(Shooter.HANDOFF_TILT)
             .andThen(shooter.load(1))
             .andThen(Commands.waitSeconds(0.5))
-            .andThen(shooter.load(0));
+            .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
+            .andThen(stow());
     }
 
     public Command shoot() {
-        return shooter.load(-1)
+        return shooter.load(Shooter.LOADER_SHOOT_SPEED)
             .andThen(Commands.waitSeconds(0.9))
-            .andThen(shooter.load(Shooter.LOADER_OFF_SPEED));
+            .andThen(shooter.load(Shooter.LOADER_OFF_SPEED))
+            .andThen(stow());
+
     }
 
     public Command stow() {
@@ -297,21 +296,11 @@ public class Superstructure {
             .andThen(shooter.coast());
     }
 
-    public Command readyFarShot() {
+    public Command readyVariableShot() {
         return shooter.spinUp(Shooter.SUBWOOFER_LEFT_SPEED, Shooter.SUBWOOFER_RIGHT_SPEED)
             .andThen(telescope.extend(Telescope.SUBWOOFER))
             .andThen(Commands.waitSeconds(0.5))
-            // .andThen(shooter.pivot(Shooter.STAGE_TILT));
-            // .andThen(shooter.pivot(-3.1));
             .andThen(shooter.pivotForSpeaker());
-    }
-
-    public Command confirmIntake() {
-        return intake.run(Intake.PICKUP_SPEED);
-    }
-
-    public Command offIntake() {
-        return intake.run(Intake.OFF_SPEED);
     }
 
     public Command backOut() {
