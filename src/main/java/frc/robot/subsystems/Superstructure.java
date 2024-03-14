@@ -124,6 +124,19 @@ public class Superstructure {
             stow()
                 .andThen(handoff())
         );
+
+        NamedCommands.registerCommand(
+            "Handoff", 
+            handoff()
+        );
+        NamedCommands.registerCommand(
+            "Ready Variable Shot",
+            readyVariableShot()
+        );
+        NamedCommands.registerCommand(
+            "Fire",
+            shoot()
+        );
     }
 
     public void debugToShuffleboard() {

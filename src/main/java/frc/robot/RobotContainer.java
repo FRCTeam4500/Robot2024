@@ -58,6 +58,7 @@ public class RobotContainer {
 
 	private void setupOperatorController() {
 		flightSim = new CommandJoystick(OPERATOR_PORT);
+		
 		Trigger shootButton = flightSim.button(1);
 		Trigger intakeButton = flightSim.button(2);
 		Trigger readyEverywhereButton = flightSim.button(3);
@@ -101,8 +102,6 @@ public class RobotContainer {
 	}
 
 	public void teleopInit() {
-		if (autoCommand != null) {
-			autoCommand.cancel();
-		}
+		if (autoCommand != null) autoCommand.cancel();
 	}
 }
