@@ -58,30 +58,30 @@ public class RobotContainer {
 
 	private void setupOperatorController() {
 		flightSim = new CommandJoystick(OPERATOR_PORT);
-		Trigger intakeButton = flightSim.button(2);
 		Trigger shootButton = flightSim.button(1);
-		Trigger stowButton = flightSim.button(10);
-		Trigger readyAmpButton = flightSim.button(5);
-		Trigger ejectButton = flightSim.button(11);
-		Trigger handoffButton = flightSim.button(6);
+		Trigger intakeButton = flightSim.button(2);
 		Trigger readyEverywhereButton = flightSim.button(3);
 		Trigger readySubwooferButton = flightSim.button(4);
-		Trigger unstickShooterButton = flightSim.button(12);
-		Trigger climberUpButton = flightSim.button(8);
+		Trigger readyAmpButton = flightSim.button(5);
+		// 6
 		Trigger climberDownButton = flightSim.button(7);
+		Trigger climberUpButton = flightSim.button(8);
+		// 9
+		Trigger stowButton = flightSim.button(10);
+		Trigger ejectButton = flightSim.button(11);
+		Trigger unstickShooterButton = flightSim.button(12);
 		Trigger zeroIntakeButton = flightSim.povDown();
 
-		climberUpButton.onTrue(structure.climberUp());
-		climberDownButton.onTrue(structure.climberDown());
+		shootButton.onTrue(structure.shoot());
 		intakeButton.onTrue(structure.startIntake());
 		intakeButton.onFalse(structure.handoff());
-		shootButton.onTrue(structure.shoot());
-		readySubwooferButton.onTrue(structure.readySubwooferShot());
 		readyEverywhereButton.onTrue(structure.readyVariableShot());
+		readySubwooferButton.onTrue(structure.readySubwooferShot());
 		readyAmpButton.onTrue(structure.readyAmp());
-		ejectButton.onTrue(structure.ejectLoader());
-		ejectButton.onFalse(structure.stow());
+		climberDownButton.onTrue(structure.climberDown());
+		climberUpButton.onTrue(structure.climberUp());
 		stowButton.onTrue(structure.stow());
+		ejectButton.onTrue(structure.ejectLoader());
 		unstickShooterButton.onTrue(structure.backOut());
 		zeroIntakeButton.whileTrue(structure.zeroIntake());
 		zeroIntakeButton.onFalse(structure.stow());
