@@ -61,6 +61,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         leftMotor.setSmartCurrentLimit(30);
         tiltMotor.setSmartCurrentLimit(30);
 
+        angleCalculator = new InterpolatingDoubleTreeMap();
         angleCalculator.put(0.94, 1.5);
         angleCalculator.put(2.09, -2.2);
         angleCalculator.put(1.7, -1.0);

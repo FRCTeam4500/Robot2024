@@ -249,7 +249,7 @@ public class ExtendedMath {
 			currentAlliance == Alliance.Blue ? 0 : 16, 5.6
 		).minus(current).getAngle().plus(Rotation2d.fromDegrees(180)).plus(
 			Rotation2d.fromDegrees(
-				currentAlliance == Alliance.Blue ? -10 : 10
+				currentAlliance == Alliance.Blue ? -8.5 : 8.5
 			)
 		);
 	}
