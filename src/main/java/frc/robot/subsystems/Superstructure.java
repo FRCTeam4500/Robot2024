@@ -79,6 +79,7 @@ public class Superstructure {
                 .andThen(intake.run(Intake.PICKUP_SPEED))
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
+                .andThen(intake.coast())
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(telescope.extend(Telescope.STAGE))
                 .andThen(shooter.pivot(Shooter.STAGE_TILT))
@@ -90,6 +91,8 @@ public class Superstructure {
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(intake.tilt(Intake.GROUND_TILT))
                 .andThen(intake.run(Intake.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.25))
+                .andThen(intake.coast())
         );
         NamedCommands.registerCommand(
             "Finish Intake + Far Shot",
@@ -266,7 +269,7 @@ public class Superstructure {
             .andThen(intake.zeroIntake())
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
-            .andThen(Commands.waitSeconds(0.6))
+            .andThen(Commands.waitSeconds(0.75))
             .andThen(backOut())
             .andThen(intake.run(Intake.OFF_SPEED));
     }
@@ -276,6 +279,8 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(0.3))
             .andThen(intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED))
+            .andThen(Commands.waitSeconds(0.25))
+            .andThen(intake.coast())
         );
     }
 
@@ -319,7 +324,7 @@ public class Superstructure {
     public Command backOut() {
         return shooter.load(0.25)
             .andThen(shooter.spinUp(-0.15, -0.15 ))
-            .andThen(Commands.waitSeconds(0.15))
+            .andThen(Commands.waitSeconds(0.1))
             .andThen(shooter.load(0))
             .andThen(shooter.spinUp(0, 0));
     }

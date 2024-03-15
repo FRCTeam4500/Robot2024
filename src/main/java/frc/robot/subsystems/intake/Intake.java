@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         return instance;
     }
 
-    public static final double GROUND_TILT = -55;
+    public static final double GROUND_TILT = -45;
     public static final double STOW_TILT = 0;
     public static final double HANDOFF_TILT = 0;
     public static final double AMP_TILT = -10;
