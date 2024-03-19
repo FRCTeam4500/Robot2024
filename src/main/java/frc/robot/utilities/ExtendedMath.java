@@ -225,10 +225,10 @@ public class ExtendedMath {
 			&& within(a.omegaRadiansPerSecond, b.omegaRadiansPerSecond, threshold.omegaRadiansPerSecond);
 	}
 	/** 
+	 * takes in current position of robot and finds angle to speaker based off our alliance
 	 * @author Bennett
 	 * @author David
 	 * @deprecated <strong>Use {@link ExtendedMath#getSpeakerAngle(Translation2d) getSpeakerAngle} instead <p> </strong>
-	 * takes in current position of robot and finds angle to speaker based off our alliance
 	*/
 	public static Rotation2d getAngleToSpeaker(Pose2d currentPose) {
 		if (currentPose.getY() == 5.6)  return Rotation2d.fromDegrees(180);
@@ -249,7 +249,7 @@ public class ExtendedMath {
 			currentAlliance == Alliance.Blue ? 0 : 16, 5.6
 		).minus(current).getAngle().plus(Rotation2d.fromDegrees(180)).plus(
 			Rotation2d.fromDegrees(
-				currentAlliance == Alliance.Blue ? -7 : 7
+				currentAlliance == Alliance.Blue ? -7 : 7 // Our shooter doesn't shoot straight
 			)
 		);
 	}
