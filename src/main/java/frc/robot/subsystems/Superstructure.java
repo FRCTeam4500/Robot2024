@@ -14,6 +14,7 @@ import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.utilities.ExtendedMath;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
@@ -149,6 +150,7 @@ public class Superstructure {
         debug.add(telescope);
         debug.add(shooter);
         debug.add(climber);
+        debug.add(AprilTagVision.getInstance());
     }
 
     public Command shootWithEverything() {
@@ -266,10 +268,11 @@ public class Superstructure {
     public Command handoff() {
         return intake.run(Intake.PICKUP_SPEED)
             .andThen(shooter.pivot(Shooter.HANDOFF_TILT))
+            .andThen(telescope.extend(Telescope.HANDOFF))
             .andThen(intake.zeroIntake())
             .andThen(shooter.load(Shooter.LOADER_HANDOFF_SPEED))
             .andThen(intake.run(Intake.HANDOFF_SPEED))
-            .andThen(Commands.waitSeconds(0.75))
+            .andThen(Commands.waitSeconds(0.5))
             .andThen(backOut())
             .andThen(intake.run(Intake.OFF_SPEED));
     }
@@ -279,8 +282,8 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(0.3))
             .andThen(intake.tilt(Intake.GROUND_TILT)
             .andThen(intake.run(Intake.PICKUP_SPEED))
-            .andThen(Commands.waitSeconds(0.25))
-            .andThen(intake.coast())
+            // .andThen(Commands.waitSeconds(0.35))
+            // .andThen(intake.coast())
         );
     }
 
@@ -324,7 +327,7 @@ public class Superstructure {
     public Command backOut() {
         return shooter.load(0.25)
             .andThen(shooter.spinUp(-0.15, -0.15 ))
-            .andThen(Commands.waitSeconds(0.1))
+            .andThen(Commands.waitSeconds(0.125))
             .andThen(shooter.load(0))
             .andThen(shooter.spinUp(0, 0));
     }

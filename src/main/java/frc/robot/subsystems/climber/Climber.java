@@ -37,7 +37,6 @@ public class Climber extends SubsystemBase implements LoggableInputs {
         climbMotor.setIdleMode(IdleMode.kBrake);
         climbMotor.getPIDController().setP(5);
         climbMotor.getPIDController().setOutputRange(-1, 1);
-
     }
 
     public Command extend(double extension)

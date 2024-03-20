@@ -113,5 +113,6 @@ public class AprilTagVision extends SubsystemBase implements LoggableInputs {
     public void initSendable(SendableBuilder builder) {
         builder.addBooleanProperty("Sees Tag", () -> seesTag(), null);
         builder.addIntegerProperty("Target Tag", () -> getTagId(0), null);
+        builder.addDoubleProperty("X Pose", () -> getRobotPose(new Pose2d()).getX(), null);
     }
 }

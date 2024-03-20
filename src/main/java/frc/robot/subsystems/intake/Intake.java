@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         return instance;
     }
 
-    public static final double GROUND_TILT = -45;
+    public static final double GROUND_TILT = -55;
     public static final double STOW_TILT = 0;
     public static final double HANDOFF_TILT = 0;
     public static final double AMP_TILT = -10;
@@ -45,10 +45,10 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         tiltMotor.getPIDController().setOutputRange(-0.75, 0.75);
         tiltMotor.getPIDController().setP(5);
 
-        runMotor.setSmartCurrentLimit(30);
-        tiltMotor.setSmartCurrentLimit(30);
-
         tiltMotor.getEncoder().setPosition(0);
+
+        tiltMotor.setSmartCurrentLimit(30);
+        runMotor.setSmartCurrentLimit(30);
     }
 
     @Override

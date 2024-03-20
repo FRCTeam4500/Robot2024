@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swerve;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -106,9 +107,10 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		SwerveModulePosition[] modulePositions = getModulePositions();
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
+		double dist = tagVision.getRelativeTagPose(new Pose2d(100, 100, gyroAngle)).getTranslation().getNorm();
 		if (tagVision.seesTag() &&
 			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5))
-			|| !DriverStation.isAutonomous())
+			|| !DriverStation.isAutonomous()) && dist < 4
 		) {	
 			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d()), Timer.getFPGATimestamp());
 		}

@@ -36,7 +36,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
     public static final double SUBWOOFER_RIGHT_SPEED = 1;
     public static final double AMP_SPEED = 0.5;
     public static final double OFF_SPEED = 0;
-    public static final double LOADER_HANDOFF_SPEED = -0.2;
+    public static final double LOADER_HANDOFF_SPEED = -0.75;
     public static final double LOADER_SHOOT_SPEED = -1;
     public static final double LOADER_OFF_SPEED = 0;
     
@@ -60,18 +60,17 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         rightMotor.setSmartCurrentLimit(30);
         leftMotor.setSmartCurrentLimit(30);
         tiltMotor.setSmartCurrentLimit(30);
+        loaderMotor.setSmartCurrentLimit(40);
 
         angleCalculator = new InterpolatingDoubleTreeMap();
         angleCalculator.put(1.37, 1.25);
-        angleCalculator.put(1.5, 0.75);
-        angleCalculator.put(1.86, 0.0);
-        angleCalculator.put(2.14, -0.75);
-        angleCalculator.put(2.50, -2.0);
-        angleCalculator.put(2.79, -2.45);
-        // angleCalculator.put(1.7, -1.0);
-        // angleCalculator.put(2.09, -2.2);
-        // angleCalculator.put(2.67, -3.6);
-        angleCalculator.put(3.09, -3.7);
+        angleCalculator.put(1.74, -0.25);
+        angleCalculator.put(2.14, -2.25);
+        angleCalculator.put(2.8, -3.25);
+        // angleCalculator
+        angleCalculator.put(3.25, -3.75);
+        angleCalculator.put(3.75, -4.25);
+        angleCalculator.put(4.4, -4.6);
 
     }
 
