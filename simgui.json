@@ -14,6 +14,7 @@
       "/Shuffleboard/Display/SendableChooser[0]": "String Chooser",
       "/Shuffleboard/Hi/InstantCommand": "Command",
       "/Shuffleboard/Hi/PrintCommand": "Command",
+      "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Telescope Down": "Command",
       "/SmartDashboard/Telescope Up": "Command"
     }

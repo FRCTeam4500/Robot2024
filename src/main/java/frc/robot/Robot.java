@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.shooter.ShooterIO;
-import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.telescope.TelescopeIO;
 import frc.robot.subsystems.vision.AprilTagVision;
 
@@ -70,7 +70,7 @@ public class Robot extends LoggedRobot {
 		new Timer().schedule(
 			new TimerTask() {
 				public void run() {
-					Logger.processInputs("Swerve", Swerve.getInstance());
+					Logger.processInputs("Swerve", SwerveIO.getInstance());
 					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
 					Logger.processInputs("Intake", IntakeIO.getInstance());
 					Logger.processInputs("Shooter", ShooterIO.getInstance());

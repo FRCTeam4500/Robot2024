@@ -1,4 +1,4 @@
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.real;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -18,21 +18,20 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.hardware.NavX;
-import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
+import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.swerve.real.SwerveConstants.DriveMode;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.GamePieceVision;
 import frc.robot.utilities.ExtendedMath;
 
-import static frc.robot.subsystems.swerve.SwerveConstants.*;
+import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class Swerve extends SubsystemBase implements LoggableInputs {
+public class Swerve extends SwerveIO {
 
 	private static Swerve instance;
 	public static synchronized Swerve getInstance() {
@@ -51,7 +50,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
     private Rotation2d targetAngle;
     private DriveMode driveMode;
 
-	protected Swerve() {
+	public Swerve() {
 		anglePID = new PIDController(5, 0, 0);
 		anglePID.enableContinuousInput(-Math.PI, Math.PI);
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
@@ -230,6 +229,23 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 
 	/* COMMANDS */
 
+	public Command poseCentricDrive(Pose2d red, Pose2d blue, double forwardScale, double sidewaysScale) {
+		return Commands.run(() -> {
+            Pose2d pose = getEstimatedPose();
+            if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+                driveAngleCentric(
+                    ExtendedMath.clamp(-3, 3, (blue.getX()  - pose.getX()) * forwardScale),
+                    ExtendedMath.clamp(-3, 3, (blue.getY() - pose.getY()) * sidewaysScale),
+                    blue.getRotation());
+            } else {
+                driveAngleCentric(
+                    ExtendedMath.clamp(-3, 3, (red.getX()  - pose.getX()) * forwardScale),
+                    ExtendedMath.clamp(-3, 3, (red.getY() - pose.getY()) * sidewaysScale),
+                    red.getRotation());
+            }
+        }, this);
+	}
+
 	public Command fieldCentricDrive(CommandXboxController xbox) {
 		return Commands.run(
 			() -> {
@@ -339,7 +355,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
      * @author Bennett
      * @author David
      */
-    public Command rotateToSpeaker(CommandXboxController xbox) {
+    public Command speakerCentricDrive(CommandXboxController xbox) {
         return Commands.run(() -> {
                 double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
@@ -348,7 +364,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 driveAngleCentric(
                     -xbox.getLeftY() * forwardSens,
                     -xbox.getLeftX() * sidewaysSens,
-                    ExtendedMath.getSpeakerAngle(getEstimatorPose().getTranslation())
+                    ExtendedMath.getSpeakerAngle(getEstimatedPose().getTranslation())
                 );
             }, this
         );
@@ -377,7 +393,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		);
 		Logger.recordOutput(
 			"Estimated Pose",
-			getEstimatorPose()
+			getEstimatedPose()
 		);
 		Logger.recordOutput(
 			"Module States",
@@ -397,7 +413,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
 		builder.addStringProperty("Drive Mode", () -> driveMode.name(), null);
         builder.addDoubleProperty("Target Angle (deg)", () -> targetAngle.getDegrees(), null);
-		builder.addDoubleProperty("Distance To Speaker", () -> getEstimatorPose().getTranslation().getDistance(new Translation2d(
+		builder.addDoubleProperty("Distance To Speaker", () -> getEstimatedPose().getTranslation().getDistance(new Translation2d(
 			DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.6)), null);
 	}
 
@@ -422,7 +438,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		return kinematics.toChassisSpeeds(getModuleStates());
 	}
 
-	public Pose2d getEstimatorPose() {
+	public Pose2d getEstimatedPose() {
 		return poseEstimator.getEstimatedPosition();
 	}
 

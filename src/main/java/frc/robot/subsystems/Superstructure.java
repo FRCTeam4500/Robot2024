@@ -12,12 +12,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.shooter.ShooterIO;
-import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.telescope.TelescopeIO;
 import frc.robot.subsystems.vision.AprilTagVision;
-import frc.robot.utilities.ExtendedMath;
-
-import static frc.robot.subsystems.swerve.SwerveConstants.*;
+import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -37,14 +35,14 @@ public class Superstructure {
         return instance;
     }
 
-    private Swerve swerve;
+    private SwerveIO swerve;
     private IntakeIO intake;
     private TelescopeIO telescope;
     private ShooterIO shooter;
     private ClimberIO climber;
 
     public Superstructure() {
-        swerve = Swerve.getInstance();
+        swerve = SwerveIO.getInstance();
         intake = IntakeIO.getInstance();
         telescope = TelescopeIO.getInstance();
         shooter = ShooterIO.getInstance();
@@ -55,7 +53,7 @@ public class Superstructure {
 
     public void configurePathPlanner() {
         AutoBuilder.configureHolonomic(
-            swerve::getEstimatorPose,
+            swerve::getEstimatedPose,
             swerve::resetPose,
             swerve::getChassisSpeeds,
             swerve::driveRobotCentric,
@@ -170,41 +168,12 @@ public class Superstructure {
         return swerve.angleCentricDrive(xbox);
     }
 
-    public Command robotCentricDrive(CommandXboxController xbox) {
-        return swerve.robotCentricDrive(xbox);
-    }
-
-    public Command fieldCentricDrive(CommandXboxController xbox) {
-        return swerve.fieldCentricDrive(xbox);
-    }
-
-    public Command alignToPiece(CommandXboxController xbox) {
-        return swerve.alignToPiece(xbox);
-    }
-
-    public Command driveToPiece() {
-        return swerve.driveToPiece();
-    }
-
     public Command alignToSpeaker(CommandXboxController xbox) {
-        return swerve.rotateToSpeaker(xbox);
+        return swerve.speakerCentricDrive(xbox);
     }
     
     public Command driveToPose(Pose2d bluePose, Pose2d redPose, double forwardScale, double sidewaysScale) {
-        return Commands.run(() -> {
-            Pose2d pose = swerve.getEstimatorPose();
-            if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-                swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-3, 3, (bluePose.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-3, 3, (bluePose.getY() - pose.getY()) * sidewaysScale),
-                    bluePose.getRotation());
-            } else {
-                swerve.driveAngleCentric(
-                    ExtendedMath.clamp(-3, 3, (redPose.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-3, 3, (redPose.getY() - pose.getY()) * sidewaysScale),
-                    redPose.getRotation());
-            }
-        }, swerve);
+        return swerve.poseCentricDrive(redPose, bluePose, forwardScale, sidewaysScale);
     }
 
     public Command driveToAmp() {
