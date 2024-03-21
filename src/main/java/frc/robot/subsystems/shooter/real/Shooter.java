@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.shooter.real;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.Swerve;
 
 import com.revrobotics.CANSparkMax;
@@ -18,15 +18,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import static frc.robot.CANConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class Shooter extends SubsystemBase implements LoggableInputs {
-    private static Shooter instance;
-    public static synchronized Shooter getInstance() {
-        if (instance == null) instance = new Shooter();
-        return instance;
-    }
-
+public class Shooter extends ShooterIO {
     public static final double AMP_TILT = -16.3;//-18;
     public static final double HANDOFF_TILT = -7;//-7;
     public static final double SUBWOOFER_TILT = 1.5;//1;
@@ -45,7 +38,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
     private CANSparkMax rightMotor;
     private CANSparkMax loaderMotor;
     private InterpolatingDoubleTreeMap angleCalculator;
-    private Shooter() {
+    public Shooter() {
         rightMotor = new CANSparkMax(SHOOTER_ONE_ID, MotorType.kBrushless);
         leftMotor = new CANSparkMax(SHOOTER_TWO_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(SHOOTER_PIVOT_ID, MotorType.kBrushless);
@@ -67,7 +60,6 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         angleCalculator.put(1.74, -0.25);
         angleCalculator.put(2.14, -2.25);
         angleCalculator.put(2.8, -3.25);
-        // angleCalculator
         angleCalculator.put(3.25, -3.75);
         angleCalculator.put(3.75, -4.25);
         angleCalculator.put(4.4, -4.6);
@@ -81,7 +73,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         );
     }
 
-    public Command pivotForSpeaker() {
+    public Command autoPivot() {
         return Commands.run(
             () -> {
                 double distance = Swerve.getInstance().getEstimatorPose().getTranslation().getDistance(new Translation2d(
@@ -105,10 +97,6 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
                 rightMotor.set(right);
             }, this
         );
-    }
-
-    public Command off() {
-        return spinUp(0, 0);
     }
 
     public Command coast() {

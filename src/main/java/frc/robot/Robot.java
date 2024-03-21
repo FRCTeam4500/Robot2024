@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.intake.IntakeIO;
-import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.telescope.TelescopeIO;
 import frc.robot.subsystems.vision.AprilTagVision;
@@ -73,7 +73,7 @@ public class Robot extends LoggedRobot {
 					Logger.processInputs("Swerve", Swerve.getInstance());
 					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
 					Logger.processInputs("Intake", IntakeIO.getInstance());
-					Logger.processInputs("Shooter", Shooter.getInstance());
+					Logger.processInputs("Shooter", ShooterIO.getInstance());
 					Logger.processInputs("Climber", ClimberIO.getInstance());
 					Logger.processInputs("Telescope", TelescopeIO.getInstance());
 				}
