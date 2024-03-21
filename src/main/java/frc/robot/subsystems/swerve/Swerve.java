@@ -1,6 +1,5 @@
 package frc.robot.subsystems.swerve;
 
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,10 +10,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -95,6 +96,21 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		);
 		targetAngle = getRobotAngle();
         driveMode = DriveMode.AngleCentric;
+		Shuffleboard.getTab("Debug").add("Swerve Drive",new Sendable() {
+			@Override
+			public void initSendable(SendableBuilder builder) {
+				builder.setSmartDashboardType("SwerveDrive");
+				builder.addDoubleProperty("Front Left Angle", () -> getModuleStates()[0].angle.getDegrees(), null);
+				builder.addDoubleProperty("Front Left Velocity", () -> getModuleStates()[0].speedMetersPerSecond, null);
+				builder.addDoubleProperty("Front Right Angle", () -> getModuleStates()[1].angle.getDegrees(), null);
+				builder.addDoubleProperty("Front Right Velocity", () -> getModuleStates()[1].speedMetersPerSecond, null);
+				builder.addDoubleProperty("Back Left Angle", () -> getModuleStates()[2].angle.getDegrees(), null);
+				builder.addDoubleProperty("Back Left Velocity", () -> getModuleStates()[2].speedMetersPerSecond, null);
+				builder.addDoubleProperty("Back Right Angle", () -> getModuleStates()[3].angle.getDegrees(), null);
+				builder.addDoubleProperty("Back Right Velocity", () -> getModuleStates()[3].speedMetersPerSecond, null);
+				builder.addDoubleProperty("Robot Angle", () -> getRobotAngle().getDegrees(), null);
+			}
+		});
 	}
 
 	public boolean gyroConnected() {

@@ -1,7 +1,7 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "SPARK MAX [5]": {
+      "Talon FX (v6)[4]/Rotor Sensor": {
         "header": {
           "open": true
         }
@@ -10,7 +10,10 @@
   },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Display/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/Hi/InstantCommand": "Command",
+      "/Shuffleboard/Hi/PrintCommand": "Command"
     }
   },
   "NetworkTables": {
@@ -23,6 +26,9 @@
     }
   },
   "NetworkTables Info": {
+    "Server": {
+      "open": true
+    },
     "visible": true
   }
 }

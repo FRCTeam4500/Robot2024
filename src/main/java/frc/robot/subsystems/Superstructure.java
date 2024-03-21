@@ -16,7 +16,6 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.utilities.ExtendedMath;
-
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -80,7 +79,6 @@ public class Superstructure {
                 .andThen(intake.run(Intake.PICKUP_SPEED))
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(shooter.load(Shooter.LOADER_SHOOT_SPEED))
-                .andThen(intake.coast())
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(telescope.extend(Telescope.STAGE))
                 .andThen(shooter.pivot(Shooter.STAGE_TILT))
@@ -93,7 +91,6 @@ public class Superstructure {
                 .andThen(intake.tilt(Intake.GROUND_TILT))
                 .andThen(intake.run(Intake.PICKUP_SPEED))
                 .andThen(Commands.waitSeconds(0.25))
-                .andThen(intake.coast())
         );
         NamedCommands.registerCommand(
             "Finish Intake + Far Shot",
