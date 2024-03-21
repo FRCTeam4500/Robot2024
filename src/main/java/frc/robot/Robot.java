@@ -2,11 +2,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.arm.Telescope;
-import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.real.Climber;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.telescope.TelescopeIO;
 import frc.robot.subsystems.vision.AprilTagVision;
 
 import java.util.Timer;
@@ -75,7 +75,7 @@ public class Robot extends LoggedRobot {
 					Logger.processInputs("Intake", Intake.getInstance());
 					Logger.processInputs("Shooter", Shooter.getInstance());
 					Logger.processInputs("Climber", Climber.getInstance());
-					Logger.processInputs("Telescope", Telescope.getInstance());
+					Logger.processInputs("Telescope", TelescopeIO.getInstance());
 				}
 			},
 			10,

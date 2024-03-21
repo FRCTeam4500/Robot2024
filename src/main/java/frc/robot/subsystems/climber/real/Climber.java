@@ -1,4 +1,4 @@
-package frc.robot.subsystems.climber;
+package frc.robot.subsystems.climber.real;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;

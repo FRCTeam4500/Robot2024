@@ -13,7 +13,9 @@
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Display/SendableChooser[0]": "String Chooser",
       "/Shuffleboard/Hi/InstantCommand": "Command",
-      "/Shuffleboard/Hi/PrintCommand": "Command"
+      "/Shuffleboard/Hi/PrintCommand": "Command",
+      "/SmartDashboard/Telescope Down": "Command",
+      "/SmartDashboard/Telescope Up": "Command"
     }
   },
   "NetworkTables": {
@@ -22,6 +24,15 @@
         "Swerve": {
           "open": true
         }
+      },
+      "Shuffleboard": {
+        "Debug": {
+          "TelescopeSim": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
       }
     }
   },
