@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.swerve.SwerveIO;
 
 public class ShooterSim extends ShooterIO {
     private double currentTilt;
@@ -39,7 +40,7 @@ public class ShooterSim extends ShooterIO {
 
     public Command autoPivot() {
         return Commands.run(() -> {
-            Translation2d current = new Translation2d();
+            Translation2d current = SwerveIO.getInstance().getEstimatedPose().getTranslation();
             Translation2d speaker = new Translation2d(16, 5.6);
             if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
                 speaker = new Translation2d(0, 5.6);

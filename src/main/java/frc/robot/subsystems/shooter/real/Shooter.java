@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.shooter.ShooterIO;
-import frc.robot.subsystems.swerve.real.Swerve;
+import frc.robot.subsystems.swerve.SwerveIO;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -76,7 +76,7 @@ public class Shooter extends ShooterIO {
     public Command autoPivot() {
         return Commands.run(
             () -> {
-                double distance = Swerve.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
+                double distance = SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
                     DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
                 ));
                 tiltMotor.getPIDController().setReference(angleCalculator.get(distance), ControlType.kPosition);
