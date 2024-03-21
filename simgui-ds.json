@@ -16,13 +16,21 @@
           "keyRate": 0.009999999776482582
         }
       ],
-      "axisCount": 6,
-      "buttonCount": 4,
+      "axisCount": 3,
+      "buttonCount": 12,
       "buttonKeys": [
-        90,
-        88,
-        67,
-        86
+        49,
+        50,
+        51,
+        52,
+        53,
+        -1,
+        55,
+        56,
+        -1,
+        48,
+        45,
+        61
       ],
       "povConfig": [
         {

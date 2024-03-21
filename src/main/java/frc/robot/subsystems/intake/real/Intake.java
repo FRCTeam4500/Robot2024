@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake;
+package frc.robot.subsystems.intake.real;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -8,29 +8,18 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.intake.IntakeIO;
 
 import static frc.robot.CANConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class Intake extends SubsystemBase implements LoggableInputs {
+public class Intake extends IntakeIO {
     private static Intake instance;
     public static synchronized Intake getInstance() {
         if (instance == null) instance = new Intake();
         return instance;
     }
-
-    public static final double GROUND_TILT = -55;
-    public static final double STOW_TILT = 0;
-    public static final double HANDOFF_TILT = 0;
-    public static final double AMP_TILT = -10;
-    public static final double PICKUP_SPEED = 0.5;
-    public static final double OFF_SPEED = 0;
-    public static final double HANDOFF_SPEED = -1;
-    public static final double SHOOTING_SPEED = -1;
-    public static final double AMP_SPEED = -1;
 
     private CANSparkMax tiltMotor;
     private CANSparkMax runMotor;
@@ -65,7 +54,7 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         );
     }
 
-    public Command zeroIntake() {
+    public Command zero() {
         return Commands.run(
             () -> tiltMotor.set(0.6)
         ).until(() -> !limitSwitch.get()).withTimeout(2).andThen(() -> tiltMotor.set(0));
@@ -75,14 +64,6 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         return Commands.runOnce(
             () -> runMotor.set(output)
         );
-    }
-
-    public Command reset() {
-        return Commands.runOnce(() -> tiltMotor.getEncoder().setPosition(0));
-    }
-
-    public Command coast() {
-        return Commands.runOnce(() -> tiltMotor.set(0));
     }
 
     @Override

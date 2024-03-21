@@ -16,10 +16,10 @@ public abstract class TelescopeIO extends SubsystemBase implements LoggableInput
         if (instance == null && !RobotBase.isReal()) instance = new TelescopeSim();
         return instance;
     }
-    public static final double AMP_EXTENSION = 3000;
-    public static final double SHOOTING_EXTENSION = 3500;
-    public static final double AUTO_EXTENSION = 3000;
-    public static final double HANDOFF_EXTENSION = 400;
+    public static final double AMP = 3000;
+    public static final double SHOOTING = 3500;
+    public static final double AUTO = 3000;
+    public static final double HANDOFF = 400;
     public abstract Command extend(double extension);
     public abstract Command coast();
     public abstract void initSendable(SendableBuilder builder);
