@@ -15,7 +15,8 @@ import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.telescope.TelescopeIO;
-import frc.robot.subsystems.vision.AprilTagVision;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO;
+import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
@@ -67,7 +68,7 @@ public class Superstructure {
                 new PIDConstants(5.0),
                 MAX_LINEAR_SPEED_MPS,
                 0.39878808909,
-                new ReplanningConfig()
+                new ReplanningConfig(true, true)
             ),
             () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
             swerve
@@ -151,7 +152,7 @@ public class Superstructure {
         debug.add(telescope);
         debug.add(shooter);
         debug.add(climber);
-        debug.add(AprilTagVision.getInstance());
+        debug.add(AprilTagVisionIO.getInstance());
     }
 
     public Command shootWithEverything() {

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -40,7 +41,7 @@ public class RobotContainer {
 	private void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
 		structure.setDefaultDrive(xbox);
-
+		
 		Trigger cancelAllButton = xbox.start();
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmpButton = xbox.rightTrigger();
