@@ -16,8 +16,6 @@ import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.telescope.TelescopeIO;
 import frc.robot.subsystems.tagVision.AprilTagVisionIO;
-import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
-
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;

@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.hardware.NavX;
 import frc.robot.subsystems.swerve.SwerveIO;
-import frc.robot.subsystems.swerve.real.SwerveConstants.DriveMode;
+import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
 import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 import frc.robot.subsystems.pieceVision.GamePieceVisionIO;
 import frc.robot.utilities.ExtendedMath;
