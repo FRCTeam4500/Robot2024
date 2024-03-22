@@ -7,7 +7,7 @@ import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.telescope.TelescopeIO;
-import frc.robot.subsystems.vision.AprilTagVision;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -71,7 +71,7 @@ public class Robot extends LoggedRobot {
 			new TimerTask() {
 				public void run() {
 					Logger.processInputs("Swerve", SwerveIO.getInstance());
-					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
+					Logger.processInputs("Tag Vision", AprilTagVisionIO.getInstance());
 					Logger.processInputs("Intake", IntakeIO.getInstance());
 					Logger.processInputs("Shooter", ShooterIO.getInstance());
 					Logger.processInputs("Climber", ClimberIO.getInstance());

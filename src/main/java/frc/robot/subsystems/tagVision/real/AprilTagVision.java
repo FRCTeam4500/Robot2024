@@ -1,19 +1,17 @@
-package frc.robot.subsystems.vision;
+package frc.robot.subsystems.tagVision.real;
 
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.Limelight;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
-public class AprilTagVision extends SubsystemBase implements LoggableInputs {
+public class AprilTagVision extends AprilTagVisionIO {
     private static AprilTagVision instance;
     public static synchronized AprilTagVision getInstance() {
         if (instance == null) instance = new AprilTagVision();
