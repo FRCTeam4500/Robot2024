@@ -1,10 +1,11 @@
 package frc.robot.subsystems.swerve.sim;
 
+import static frc.robot.subsystems.swerve.SwerveConstants.*;
+
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,8 +25,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.utilities.ExtendedMath;
-
-import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
 
 public class SwerveSim extends SwerveIO {
     private Pose2d currentPose;
@@ -84,7 +83,7 @@ public class SwerveSim extends SwerveIO {
     public void toLog(LogTable table) {
         Logger.recordOutput("Module States", getModuleStates());
         Logger.recordOutput("Estimated Pose", getEstimatedPose());
-        Logger.recordOutput("Current Speedes", getChassisSpeeds());
+        Logger.recordOutput("Current Speeds", getChassisSpeeds());
     }
 
     @Override
@@ -136,7 +135,7 @@ public class SwerveSim extends SwerveIO {
 
     @Override
     public Command poseCentricDrive(Pose2d target) {
-        return AutoBuilder.pathfindToPoseFlipped(target, new PathConstraints(4, 3, 540, 720));
+        return AutoBuilder.pathfindToPoseFlipped(target, TELEOP_CONSTRAINTS);
 	}
 
     @Override

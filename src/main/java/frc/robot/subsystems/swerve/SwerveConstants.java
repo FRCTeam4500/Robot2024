@@ -1,12 +1,14 @@
-package frc.robot.subsystems.swerve.real;
+package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.subsystems.swerve.real.SwerveMotor;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.CANSparkMax;
 
 import static frc.robot.CANConstants.*;
@@ -21,6 +23,10 @@ public class SwerveConstants {
 
     public static final double MAX_LINEAR_SPEED_MPS = 6;
     public static final double WHEEL_DIAMETER_METERS = 0.1016;
+
+    public static final PathConstraints TELEOP_CONSTRAINTS = new PathConstraints(
+        4, 3, 540, 720
+    );
 
     /* Sensitivities */
     public static final double MAX_FORWARD_SENSITIVITY = 6;

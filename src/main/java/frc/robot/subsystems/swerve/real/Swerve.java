@@ -21,18 +21,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.hardware.NavX;
 import frc.robot.subsystems.swerve.SwerveIO;
-import frc.robot.subsystems.swerve.real.SwerveConstants.DriveMode;
+import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.GamePieceVision;
 import frc.robot.utilities.ExtendedMath;
 
-import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
+import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathConstraints;
 
 public class Swerve extends SwerveIO {
 
@@ -233,7 +232,7 @@ public class Swerve extends SwerveIO {
 	/* COMMANDS */
 
 	public Command poseCentricDrive(Pose2d target) {
-		return AutoBuilder.pathfindToPoseFlipped(target, new PathConstraints(4, 3, 540, 720));
+		return AutoBuilder.pathfindToPoseFlipped(target, TELEOP_CONSTRAINTS);
 	}
 
 	public Command fieldCentricDrive(CommandXboxController xbox) {
