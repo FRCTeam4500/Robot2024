@@ -56,13 +56,13 @@ public class Intake extends IntakeIO {
 
     public Command zero() {
         return Commands.run(
-            () -> tiltMotor.set(0.6)
+            () -> tiltMotor.set(0.6), this
         ).until(() -> !limitSwitch.get()).withTimeout(2).andThen(() -> tiltMotor.set(0));
     }
 
     public Command run(double output) {
         return Commands.runOnce(
-            () -> runMotor.set(output)
+            () -> runMotor.set(output), this
         );
     }
 

@@ -26,17 +26,17 @@ public class IntakeSim extends IntakeIO {
 
     @Override
     public Command tilt(double tilt) {
-        return Commands.runOnce(() -> currentTilt = tilt);
+        return Commands.runOnce(() -> currentTilt = tilt, this);
     }
 
     @Override
     public Command zero() {
-        return Commands.runOnce(() -> currentTilt = 0);
+        return Commands.runOnce(() -> currentTilt = 0, this);
     }
 
     @Override
     public Command run(double output) {
-        return Commands.runOnce(() -> currentOutput = output);
+        return Commands.runOnce(() -> currentOutput = output, this);
     }
 
     @Override

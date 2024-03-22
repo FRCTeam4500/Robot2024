@@ -113,10 +113,10 @@ public class SwerveSim extends SwerveIO {
                 -xbox.getLeftX() * sidewaysSens,
                 targetAngle
             );
-        }, this)
-            .beforeStarting(
-                Commands.runOnce(() -> targetAngle = getEstimatedPose().getRotation())
-            );
+        }, this
+        ).beforeStarting(
+            Commands.runOnce(() -> targetAngle = getEstimatedPose().getRotation())
+        );
     }
 
     @Override

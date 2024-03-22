@@ -22,7 +22,7 @@ public class ClimberSim extends ClimberIO {
 
     @Override
     public Command extend(double extension) {
-        return Commands.runOnce(() -> currentExtension = extension);
+        return Commands.runOnce(() -> currentExtension = extension, this);
     }
 
     @Override
