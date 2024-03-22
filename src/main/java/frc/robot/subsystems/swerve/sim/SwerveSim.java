@@ -70,6 +70,10 @@ public class SwerveSim extends SwerveIO {
         if (DriverStation.isDisabled()) {
             currentSpeeds = new ChassisSpeeds();
         }
+        var requestedStates = kinematics.toSwerveModuleStates(currentSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(requestedStates, MAX_LINEAR_SPEED_MPS);
+        currentSpeeds = kinematics.toChassisSpeeds(requestedStates);
+
         ChassisSpeeds fieldCentricSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, getEstimatedPose().getRotation());
         currentPose = new Pose2d(
             currentPose.getX() + 0.02 * fieldCentricSpeeds.vxMetersPerSecond,
@@ -191,7 +195,6 @@ public class SwerveSim extends SwerveIO {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Offset Robot Angle (deg)", () -> getEstimatedPose().getRotation().getDegrees(), null);
 		builder.addDoubleProperty("Forward Velocity (mps)", () -> getChassisSpeeds().vxMetersPerSecond, null);
 		builder.addDoubleProperty("Sideways Velocity (mps)", () -> getChassisSpeeds().vyMetersPerSecond, null);
 		builder.addDoubleProperty("Rotational Velocity (radps)", () -> getChassisSpeeds().omegaRadiansPerSecond, null);

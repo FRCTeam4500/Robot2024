@@ -16,7 +16,10 @@
       "/Shuffleboard/Hi/PrintCommand": "Command",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Telescope Down": "Command",
-      "/SmartDashboard/Telescope Up": "Command"
+      "/SmartDashboard/Telescope Up": "Command",
+      "/SmartDashboard/To Amp": "Command",
+      "/SmartDashboard/To Amp Shot": "Command",
+      "/SmartDashboard/To Far Shot": "Command"
     }
   },
   "NetworkTables": {
