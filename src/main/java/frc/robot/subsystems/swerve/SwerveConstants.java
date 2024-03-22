@@ -25,7 +25,7 @@ public class SwerveConstants {
     public static final double WHEEL_DIAMETER_METERS = 0.1016;
 
     public static final PathConstraints TELEOP_CONSTRAINTS = new PathConstraints(
-        4, 3, 12, 5
+        5, 4, 9.425, 12.5664
     );
 
     /* Sensitivities */
