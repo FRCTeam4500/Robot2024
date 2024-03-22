@@ -23,7 +23,7 @@ import frc.robot.hardware.NavX;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.real.SwerveConstants.DriveMode;
 import frc.robot.subsystems.tagVision.AprilTagVisionIO;
-import frc.robot.subsystems.pieceVision.real.GamePieceVision;
+import frc.robot.subsystems.pieceVision.GamePieceVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
 import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
@@ -44,7 +44,7 @@ public class Swerve extends SwerveIO {
 
 	private NavX gyro;
 	private AprilTagVisionIO tagVision;
-	private GamePieceVision pieceVision;
+	private GamePieceVisionIO pieceVision;
 	private SwerveModule[] modules;
 	private SwerveDriveKinematics kinematics;
 	private SwerveDriveOdometry odometry;
@@ -82,7 +82,7 @@ public class Swerve extends SwerveIO {
 		};
 		gyro = new NavX(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		tagVision = AprilTagVisionIO.getInstance();
-		pieceVision = GamePieceVision.getInstance();
+		pieceVision = GamePieceVisionIO.getInstance();
 		kinematics = new SwerveDriveKinematics(getModuleTranslations());
 		odometry = new SwerveDriveOdometry(
 			kinematics,

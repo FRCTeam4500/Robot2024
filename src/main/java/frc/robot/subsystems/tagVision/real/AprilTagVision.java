@@ -12,12 +12,6 @@ import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
 public class AprilTagVision extends AprilTagVisionIO {
-    private static AprilTagVision instance;
-    public static synchronized AprilTagVision getInstance() {
-        if (instance == null) instance = new AprilTagVision();
-        return instance;
-    }
-
     private Limelight limelight;
 
     public AprilTagVision() {
