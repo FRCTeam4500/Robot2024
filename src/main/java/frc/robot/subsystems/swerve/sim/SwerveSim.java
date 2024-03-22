@@ -3,6 +3,9 @@ package frc.robot.subsystems.swerve.sim;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -132,23 +135,8 @@ public class SwerveSim extends SwerveIO {
     }
 
     @Override
-    public Command poseCentricDrive(Pose2d red, Pose2d blue, double forwardScale, double sidewaysScale) {
-		return Commands.run(() -> {
-            Pose2d pose = getEstimatedPose();
-            if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-                driveAngleCentric(
-                    ExtendedMath.clamp(-3, 3, (blue.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-3, 3, (blue.getY() - pose.getY()) * sidewaysScale),
-                    blue.getRotation());
-            } else {
-                driveAngleCentric(
-                    ExtendedMath.clamp(-3, 3, (red.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-3, 3, (red.getY() - pose.getY()) * sidewaysScale),
-                    red.getRotation());
-            }
-        }, this);
-        // var constraints = new PathConstraints(4, 3, 540, 720);
-        // return AutoBuilder.pathfindToPose(red, constraints);
+    public Command poseCentricDrive(Pose2d target) {
+        return AutoBuilder.pathfindToPoseFlipped(target, new PathConstraints(4, 3, 540, 720));
 	}
 
     @Override

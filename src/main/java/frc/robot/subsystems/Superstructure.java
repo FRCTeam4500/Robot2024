@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -49,6 +50,9 @@ public class Superstructure {
         climber = ClimberIO.getInstance();
         configurePathPlanner();
         debugToShuffleboard();
+        SmartDashboard.putData("To Amp", driveToAmp());
+        SmartDashboard.putData("To Amp Shot", driveToAmpShot());
+        SmartDashboard.putData("To Far Shot", driveToFarShot());
     }
 
     public void configurePathPlanner() {
@@ -172,32 +176,20 @@ public class Superstructure {
         return swerve.speakerCentricDrive(xbox);
     }
     
-    public Command driveToPose(Pose2d bluePose, Pose2d redPose, double forwardScale, double sidewaysScale) {
-        return swerve.poseCentricDrive(redPose, bluePose, forwardScale, sidewaysScale);
+    public Command driveToPose(Pose2d target) {
+        return swerve.poseCentricDrive(target);
     }
 
     public Command driveToAmp() {
-        return driveToPose(
-            new Pose2d(1.9, 7.7, Rotation2d.fromDegrees(-90)), 
-            new Pose2d(14.1, 7.7, Rotation2d.fromDegrees(-90)), 
-            3, 1
-        );
+        return driveToPose(new Pose2d(1.9, 7.7, Rotation2d.fromDegrees(-90)));
 	}
 
     public Command driveToAmpShot() {
-        return driveToPose(
-            new Pose2d(1.723, 7.505, Rotation2d.fromRadians(0.775)),
-            new Pose2d(14.277, 7.505, Rotation2d.fromRadians(2.366592653689793)),
-            2, 3  
-        );
+        return driveToPose(new Pose2d(1.723, 7.505, Rotation2d.fromRadians(0.775)));
     }
 
     public Command driveToFarShot() {
-        return driveToPose(
-            new Pose2d(2.3, 5.9, Rotation2d.fromDegrees(0)), 
-            new Pose2d(13.7, 5.9, Rotation2d.fromDegrees(180)), // 16 max of field
-            2, 3
-        );
+        return driveToPose(new Pose2d(2.3, 5.9, Rotation2d.fromDegrees(0)));
     }
 
     public Command resetGyro() {

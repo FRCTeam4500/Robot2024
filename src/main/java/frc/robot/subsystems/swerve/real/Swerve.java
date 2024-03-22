@@ -31,6 +31,9 @@ import static frc.robot.subsystems.swerve.real.SwerveConstants.*;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+
 public class Swerve extends SwerveIO {
 
 	private static Swerve instance;
@@ -229,21 +232,8 @@ public class Swerve extends SwerveIO {
 
 	/* COMMANDS */
 
-	public Command poseCentricDrive(Pose2d red, Pose2d blue, double forwardScale, double sidewaysScale) {
-		return Commands.run(() -> {
-            Pose2d pose = getEstimatedPose();
-            if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-                driveAngleCentric(
-                    ExtendedMath.clamp(-3, 3, (blue.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-3, 3, (blue.getY() - pose.getY()) * sidewaysScale),
-                    blue.getRotation());
-            } else {
-                driveAngleCentric(
-                    ExtendedMath.clamp(-3, 3, (red.getX()  - pose.getX()) * forwardScale),
-                    ExtendedMath.clamp(-3, 3, (red.getY() - pose.getY()) * sidewaysScale),
-                    red.getRotation());
-            }
-        }, this);
+	public Command poseCentricDrive(Pose2d target) {
+		return AutoBuilder.pathfindToPoseFlipped(target, new PathConstraints(4, 3, 540, 720));
 	}
 
 	public Command fieldCentricDrive(CommandXboxController xbox) {
