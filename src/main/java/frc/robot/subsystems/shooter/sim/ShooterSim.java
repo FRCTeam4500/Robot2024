@@ -7,10 +7,12 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.telescope.TelescopeIO;
 
 public class ShooterSim extends ShooterIO {
     private double currentTilt;
@@ -18,6 +20,7 @@ public class ShooterSim extends ShooterIO {
     private double currentRightShooterOutput;
     private double currentLeftShooterOutput;
     private InterpolatingDoubleTreeMap angleCalculator;
+    private MechanismLigament2d shooterState;
     public ShooterSim() {
         currentTilt = 0;
         currentloaderOutput = 0;
@@ -32,6 +35,8 @@ public class ShooterSim extends ShooterIO {
         angleCalculator.put(3.25, -3.75);
         angleCalculator.put(3.75, -4.25);
         angleCalculator.put(4.4, -4.6);
+        shooterState = new MechanismLigament2d("Shooter State", 0.3, 130);
+        TelescopeIO.getInstance().getCurrentMech().append(shooterState);
     }
 
     public Command pivot(double tilt) {
@@ -76,6 +81,7 @@ public class ShooterSim extends ShooterIO {
         table.put("Right Output", currentRightShooterOutput);
         table.put("Loader Output", currentloaderOutput);
         table.put("Tilt", currentTilt);
+        shooterState.setAngle(140 + (5 * currentTilt));
     } 
 
     public void fromLog(LogTable table) {}

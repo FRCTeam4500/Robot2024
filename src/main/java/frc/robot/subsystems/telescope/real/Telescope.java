@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.telescope.TelescopeIO;
@@ -41,4 +42,9 @@ public class Telescope extends TelescopeIO {
 
     @Override
     public void fromLog(LogTable table) {}
+
+    @Override
+    public MechanismLigament2d getCurrentMech() {
+        return null;
+    }
 }

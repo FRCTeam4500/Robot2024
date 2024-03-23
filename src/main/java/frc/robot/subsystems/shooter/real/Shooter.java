@@ -5,10 +5,12 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.telescope.TelescopeIO;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -38,6 +40,7 @@ public class Shooter extends ShooterIO {
     private CANSparkMax rightMotor;
     private CANSparkMax loaderMotor;
     private InterpolatingDoubleTreeMap angleCalculator;
+    private MechanismLigament2d shooterState;
     public Shooter() {
         rightMotor = new CANSparkMax(SHOOTER_ONE_ID, MotorType.kBrushless);
         leftMotor = new CANSparkMax(SHOOTER_TWO_ID, MotorType.kBrushless);
@@ -64,6 +67,8 @@ public class Shooter extends ShooterIO {
         angleCalculator.put(3.75, -4.25);
         angleCalculator.put(4.4, -4.6);
 
+        shooterState = new MechanismLigament2d("Shooter State", 0.3, 130);
+        TelescopeIO.getInstance().getCurrentMech().append(shooterState);
     }
 
     public Command pivot(double angle) {
@@ -117,6 +122,7 @@ public class Shooter extends ShooterIO {
         table.put("Right Speed", rightMotor.getEncoder().getVelocity());
         table.put("Loader Speed", loaderMotor.getEncoder().getVelocity());
         table.put("Tilt", tiltMotor.getEncoder().getPosition());
+        shooterState.setAngle(140 + (5 * tiltMotor.getEncoder().getPosition()));
     }
 
     @Override
