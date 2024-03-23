@@ -10,16 +10,36 @@
   },
   "NTProvider": {
     "types": {
+      "/AdvantageKit/RealOutputs/Climber Mechanism": "Mechanism2d",
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Display/SendableChooser[0]": "String Chooser",
       "/Shuffleboard/Hi/InstantCommand": "Command",
       "/Shuffleboard/Hi/PrintCommand": "Command",
+      "/SmartDashboard/Extend Climber": "Command",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Retract Climber": "Command",
       "/SmartDashboard/Telescope Down": "Command",
       "/SmartDashboard/Telescope Up": "Command",
       "/SmartDashboard/To Amp": "Command",
       "/SmartDashboard/To Amp Shot": "Command",
       "/SmartDashboard/To Far Shot": "Command"
+    },
+    "windows": {
+      "/AdvantageKit/RealOutputs/Climber Mechanism": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Extend Climber": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Retract Climber": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {

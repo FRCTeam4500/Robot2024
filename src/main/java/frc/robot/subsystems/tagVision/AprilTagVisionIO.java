@@ -17,9 +17,13 @@ public abstract class AprilTagVisionIO extends SubsystemBase implements Loggable
         return instance;
     }
 
-    public abstract int getTagId(int defaultId);
-    public abstract boolean seesTag();
-    public abstract Pose2d getRelativeTagPose(Pose2d defaultPose);
-    public abstract Pose2d getRobotPose(Pose2d defaultPose);
+    public abstract int getTagId(int defaultId, Camera camera);
+    public abstract boolean seesTag(Camera camera);
+    public abstract Pose2d getRelativeTagPose(Pose2d defaultPose, Camera camera);
+    public abstract Pose2d getRobotPose(Pose2d defaultPose, Camera camera);
     public abstract void initSendable(SendableBuilder builder);
+
+    public static enum Camera {
+        Front, Back
+    }
 }

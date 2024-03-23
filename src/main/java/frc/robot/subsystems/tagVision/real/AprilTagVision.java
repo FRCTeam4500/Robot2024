@@ -12,34 +12,36 @@ import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
 public class AprilTagVision extends AprilTagVisionIO {
-    private Limelight limelight;
+    private Limelight front;
+    private Limelight back;
 
     public AprilTagVision() {
-        limelight = new Limelight("limelight-hehehe");
+        front = new Limelight("limelight-hehehe");
+        back = new Limelight("limelight-haha");
     }
 
-    public boolean seesTag() {
-        return limelight.hasValidTargets();
+    public boolean seesTag(Camera camera) {
+        return getCamera(camera).hasValidTargets();
     }
 
-    public int getTagId(int defaultId) {
-        return limelight.getTargetTagId().orElse(defaultId);
+    public int getTagId(int defaultId, Camera camera) {
+        return getCamera(camera).getTargetTagId().orElse(defaultId);
     }
 
-    public Pose2d getRobotPose(Pose2d defaultPose) {
-		return getRobotPose(defaultPose, Alliance.Blue);
+    public Pose2d getRobotPose(Pose2d defaultPose, Camera camera) {
+		return getRobotPose(defaultPose, Alliance.Blue, camera);
 	}
 
-	public Pose2d getRobotPose(Pose2d defaultPose, Alliance poseOrigin) {
-		return limelight
+	public Pose2d getRobotPose(Pose2d defaultPose, Alliance poseOrigin, Camera camera) {
+		return getCamera(camera)
 			.getRobotPoseToAlliance(poseOrigin)
 			.orElse(defaultPose);
 	}
 
-    public Pose2d getRelativeTagPose(Pose2d defaultPose) {
-        if (!seesTag()) return defaultPose;
-		Pose2d backwardsPose = getRobotPose(new Pose2d(), Alliance.Blue)
-			.relativeTo(getTagPose(getTagId(0)));
+    public Pose2d getRelativeTagPose(Pose2d defaultPose, Camera camera) {
+        if (!seesTag(camera)) return defaultPose;
+		Pose2d backwardsPose = getRobotPose(new Pose2d(), Alliance.Blue, camera)
+			.relativeTo(getTagPose(getTagId(0, camera)));
         return new Pose2d(
             backwardsPose.getTranslation(), 
             ExtendedMath.wrapRotation2d(backwardsPose.getRotation()
@@ -87,15 +89,25 @@ public class AprilTagVision extends AprilTagVisionIO {
                 return new Pose2d(4.641342, 3.713226, Rotation2d.fromDegrees(60)); 
         }
     }
+
+    private Limelight getCamera(Camera camera) {
+        switch (camera) {
+            case Front:
+                return front;
+            case Back:
+                return back;
+        }
+        return front;
+    }
     
     @Override
     public void toLog(LogTable table) {
-        table.put("Tag ID", getTagId(0));
-        table.put("Sees tag", seesTag());
-        Logger.recordOutput(
-            "Vision Robot Pose", 
-            getRobotPose(new Pose2d())
-        );
+        table.put("Front Sees Tag", seesTag(Camera.Front));
+        table.put("Front Tag ID", getTagId(0, Camera.Front));
+        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Front));
+        table.put("Back Sees Tag", seesTag(Camera.Back));
+        table.put("Back Tag ID", getTagId(0, Camera.Back));
+        Logger.recordOutput("Back Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Back));
     }
 
     @Override
@@ -103,8 +115,9 @@ public class AprilTagVision extends AprilTagVisionIO {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addBooleanProperty("Sees Tag", () -> seesTag(), null);
-        builder.addIntegerProperty("Target Tag", () -> getTagId(0), null);
-        builder.addDoubleProperty("X Pose", () -> getRobotPose(new Pose2d()).getX(), null);
+        builder.addBooleanProperty("Front Sees Tag", () -> seesTag(Camera.Front), null);
+        builder.addIntegerProperty("Front Tag ID", () -> getTagId(0, Camera.Front), null);
+        builder.addBooleanProperty("Back Sees Tag", () -> seesTag(Camera.Back), null);
+        builder.addIntegerProperty("Back Tag ID", () -> getTagId(0, Camera.Back), null);
     }
 }

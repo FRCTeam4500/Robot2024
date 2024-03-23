@@ -23,6 +23,7 @@ import frc.robot.hardware.NavX;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
 import frc.robot.subsystems.tagVision.AprilTagVisionIO;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO.Camera;
 import frc.robot.subsystems.pieceVision.GamePieceVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
@@ -87,13 +88,13 @@ public class Swerve extends SwerveIO {
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d())
+			tagVision.getRobotPose(new Pose2d(), Camera.Front)
 		);
 		poseEstimator = new SwerveDrivePoseEstimator(
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d())
+			tagVision.getRobotPose(new Pose2d(), Camera.Front)
 		);
 		targetAngle = getRobotAngle();
         driveMode = DriveMode.AngleCentric;
@@ -124,12 +125,16 @@ public class Swerve extends SwerveIO {
 		SwerveModulePosition[] modulePositions = getModulePositions();
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
-		double dist = tagVision.getRelativeTagPose(new Pose2d(100, 100, gyroAngle)).getTranslation().getNorm();
-		if (tagVision.seesTag() &&
-			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5))
-			|| !DriverStation.isAutonomous()) && dist < 4
-		) {	
-			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d()), Timer.getFPGATimestamp());
+		double frontTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
+		double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Back).getTranslation().getNorm();
+		boolean speedLimit = 
+			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5)) || 
+			!DriverStation.isAutonomous());
+		if (tagVision.seesTag(Camera.Front) && speedLimit && frontTagDist < 4) {	
+			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Front), Timer.getFPGATimestamp());
+		}
+		if (tagVision.seesTag(Camera.Back) && speedLimit && backTagDist < 4) {
+			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Back), Timer.getFPGATimestamp());
 		}
 	}
 
