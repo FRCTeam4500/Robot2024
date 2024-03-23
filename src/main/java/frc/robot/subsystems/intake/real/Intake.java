@@ -6,24 +6,24 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.intake.IntakeIO;
 
 import static frc.robot.CANConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 
-public class Intake extends IntakeIO {
-    private static Intake instance;
-    public static synchronized Intake getInstance() {
-        if (instance == null) instance = new Intake();
-        return instance;
-    }
-
-    private CANSparkMax tiltMotor;
+public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
     private CANSparkMax runMotor;
     private DigitalInput limitSwitch;
+    private Mechanism2d currentMech;
+    private MechanismRoot2d root;
+    private MechanismLigament2d intakeMech;
     public Intake() {
         runMotor = new CANSparkMax(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(INTAKE_TILT_ID, MotorType.kBrushless);
@@ -38,6 +38,11 @@ public class Intake extends IntakeIO {
 
         tiltMotor.setSmartCurrentLimit(30);
         runMotor.setSmartCurrentLimit(30);
+
+        currentMech = Superstructure.getCurrentMech();
+        root = currentMech.getRoot("Intake Root", 0.4, 0.1);
+        intakeMech = new MechanismLigament2d("Intake State", 0.3, 45);
+        root.append(intakeMech);
     }
 
     @Override
@@ -76,6 +81,7 @@ public class Intake extends IntakeIO {
     public void toLog(LogTable table) {
         table.put("Output", runMotor.get());
         table.put("Tilt", tiltMotor.getEncoder().getPosition());
+        intakeMech.setAngle(-2.70909 * tiltMotor.getEncoder().getPosition() + 45);
     }
 
     @Override

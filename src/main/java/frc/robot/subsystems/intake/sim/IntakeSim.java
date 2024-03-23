@@ -22,7 +22,7 @@ public class IntakeSim extends IntakeIO {
         currentOutput = 0;
         currentMech = Superstructure.getCurrentMech();
         root = currentMech.getRoot("Intake Root", 0.4, 0.1);
-        intakeMech = new MechanismLigament2d("Intake State", 0.5, 45);
+        intakeMech = new MechanismLigament2d("Intake State", 0.3, 45);
         root.append(intakeMech);
     }
 
