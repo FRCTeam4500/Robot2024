@@ -15,6 +15,7 @@
       "/Shuffleboard/Display/SendableChooser[0]": "String Chooser",
       "/Shuffleboard/Hi/InstantCommand": "Command",
       "/Shuffleboard/Hi/PrintCommand": "Command",
+      "/SmartDashboard/Current Robot State": "Mechanism2d",
       "/SmartDashboard/Extend Climber": "Command",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Retract Climber": "Command",

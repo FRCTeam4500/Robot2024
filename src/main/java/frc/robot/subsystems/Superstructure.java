@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,6 +35,24 @@ public class Superstructure {
     public static synchronized Superstructure getInstance() {
         if (instance == null) instance = new Superstructure();
         return instance;
+    }
+
+    private static Mechanism2d currentMech;
+    public static synchronized Mechanism2d getCurrentMech() {
+        if (currentMech == null) {
+            currentMech = new Mechanism2d(1.372, 1.2192);
+            SmartDashboard.putData("Current Robot State", currentMech);
+        }
+        return currentMech;
+    }
+
+    private static Mechanism2d setpointMech;
+    public static synchronized Mechanism2d getSetpointMech() {
+        if (setpointMech == null) {
+            setpointMech = new Mechanism2d(1.372, 1.2192);
+            SmartDashboard.putData("Target Robot State", setpointMech);
+        }
+        return setpointMech;
     }
 
     private SwerveIO swerve;
