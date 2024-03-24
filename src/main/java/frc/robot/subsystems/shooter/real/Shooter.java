@@ -67,7 +67,7 @@ public class Shooter extends ShooterIO {
         angleCalculator.put(3.75, -4.25);
         angleCalculator.put(4.4, -4.6);
 
-        shooterState = new MechanismLigament2d("Shooter State", 0.3, 130);
+        shooterState = new MechanismLigament2d("Shooter State", 0.3, 140);
         TelescopeIO.getInstance().getCurrentMech().append(shooterState);
     }
 
@@ -122,7 +122,7 @@ public class Shooter extends ShooterIO {
         table.put("Right Speed", rightMotor.getEncoder().getVelocity());
         table.put("Loader Speed", loaderMotor.getEncoder().getVelocity());
         table.put("Tilt", tiltMotor.getEncoder().getPosition());
-        shooterState.setAngle(140 + (5 * tiltMotor.getEncoder().getPosition()));
+        shooterState.setAngle(140 + (4.5 * tiltMotor.getEncoder().getPosition()));
     }
 
     @Override

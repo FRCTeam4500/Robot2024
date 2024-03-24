@@ -19,8 +19,8 @@ public class TelescopeSim extends TelescopeIO {
     public TelescopeSim() {
         currentExtension = 0;
         currentMech = Superstructure.getCurrentMech();
-        root = currentMech.getRoot("Telescope Root", 0.9398, 0.1);
-        telescopeState = new MechanismLigament2d("Telescope State", 0.4, 80);
+        root = currentMech.getRoot("Telescope Root", 0.889, 0.1524);
+        telescopeState = new MechanismLigament2d("Telescope State", 0.4064, 75);
         root.append(telescopeState);
     }
     @Override
