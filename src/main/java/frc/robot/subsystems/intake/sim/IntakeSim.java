@@ -41,6 +41,10 @@ public class IntakeSim extends IntakeIO {
         return Commands.runOnce(() -> currentTilt = tilt, this);
     }
 
+    public Command coast() {
+        return Commands.none();
+    }
+
     @Override
     public Command zero() {
         return Commands.runOnce(() -> currentTilt = 0, this);

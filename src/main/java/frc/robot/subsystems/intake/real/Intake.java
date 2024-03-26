@@ -71,6 +71,12 @@ public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
         );
     }
 
+    public Command coast() {
+        return Commands.runOnce(
+            () -> tiltMotor.set(0), this  
+        );
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Speed", () -> runMotor.get(), null);

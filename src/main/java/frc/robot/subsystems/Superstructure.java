@@ -267,6 +267,8 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(0.3))
             .andThen(intake.tilt(IntakeIO.GROUND_TILT)
             .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+            .andThen(Commands.waitSeconds(1))
+            .andThen(intake.coast())
         );
     }
 
