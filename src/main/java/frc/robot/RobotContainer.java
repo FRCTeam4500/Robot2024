@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -59,19 +60,19 @@ public class RobotContainer {
 	private void setupOperatorController() {
 		flightSim = new CommandJoystick(OPERATOR_PORT);
 		
-		Trigger shootButton = flightSim.button(1);
-		Trigger intakeButton = flightSim.button(2);
-		Trigger readyEverywhereButton = flightSim.button(3);
-		Trigger readySubwooferButton = flightSim.button(4);
-		Trigger readyAmpButton = flightSim.button(5);
+		Trigger shootButton = flightSim.button(1).debounce(0.1, DebounceType.kBoth);
+		Trigger intakeButton = flightSim.button(2).debounce(0.1, DebounceType.kBoth);
+		Trigger readyEverywhereButton = flightSim.button(3).debounce(0.1, DebounceType.kBoth);
+		Trigger readySubwooferButton = flightSim.button(4).debounce(0.1, DebounceType.kBoth);
+		Trigger readyAmpButton = flightSim.button(5).debounce(0.1, DebounceType.kBoth);
 		// 6
-		Trigger climberDownButton = flightSim.button(7);
-		Trigger climberUpButton = flightSim.button(8);
-		// 9
+		Trigger climberDownButton = flightSim.button(7).debounce(0.1, DebounceType.kBoth);
+		Trigger climberUpButton = flightSim.button(8).debounce(0.1, DebounceType.kBoth);
+		Trigger lowFerryButton = flightSim.button(9).debounce(0.1, DebounceType.kBoth);
 		Trigger stowButton = flightSim.button(10);
-		Trigger ejectButton = flightSim.button(11);
-		Trigger unstickShooterButton = flightSim.button(12);
-		Trigger zeroIntakeButton = flightSim.povDown();
+		Trigger ejectButton = flightSim.button(11).debounce(0.1, DebounceType.kBoth);
+		Trigger unstickShooterButton = flightSim.button(12).debounce(0.1, DebounceType.kBoth);
+		Trigger zeroIntakeButton = flightSim.povDown().debounce(0.1, DebounceType.kBoth);
 
 		shootButton.onTrue(structure.shoot());
 		intakeButton.onTrue(structure.startIntake());
@@ -81,6 +82,7 @@ public class RobotContainer {
 		readyAmpButton.onTrue(structure.readyAmp());
 		climberDownButton.onTrue(structure.climberDown());
 		climberUpButton.onTrue(structure.climberUp());
+		lowFerryButton.onTrue(structure.lowFerry());
 		stowButton.onTrue(structure.stow());
 		ejectButton.onTrue(structure.ejectLoader());
 		unstickShooterButton.onTrue(structure.backOut());

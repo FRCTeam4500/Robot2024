@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -35,13 +37,6 @@ import org.littletonrobotics.junction.Logger;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 public class Swerve extends SwerveIO {
-
-	private static Swerve instance;
-	public static synchronized Swerve getInstance() {
-		if (instance == null) instance = new Swerve();
-		return instance;
-	}
-
 	private NavX gyro;
 	private AprilTagVisionIO tagVision;
 	private GamePieceVisionIO pieceVision;
@@ -52,6 +47,7 @@ public class Swerve extends SwerveIO {
 	private PIDController anglePID;
     private Rotation2d targetAngle;
     private DriveMode driveMode;
+	private Field2d field;
 
 	public Swerve() {
 		anglePID = new PIDController(5, 0, 0);
@@ -98,6 +94,8 @@ public class Swerve extends SwerveIO {
 		);
 		targetAngle = getRobotAngle();
         driveMode = DriveMode.AngleCentric;
+		field = new Field2d();
+		SmartDashboard.putData("Field", field);
 		Shuffleboard.getTab("Debug").add("Swerve Drive",new Sendable() {
 			@Override
 			public void initSendable(SendableBuilder builder) {
@@ -136,6 +134,7 @@ public class Swerve extends SwerveIO {
 		if (tagVision.seesTag(Camera.Back) && speedLimit && backTagDist < 4) {
 			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Back), Timer.getFPGATimestamp());
 		}
+		field.setRobotPose(getEstimatedPose());
 	}
 
 	public void driveAngleCentric(

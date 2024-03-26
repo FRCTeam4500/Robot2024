@@ -23,7 +23,7 @@ import org.littletonrobotics.junction.LogTable;
 
 public class Shooter extends ShooterIO {
     public static final double AMP_TILT = -16.3;//-18;
-    public static final double HANDOFF_TILT = -7;//-7;
+    public static final double HANDOFF_TILT = -6;//-7;
     public static final double SUBWOOFER_TILT = 1.5;//1;
     public static final double STAGE_TILT = -2.2;
     public static final double STOW_TILT = 0;//-6.15;
@@ -48,9 +48,8 @@ public class Shooter extends ShooterIO {
         loaderMotor = new CANSparkMax(LOADER_ID, MotorType.kBrushless);
 
         rightMotor.getPIDController().setP(0.3);
-        leftMotor.getPIDController().setP(0.3);
-        tiltMotor.getPIDController().setP(0.5);
-        tiltMotor.getPIDController().setOutputRange(-0.3, 0.3);
+        tiltMotor.getPIDController().setP(3);
+        tiltMotor.getPIDController().setOutputRange(-0.5, 0.5);
         tiltMotor.setIdleMode(IdleMode.kCoast);
 
         rightMotor.setSmartCurrentLimit(30);
@@ -73,7 +72,7 @@ public class Shooter extends ShooterIO {
 
     public Command pivot(double angle) {
         return Commands.runOnce(
-            () -> tiltMotor.getPIDController().setReference(angle, ControlType.kPosition),
+            () -> tiltMotor.getPIDController().setReference(angle, ControlType.kPosition, 0, calcFF(angle)),
             this
         );
     }
@@ -84,7 +83,8 @@ public class Shooter extends ShooterIO {
                 double distance = SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
                     DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
                 ));
-                tiltMotor.getPIDController().setReference(angleCalculator.get(distance), ControlType.kPosition);
+                double angle = angleCalculator.get(distance);
+                tiltMotor.getPIDController().setReference(angle, ControlType.kPosition, 0, calcFF(angle));
             }, this
         );
     }
@@ -108,12 +108,19 @@ public class Shooter extends ShooterIO {
         return Commands.runOnce(() -> tiltMotor.set(0), this);
     }
 
+    public double calcFF(double setpoint) {
+        double angle =  -(setpoint * 360 / 69.9 + 38);
+        double kG = -0.3516;
+        return Math.cos(Math.toRadians(angle) * kG);
+      }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Left Speed", () -> leftMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Right Speed", () -> rightMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Loader Speed", () -> loaderMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
+        builder.addDoubleProperty("Actual Angle?", () -> 38 + tiltMotor.getEncoder().getPosition() * 360 / 69.9, null);
     }
 
     @Override

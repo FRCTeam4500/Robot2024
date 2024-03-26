@@ -57,6 +57,6 @@ public class Telescope extends TelescopeIO {
 
     @Override
     public MechanismLigament2d getCurrentMech() {
-        return null;
+        return telescopeState;
     }
 }

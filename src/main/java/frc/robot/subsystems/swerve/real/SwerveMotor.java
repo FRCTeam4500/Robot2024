@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotBase;
 
 import java.util.function.Consumer;
 
@@ -21,6 +22,7 @@ public interface SwerveMotor {
     public Rotation2d getAngularVelocity();
 
     public static SwerveMotor fromTalonSRX(TalonSRX motor, Consumer<TalonSRX> config) {
+        if (RobotBase.isSimulation()) return fromSimulation();
         config.accept(motor);
         return new SwerveMotor() {
             public void setAngle(Rotation2d target) {
@@ -39,6 +41,7 @@ public interface SwerveMotor {
     }
 
     public static SwerveMotor fromTalonFX(TalonFX motor, TalonFXConfiguration config) {
+        if (RobotBase.isSimulation()) return fromSimulation();
         StatusCode status = StatusCode.StatusCodeNotInitialized;
         for (int i = 0; i < 5; i++) {
             status = motor.getConfigurator().apply(config);
@@ -64,6 +67,7 @@ public interface SwerveMotor {
     }
 
     public static SwerveMotor fromSparkMax(CANSparkMax motor, Consumer<CANSparkMax> config) {
+        if (RobotBase.isSimulation()) return fromSimulation();
         config.accept(motor);
         return new SwerveMotor() {
             public void setAngle(Rotation2d target) {
@@ -78,6 +82,17 @@ public interface SwerveMotor {
             public Rotation2d getAngularVelocity() {
                 return Rotation2d.fromRotations(motor.getEncoder().getVelocity() / 60);
             }
+        };
+    }
+
+    private static SwerveMotor fromSimulation() {
+        return new SwerveMotor() {
+            private Rotation2d angle;
+            private Rotation2d velocity;
+            public void setAngle(Rotation2d target) {angle = target;}
+            public void setAngularVelocity(Rotation2d target) {velocity = target;}
+            public Rotation2d getAngle() {return angle;}
+            public Rotation2d getAngularVelocity() {return velocity;}
         };
     }
 }
