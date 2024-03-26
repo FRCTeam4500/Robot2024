@@ -3,6 +3,7 @@ package frc.robot.subsystems.telescope.real;
 import org.littletonrobotics.junction.LogTable;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -24,7 +25,7 @@ public class Telescope extends TelescopeIO {
         extensionMotor = new TalonSRX(12);
         extensionMotor.config_kP(0, 1);
         extensionMotor.configPeakOutputForward(0.6);
-        extensionMotor.configPeakOutputReverse(-0.6);
+        extensionMotor.configPeakOutputReverse(-0.4);
         extensionMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 31, 0.1));
 
         currentMech = Superstructure.getCurrentMech();
@@ -34,11 +35,12 @@ public class Telescope extends TelescopeIO {
     }
 
     public Command extend(double extension) {
-        return Commands.runOnce(() -> extensionMotor.set(ControlMode.Position, extension), this);
+        return Commands.runOnce(() -> extensionMotor.set(ControlMode.Position, extension, DemandType.ArbitraryFeedForward, 0.0625), this);
     }
 
     public Command coast() {
         return Commands.runOnce(() -> extensionMotor.set(ControlMode.PercentOutput, 0), this);
+        // return extend(TelescopeIO.STOW);
     }
 
     @Override

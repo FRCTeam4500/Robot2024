@@ -290,7 +290,7 @@ public class Superstructure {
     public Command stow() {
         return intake.zero()
             .andThen(intake.run(IntakeIO.OFF_SPEED))
-            .andThen(telescope.coast())
+            .andThen(telescope.extend(TelescopeIO.STOW))
             .andThen(climber.extend(ClimberIO.ZERO))
             .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
             .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))

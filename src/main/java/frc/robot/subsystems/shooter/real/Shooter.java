@@ -49,7 +49,7 @@ public class Shooter extends ShooterIO {
 
         rightMotor.getPIDController().setP(0.3);
         tiltMotor.getPIDController().setP(3);
-        tiltMotor.getPIDController().setOutputRange(-0.5, 0.5);
+        tiltMotor.getPIDController().setOutputRange(-0.5, 0.3);
         tiltMotor.setIdleMode(IdleMode.kCoast);
 
         rightMotor.setSmartCurrentLimit(30);
