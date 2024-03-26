@@ -265,11 +265,10 @@ public class Superstructure {
     public Command startIntake() {
         return shooter.pivot(ShooterIO.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.3))
-            .andThen(intake.tilt(IntakeIO.GROUND_TILT)
+            .andThen(intake.tilt(IntakeIO.GROUND_TILT))
             .andThen(intake.run(IntakeIO.PICKUP_SPEED))
             .andThen(Commands.waitSeconds(1))
-            .andThen(intake.coast())
-        );
+            .andThen(intake.coast());
     }
 
     public Command ejectLoader() {
