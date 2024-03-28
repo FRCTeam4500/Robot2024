@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake;
+package frc.robot.subsystems.intake.real;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -6,35 +6,24 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.intake.IntakeIO;
 
 import static frc.robot.CANConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class Intake extends SubsystemBase implements LoggableInputs {
-    private static Intake instance;
-    public static synchronized Intake getInstance() {
-        if (instance == null) instance = new Intake();
-        return instance;
-    }
-
-    public static final double GROUND_TILT = -55;
-    public static final double STOW_TILT = 0;
-    public static final double HANDOFF_TILT = 0;
-    public static final double AMP_TILT = -10;
-    public static final double PICKUP_SPEED = 0.5;
-    public static final double OFF_SPEED = 0;
-    public static final double HANDOFF_SPEED = -1;
-    public static final double SHOOTING_SPEED = -1;
-    public static final double AMP_SPEED = -1;
-
-    private CANSparkMax tiltMotor;
+public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
     private CANSparkMax runMotor;
     private DigitalInput limitSwitch;
+    private Mechanism2d currentMech;
+    private MechanismRoot2d root;
+    private MechanismLigament2d intakeMech;
     public Intake() {
         runMotor = new CANSparkMax(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(INTAKE_TILT_ID, MotorType.kBrushless);
@@ -49,6 +38,11 @@ public class Intake extends SubsystemBase implements LoggableInputs {
 
         tiltMotor.setSmartCurrentLimit(30);
         runMotor.setSmartCurrentLimit(30);
+
+        currentMech = Superstructure.getCurrentMech();
+        root = currentMech.getRoot("Intake Root", 0.4, 0.1);
+        intakeMech = new MechanismLigament2d("Intake State", 0.3, 45);
+        root.append(intakeMech);
     }
 
     @Override
@@ -65,36 +59,36 @@ public class Intake extends SubsystemBase implements LoggableInputs {
         );
     }
 
-    public Command zeroIntake() {
+    public Command zero() {
         return Commands.run(
-            () -> tiltMotor.set(0.6)
+            () -> tiltMotor.set(0.6), this
         ).until(() -> !limitSwitch.get()).withTimeout(2).andThen(() -> tiltMotor.set(0));
     }
 
     public Command run(double output) {
         return Commands.runOnce(
-            () -> runMotor.set(output)
+            () -> runMotor.set(output), this
         );
     }
 
-    public Command reset() {
-        return Commands.runOnce(() -> tiltMotor.getEncoder().setPosition(0));
-    }
-
     public Command coast() {
-        return Commands.runOnce(() -> tiltMotor.set(0));
+        return Commands.runOnce(
+            () -> tiltMotor.set(0), this  
+        );
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Speed", () -> runMotor.get(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
+        builder.addBooleanProperty("Switch", () -> !limitSwitch.get(), null);
     }
 
     @Override
     public void toLog(LogTable table) {
         table.put("Output", runMotor.get());
         table.put("Tilt", tiltMotor.getEncoder().getPosition());
+        intakeMech.setAngle(-2.70909 * tiltMotor.getEncoder().getPosition() + 45);
     }
 
     @Override

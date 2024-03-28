@@ -1,4 +1,4 @@
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.real;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -16,33 +16,30 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.hardware.NavX;
+import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.swerve.SwerveConstants.DriveMode;
-import frc.robot.subsystems.vision.AprilTagVision;
-import frc.robot.subsystems.vision.GamePieceVision;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO.Camera;
+import frc.robot.subsystems.pieceVision.GamePieceVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
 import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class Swerve extends SubsystemBase implements LoggableInputs {
+import com.pathplanner.lib.auto.AutoBuilder;
 
-	private static Swerve instance;
-	public static synchronized Swerve getInstance() {
-		if (instance == null) instance = new Swerve();
-		return instance;
-	}
-
+public class Swerve extends SwerveIO {
 	private NavX gyro;
-	private AprilTagVision tagVision;
-	private GamePieceVision pieceVision;
+	private AprilTagVisionIO tagVision;
+	private GamePieceVisionIO pieceVision;
 	private SwerveModule[] modules;
 	private SwerveDriveKinematics kinematics;
 	private SwerveDriveOdometry odometry;
@@ -50,8 +47,9 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 	private PIDController anglePID;
     private Rotation2d targetAngle;
     private DriveMode driveMode;
+	private Field2d field;
 
-	protected Swerve() {
+	public Swerve() {
 		anglePID = new PIDController(5, 0, 0);
 		anglePID.enableContinuousInput(-Math.PI, Math.PI);
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
@@ -79,23 +77,25 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 			),
 		};
 		gyro = new NavX(edu.wpi.first.wpilibj.SPI.Port.kMXP);
-		tagVision = AprilTagVision.getInstance();
-		pieceVision = GamePieceVision.getInstance();
+		tagVision = AprilTagVisionIO.getInstance();
+		pieceVision = GamePieceVisionIO.getInstance();
 		kinematics = new SwerveDriveKinematics(getModuleTranslations());
 		odometry = new SwerveDriveOdometry(
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d())
+			tagVision.getRobotPose(new Pose2d(), Camera.Front)
 		);
 		poseEstimator = new SwerveDrivePoseEstimator(
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d())
+			tagVision.getRobotPose(new Pose2d(), Camera.Front)
 		);
 		targetAngle = getRobotAngle();
         driveMode = DriveMode.AngleCentric;
+		field = new Field2d();
+		SmartDashboard.putData("Field", field);
 		Shuffleboard.getTab("Debug").add("Swerve Drive",new Sendable() {
 			@Override
 			public void initSendable(SendableBuilder builder) {
@@ -123,13 +123,18 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		SwerveModulePosition[] modulePositions = getModulePositions();
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
-		double dist = tagVision.getRelativeTagPose(new Pose2d(100, 100, gyroAngle)).getTranslation().getNorm();
-		if (tagVision.seesTag() &&
-			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5))
-			|| !DriverStation.isAutonomous()) && dist < 4
-		) {	
-			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d()), Timer.getFPGATimestamp());
+		double frontTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
+		double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Back).getTranslation().getNorm();
+		boolean speedLimit = 
+			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5)) || 
+			!DriverStation.isAutonomous());
+		if (tagVision.seesTag(Camera.Front) && speedLimit && frontTagDist < 4) {	
+			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Front), Timer.getFPGATimestamp());
 		}
+		if (tagVision.seesTag(Camera.Back) && speedLimit && backTagDist < 4) {
+			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Back), Timer.getFPGATimestamp());
+		}
+		field.setRobotPose(getEstimatedPose());
 	}
 
 	public void driveAngleCentric(
@@ -230,6 +235,10 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 
 	/* COMMANDS */
 
+	public Command poseCentricDrive(Pose2d target) {
+		return AutoBuilder.pathfindToPoseFlipped(target, TELEOP_CONSTRAINTS);
+	}
+
 	public Command fieldCentricDrive(CommandXboxController xbox) {
 		return Commands.run(
 			() -> {
@@ -251,7 +260,8 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 	public Command angleCentricDrive(CommandXboxController xbox) {
 		return Commands.run(
             () -> {
-                double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
+				// double coefficent = Math.min(xbox.getLeftTriggerAxis() + 0.2, 1);
+				double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
 				double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
@@ -339,7 +349,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
      * @author Bennett
      * @author David
      */
-    public Command rotateToSpeaker(CommandXboxController xbox) {
+    public Command speakerCentricDrive(CommandXboxController xbox) {
         return Commands.run(() -> {
                 double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
@@ -348,7 +358,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
                 driveAngleCentric(
                     -xbox.getLeftY() * forwardSens,
                     -xbox.getLeftX() * sidewaysSens,
-                    ExtendedMath.getSpeakerAngle(getEstimatorPose().getTranslation())
+                    ExtendedMath.getSpeakerAngle(getEstimatedPose().getTranslation())
                 );
             }, this
         );
@@ -377,7 +387,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		);
 		Logger.recordOutput(
 			"Estimated Pose",
-			getEstimatorPose()
+			getEstimatedPose()
 		);
 		Logger.recordOutput(
 			"Module States",
@@ -397,7 +407,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		builder.addBooleanProperty("Gyro Connected", () -> gyro.getAHRS().isConnected(), null);
 		builder.addStringProperty("Drive Mode", () -> driveMode.name(), null);
         builder.addDoubleProperty("Target Angle (deg)", () -> targetAngle.getDegrees(), null);
-		builder.addDoubleProperty("Distance To Speaker", () -> getEstimatorPose().getTranslation().getDistance(new Translation2d(
+		builder.addDoubleProperty("Distance To Speaker", () -> getEstimatedPose().getTranslation().getDistance(new Translation2d(
 			DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.6)), null);
 	}
 
@@ -422,7 +432,7 @@ public class Swerve extends SubsystemBase implements LoggableInputs {
 		return kinematics.toChassisSpeeds(getModuleStates());
 	}
 
-	public Pose2d getEstimatorPose() {
+	public Pose2d getEstimatedPose() {
 		return poseEstimator.getEstimatedPosition();
 	}
 

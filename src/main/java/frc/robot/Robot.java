@@ -2,12 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.arm.Telescope;
-import frc.robot.subsystems.climber.Climber;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.vision.AprilTagVision;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.telescope.TelescopeIO;
+import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,12 +70,12 @@ public class Robot extends LoggedRobot {
 		new Timer().schedule(
 			new TimerTask() {
 				public void run() {
-					Logger.processInputs("Swerve", Swerve.getInstance());
-					Logger.processInputs("Tag Vision", AprilTagVision.getInstance());
-					Logger.processInputs("Intake", Intake.getInstance());
-					Logger.processInputs("Shooter", Shooter.getInstance());
-					Logger.processInputs("Climber", Climber.getInstance());
-					Logger.processInputs("Telescope", Telescope.getInstance());
+					Logger.processInputs("Swerve", SwerveIO.getInstance());
+					Logger.processInputs("Tag Vision", AprilTagVisionIO.getInstance());
+					Logger.processInputs("Intake", IntakeIO.getInstance());
+					Logger.processInputs("Shooter", ShooterIO.getInstance());
+					Logger.processInputs("Climber", ClimberIO.getInstance());
+					Logger.processInputs("Telescope", TelescopeIO.getInstance());
 				}
 			},
 			10,

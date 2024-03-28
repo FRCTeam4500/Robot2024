@@ -1,14 +1,16 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.shooter.real;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.swerve.SwerveIO;
+import frc.robot.subsystems.telescope.TelescopeIO;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -18,17 +20,10 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import static frc.robot.CANConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class Shooter extends SubsystemBase implements LoggableInputs {
-    private static Shooter instance;
-    public static synchronized Shooter getInstance() {
-        if (instance == null) instance = new Shooter();
-        return instance;
-    }
-
+public class Shooter extends ShooterIO {
     public static final double AMP_TILT = -16.3;//-18;
-    public static final double HANDOFF_TILT = -7;//-7;
+    public static final double HANDOFF_TILT = -6;//-7;
     public static final double SUBWOOFER_TILT = 1.5;//1;
     public static final double STAGE_TILT = -2.2;
     public static final double STOW_TILT = 0;//-6.15;
@@ -45,16 +40,16 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
     private CANSparkMax rightMotor;
     private CANSparkMax loaderMotor;
     private InterpolatingDoubleTreeMap angleCalculator;
-    private Shooter() {
+    private MechanismLigament2d shooterState;
+    public Shooter() {
         rightMotor = new CANSparkMax(SHOOTER_ONE_ID, MotorType.kBrushless);
         leftMotor = new CANSparkMax(SHOOTER_TWO_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(SHOOTER_PIVOT_ID, MotorType.kBrushless);
         loaderMotor = new CANSparkMax(LOADER_ID, MotorType.kBrushless);
 
         rightMotor.getPIDController().setP(0.3);
-        leftMotor.getPIDController().setP(0.3);
-        tiltMotor.getPIDController().setP(0.5);
-        tiltMotor.getPIDController().setOutputRange(-0.3, 0.3);
+        tiltMotor.getPIDController().setP(3);
+        tiltMotor.getPIDController().setOutputRange(-0.5, 0.3);
         tiltMotor.setIdleMode(IdleMode.kCoast);
 
         rightMotor.setSmartCurrentLimit(30);
@@ -67,27 +62,29 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         angleCalculator.put(1.74, -0.25);
         angleCalculator.put(2.14, -2.25);
         angleCalculator.put(2.8, -3.25);
-        // angleCalculator
         angleCalculator.put(3.25, -3.75);
         angleCalculator.put(3.75, -4.25);
         angleCalculator.put(4.4, -4.6);
 
+        shooterState = new MechanismLigament2d("Shooter State", 0.3, 140);
+        TelescopeIO.getInstance().getCurrentMech().append(shooterState);
     }
 
     public Command pivot(double angle) {
         return Commands.runOnce(
-            () -> tiltMotor.getPIDController().setReference(angle, ControlType.kPosition),
+            () -> tiltMotor.getPIDController().setReference(angle, ControlType.kPosition, 0, calcFF(angle)),
             this
         );
     }
 
-    public Command pivotForSpeaker() {
+    public Command autoPivot() {
         return Commands.run(
             () -> {
-                double distance = Swerve.getInstance().getEstimatorPose().getTranslation().getDistance(new Translation2d(
-                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
+                double distance = SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
+                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9
                 ));
-                tiltMotor.getPIDController().setReference(angleCalculator.get(distance), ControlType.kPosition);
+                double angle = angleCalculator.get(distance);
+                tiltMotor.getPIDController().setReference(angle, ControlType.kPosition, 0, calcFF(angle));
             }, this
         );
     }
@@ -107,13 +104,15 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         );
     }
 
-    public Command off() {
-        return spinUp(0, 0);
-    }
-
     public Command coast() {
         return Commands.runOnce(() -> tiltMotor.set(0), this);
     }
+
+    public double calcFF(double setpoint) {
+        double angle =  -(setpoint * 360 / 69.9 + 38);
+        double kG = -0.3516;
+        return Math.cos(Math.toRadians(angle) * kG);
+      }
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -121,6 +120,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         builder.addDoubleProperty("Right Speed", () -> rightMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Loader Speed", () -> loaderMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
+        builder.addDoubleProperty("Actual Angle?", () -> 38 + tiltMotor.getEncoder().getPosition() * 360 / 69.9, null);
     }
 
     @Override
@@ -129,6 +129,7 @@ public class Shooter extends SubsystemBase implements LoggableInputs {
         table.put("Right Speed", rightMotor.getEncoder().getVelocity());
         table.put("Loader Speed", loaderMotor.getEncoder().getVelocity());
         table.put("Tilt", tiltMotor.getEncoder().getPosition());
+        shooterState.setAngle(140 + (4.5 * tiltMotor.getEncoder().getPosition()));
     }
 
     @Override

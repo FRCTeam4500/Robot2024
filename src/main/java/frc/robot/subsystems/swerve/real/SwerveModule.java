@@ -1,9 +1,10 @@
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.real;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.robot.subsystems.swerve.SwerveConstants;
 
 public class SwerveModule {
 	private SwerveMotor driveMotor;
