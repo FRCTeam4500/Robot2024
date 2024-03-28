@@ -81,7 +81,7 @@ public class Shooter extends ShooterIO {
         return Commands.run(
             () -> {
                 double distance = SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
-                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16, 5.9
+                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9
                 ));
                 double angle = angleCalculator.get(distance);
                 tiltMotor.getPIDController().setReference(angle, ControlType.kPosition, 0, calcFF(angle));
