@@ -81,6 +81,7 @@ public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Speed", () -> runMotor.get(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
+        builder.addBooleanProperty("Switch", () -> !limitSwitch.get(), null);
     }
 
     @Override

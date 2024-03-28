@@ -17,7 +17,7 @@ public abstract class IntakeIO extends SubsystemBase implements LoggableInputs {
         return instance;
     }
 
-    public static final double GROUND_TILT = -35;
+    public static final double GROUND_TILT = -30;
     public static final double EJECT_SPEED = -1;
     public static final double PICKUP_SPEED = 0.5;
     public static final double OFF_SPEED = 0.0;

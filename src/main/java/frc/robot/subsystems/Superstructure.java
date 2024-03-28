@@ -158,7 +158,77 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Fire",
-            shoot()
+            shootNoStow()
+        );
+        NamedCommands.registerCommand(
+            "Just Start Intake",
+            intake.tilt(IntakeIO.GROUND_TILT)
+                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.coast())
+        );
+        NamedCommands.registerCommand(
+            "2 Shots",
+            telescope.extend(TelescopeIO.SHOOTING)
+                .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.pivot(-3))
+                .andThen(intake.tilt(IntakeIO.GROUND_TILT))
+                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.coast())
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(intake.zero()
+                    .alongWith(
+                        telescope.extend(TelescopeIO.AUTO)
+                        .andThen(shooter.pivot(-2.5))
+                    )
+                )
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                // .andThen(shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT))
+                // .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
+                // .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
+                // .andThen(telescope.extend(TelescopeIO.HANDOFF))
+                // .andThen(intake.zero())
+                // .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                // .andThen(Commands.waitSeconds(0.25))
+                // .andThen(backOut())
+                // .andThen(intake.run(IntakeIO.OFF_SPEED))
+                // .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                // .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                // .andThen(shooter.autoPivot().withTimeout(1))
+                // .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(intake.tilt(IntakeIO.GROUND_TILT))
+                .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
+                .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.coast())
+                .andThen(telescope.extend(TelescopeIO.HANDOFF))
+                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+        );
+        NamedCommands.registerCommand(
+            "Handoff + Aim", 
+            shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT)
+                .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
+                .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
+                .andThen(telescope.extend(TelescopeIO.HANDOFF))
+                .andThen(intake.zero())
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                .andThen(Commands.waitSeconds(0.25))
+                .andThen(backOut())
+                .andThen(intake.run(IntakeIO.OFF_SPEED))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                .andThen(shooter.autoPivot())
+        );
+        NamedCommands.registerCommand(
+            "Shoot + Stow",
+            shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT)
+                .andThen(Commands.waitSeconds(1))
+                .andThen(stow())
         );
     }
 
@@ -256,10 +326,9 @@ public class Superstructure {
             .andThen(intake.zero())
             .andThen(shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT))
             .andThen(intake.run(IntakeIO.EJECT_SPEED))
-            .andThen(Commands.waitSeconds(0.5))
+            .andThen(Commands.waitSeconds(0.25))
             .andThen(backOut())
-            .andThen(shooter.pivot(ShooterIO.STOW_TILT))
-            .andThen(intake.run(IntakeIO.OFF_SPEED));
+            .andThen(stow());
     }
 
     public Command startIntake() {
@@ -267,7 +336,7 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(0.3))
             .andThen(intake.tilt(IntakeIO.GROUND_TILT))
             .andThen(intake.run(IntakeIO.PICKUP_SPEED))
-            .andThen(Commands.waitSeconds(1))
+            .andThen(Commands.waitSeconds(0.5))
             .andThen(intake.coast());
     }
 
@@ -286,6 +355,12 @@ public class Superstructure {
             .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
             .andThen(stow());
 
+    }
+
+    public Command shootNoStow() {
+        return shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT)
+            .andThen(Commands.waitSeconds(0.9))
+            .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT));
     }
 
     public Command stow() {

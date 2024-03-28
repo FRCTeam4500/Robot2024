@@ -31,7 +31,7 @@ public class SwerveConstants {
     /* Sensitivities */
     public static final double MAX_FORWARD_SENSITIVITY = 6;
     public static final double MAX_SIDEWAYS_SENSITIVITY = 6;
-    public static final double MAX_ROTATIONAL_SENSITIVITY = 3.5;
+    public static final double MAX_ROTATIONAL_SENSITIVITY = 4.5;
     public static final double MIN_SENSITIVITY = 0.2;
 
     /* Drive Modes */

@@ -260,7 +260,8 @@ public class Swerve extends SwerveIO {
 	public Command angleCentricDrive(CommandXboxController xbox) {
 		return Commands.run(
             () -> {
-				double coefficent = Math.min(xbox.getLeftTriggerAxis() + 0.2, 1);
+				// double coefficent = Math.min(xbox.getLeftTriggerAxis() + 0.2, 1);
+				double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
 				double rotationalSens = MAX_ROTATIONAL_SENSITIVITY * coefficent;
