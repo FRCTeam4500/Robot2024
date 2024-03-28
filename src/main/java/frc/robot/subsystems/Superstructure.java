@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.shooter.ShooterIO;
@@ -281,8 +282,16 @@ public class Superstructure {
         return driveToPose(new Pose2d(2.3, 5.9, Rotation2d.fromDegrees(0)));
     }
 
+    public Command driveToFerry() {
+        return driveToPose(new Pose2d(9, 1, Rotation2d.fromDegrees(-45)));
+    }
+
     public Command resetGyro() {
         return swerve.resetGyro();
+    }
+
+    public Trigger hasNote() {
+        return intake.hasNote();
     }
 
     public Command ejectFromIntake() {

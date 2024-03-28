@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.intake.IntakeIO;
 
@@ -53,6 +54,11 @@ public class IntakeSim extends IntakeIO {
     @Override
     public Command run(double output) {
         return Commands.runOnce(() -> currentOutput = output, this);
+    }
+
+    @Override
+    public Trigger hasNote() {
+        return new Trigger(() -> false);    
     }
 
     @Override

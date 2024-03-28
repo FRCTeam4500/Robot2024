@@ -6,6 +6,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.intake.real.Intake;
 import frc.robot.subsystems.intake.sim.IntakeSim;
 
@@ -26,6 +27,7 @@ public abstract class IntakeIO extends SubsystemBase implements LoggableInputs {
     public abstract Command zero();
     public abstract Command run(double output);
     public abstract Command coast();
+    public abstract Trigger hasNote();
     public abstract void initSendable(SendableBuilder builder);
 
 }

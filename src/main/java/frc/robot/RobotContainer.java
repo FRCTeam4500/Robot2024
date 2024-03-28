@@ -45,16 +45,15 @@ public class RobotContainer {
 		Trigger cancelAllButton = xbox.start();
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmpButton = xbox.rightTrigger();
-		Trigger alignAmpShotButton = xbox.povDown();
-		Trigger alignFarShotButton = xbox.povUp();
+		Trigger alignFerryButton = xbox.povLeft();
 		Trigger faceSpeakerButton = xbox.b();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
+		alignFerryButton.whileTrue(structure.driveToFerry());
 		alignAmpButton.whileTrue(structure.driveToAmp());
-		alignAmpShotButton.whileTrue(structure.driveToAmpShot());
-		alignFarShotButton.whileTrue(structure.driveToFarShot());
 		faceSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
+		structure.hasNote().onTrue(rumbleCommand(1));
 	}
 
 	private void setupOperatorController() {
@@ -65,10 +64,10 @@ public class RobotContainer {
 		Trigger readyEverywhereButton = flightSim.button(3).debounce(0.1, DebounceType.kBoth);
 		Trigger readySubwooferButton = flightSim.button(4).debounce(0.1, DebounceType.kBoth);
 		Trigger readyAmpButton = flightSim.button(5).debounce(0.1, DebounceType.kBoth);
-		// 6
+		Trigger highFerryButton = flightSim.button(6).debounce(0.1, DebounceType.kBoth);
 		Trigger climberDownButton = flightSim.button(7).debounce(0.1, DebounceType.kBoth);
 		Trigger climberUpButton = flightSim.button(8).debounce(0.1, DebounceType.kBoth);
-		Trigger lowFerryButton = flightSim.button(9).debounce(0.1, DebounceType.kBoth);
+		// 9
 		Trigger stowButton = flightSim.button(10);
 		Trigger ejectButton = flightSim.button(11).debounce(0.1, DebounceType.kBoth);
 		Trigger unstickShooterButton = flightSim.button(12).debounce(0.1, DebounceType.kBoth);
@@ -82,7 +81,7 @@ public class RobotContainer {
 		readyAmpButton.onTrue(structure.readyAmp());
 		climberDownButton.onTrue(structure.climberDown());
 		climberUpButton.onTrue(structure.climberUp());
-		lowFerryButton.onTrue(structure.lowFerry());
+		highFerryButton.onTrue(structure.lowFerry());
 		stowButton.onTrue(structure.stow());
 		ejectButton.onTrue(structure.ejectLoader());
 		unstickShooterButton.onTrue(structure.backOut());
