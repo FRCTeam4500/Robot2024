@@ -31,9 +31,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "!Close Shot to Center2"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Start Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "!Close Shot to Center2"
+                }
+              }
+            ]
           }
         },
         {

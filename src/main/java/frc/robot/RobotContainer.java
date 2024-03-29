@@ -47,6 +47,7 @@ public class RobotContainer {
 		Trigger alignAmpButton = xbox.rightTrigger();
 		Trigger alignFerryButton = xbox.povLeft();
 		Trigger faceSpeakerButton = xbox.b();
+		Trigger rumbleTestButton = xbox.y();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
@@ -54,6 +55,7 @@ public class RobotContainer {
 		alignAmpButton.whileTrue(structure.driveToAmp());
 		faceSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
 		structure.hasNote().onTrue(rumbleCommand(1));
+		rumbleTestButton.onTrue(rumbleCommand(1));
 	}
 
 	private void setupOperatorController() {
@@ -99,7 +101,6 @@ public class RobotContainer {
 	public void autonomousInit() {
 		autoCommand = autonChooser.getSelected();
 		if (autoCommand != null) autoCommand.schedule();
-
 	}
 
 	public void teleopInit() {
