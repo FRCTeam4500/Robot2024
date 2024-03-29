@@ -18,7 +18,7 @@ public abstract class ClimberIO extends SubsystemBase implements LoggableInputs 
     }
     public static final double ZERO = 0.0;
     public static final double EXTENDED = -130;
-    public static final double RETRACTED = 30;
+    public static final double RETRACTED = 0.0;
     public abstract Command extend(double extension);
     public abstract void initSendable(SendableBuilder builder);
 }

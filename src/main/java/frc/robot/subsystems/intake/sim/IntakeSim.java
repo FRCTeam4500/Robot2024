@@ -31,7 +31,7 @@ public class IntakeSim extends IntakeIO {
     public void toLog(LogTable table) {
         table.put("Tilt", currentTilt);
         table.put("Output", currentOutput);
-        intakeMech.setAngle(-2.70909 * currentTilt + 45);
+        intakeMech.setAngle(-5 * currentTilt + 45);
     }
 
     @Override
