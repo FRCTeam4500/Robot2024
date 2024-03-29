@@ -281,7 +281,7 @@ public class Superstructure {
     }
 
     public Command testPathfindThenFollowPath() {
-        return AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Path Find Test"), TELEOP_CONSTRAINTS);
+        return AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("PathfindTest"), TELEOP_CONSTRAINTS);
     }
 
     public Command resetGyro() {
