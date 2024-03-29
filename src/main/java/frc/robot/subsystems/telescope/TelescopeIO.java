@@ -22,6 +22,7 @@ public abstract class TelescopeIO extends SubsystemBase implements LoggableInput
     public static final double AUTO = 3000;
     public static final double HANDOFF = 400;
     public static final double STOW = 400;
+    public static final double SOURCE = 3500;
     public abstract Command extend(double extension);
     public abstract Command coast();
     public abstract MechanismLigament2d getCurrentMech();

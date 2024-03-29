@@ -399,4 +399,27 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(2))
             .andThen(shooter.pivot(ShooterIO.STOW_TILT));
     }
+
+    public Command beginSourceIntake() {
+        return shooter.pivot(ShooterIO.SOURCE_TILT)
+            .andThen(telescope.extend(TelescopeIO.SOURCE))
+            .andThen(shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT));
+    }
+
+    public Command endSourceIntake() {
+        // return stow().andThen(backOut());
+        return shooter.pivot(ShooterIO.HANDOFF_TILT)
+            .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
+            .andThen(Commands.waitSeconds(0.5))
+            .andThen(backOut())
+            .andThen(stow());
+    }
+
+    public Command shooterIntake() {
+        return shooter.spinUp(ShooterIO.SOURCE_INTAKE_OUTPUT, ShooterIO.SOURCE_INTAKE_OUTPUT);
+    }
+
+    public Command endShooterIntake() {
+        return shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT);
+    }
 }

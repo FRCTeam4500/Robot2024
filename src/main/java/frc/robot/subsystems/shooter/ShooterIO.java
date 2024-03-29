@@ -16,13 +16,15 @@ public abstract class ShooterIO extends SubsystemBase implements LoggableInputs 
         if (instance == null && !RobotBase.isReal()) instance = new ShooterSim();
         return instance;
     }
-    
+
     public static final double AMP_TILT = -16.3;
     public static final double HANDOFF_TILT = -7.0;
     public static final double SUBWOOFER_TILT = 1.5;
     public static final double FAR_TILT = -2.2;
     public static final double STOW_TILT = -0.5;
+    public static final double SOURCE_TILT = 1.4;
 
+    public static final double SOURCE_INTAKE_OUTPUT = -0.5;
     public static final double SHOOTING_OUTPUT = 1;
     public static final double AMPING_OUTPUT = 0.5;
     public static final double OFF_OUTPUT = 0;

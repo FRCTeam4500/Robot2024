@@ -74,6 +74,7 @@ public class RobotContainer {
 		Trigger ejectButton = flightSim.button(11).debounce(0.1, DebounceType.kBoth);
 		Trigger unstickShooterButton = flightSim.button(12).debounce(0.1, DebounceType.kBoth);
 		Trigger zeroIntakeButton = flightSim.povDown().debounce(0.1, DebounceType.kBoth);
+		Trigger sourceIntakeButton = flightSim.button(9).debounce(0.1, DebounceType.kBoth);
 
 		shootButton.onTrue(structure.shoot());
 		intakeButton.onTrue(structure.startIntake());
@@ -89,6 +90,8 @@ public class RobotContainer {
 		unstickShooterButton.onTrue(structure.backOut());
 		zeroIntakeButton.whileTrue(structure.zeroIntake());
 		zeroIntakeButton.onFalse(structure.stow());
+		sourceIntakeButton.whileTrue(structure.shooterIntake());
+		sourceIntakeButton.onFalse(structure.endShooterIntake());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
