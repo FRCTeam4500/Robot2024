@@ -141,17 +141,17 @@ public class Superstructure {
                 .andThen(stow())
         );
         NamedCommands.registerCommand(
-            "Start Intaking", 
+            "Start Intaking",
             startIntake()
         );
         NamedCommands.registerCommand(
-            "Finish Intaking", 
+            "Finish Intaking",
             stow()
                 .andThen(handoff())
         );
 
         NamedCommands.registerCommand(
-            "Handoff", 
+            "Handoff",
             handoff()
         );
         NamedCommands.registerCommand(
@@ -201,7 +201,7 @@ public class Superstructure {
                 .andThen(intake.run(IntakeIO.PICKUP_SPEED))
         );
         NamedCommands.registerCommand(
-            "Handoff + Aim", 
+            "Handoff + Aim",
             shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT)
                 .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
                 .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
@@ -255,7 +255,7 @@ public class Superstructure {
     public Command alignToSpeaker(CommandXboxController xbox) {
         return swerve.speakerCentricDrive(xbox);
     }
-    
+
     public Command driveToPose(Pose2d target) {
         return swerve.poseCentricDrive(target);
     }
@@ -276,8 +276,20 @@ public class Superstructure {
         return driveToPose(new Pose2d(9, 1, Rotation2d.fromDegrees(-45)));
     }
 
-    public Command driveToSource() {
-        return AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Path Find To Source"), TELEOP_CONSTRAINTS);
+    public Command driveToSourceLeft() {
+        return Commands.either(
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Toward Speaker"), TELEOP_CONSTRAINTS),
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Away Speaker"), TELEOP_CONSTRAINTS),
+            () -> DriverStation.getAlliance().get().equals(Alliance.Blue)
+        );
+    }
+
+    public Command driveToSourceRight() {
+        return Commands.either(
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Toward Speaker"), TELEOP_CONSTRAINTS),
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Away Speaker"), TELEOP_CONSTRAINTS),
+            () -> DriverStation.getAlliance().get().equals(Alliance.Red)
+        );
     }
 
     public Command testPathfindThenFollowPath() {
@@ -293,8 +305,7 @@ public class Superstructure {
     }
 
     public Command ejectFromIntake() {
-        return 
-            shooter.pivot(ShooterIO.HANDOFF_TILT)
+        return shooter.pivot(ShooterIO.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.25))
             .andThen(intake.tilt(IntakeIO.GROUND_TILT))
             .andThen(Commands.waitSeconds(0.5))
@@ -303,8 +314,8 @@ public class Superstructure {
 
     public Command zeroIntake() {
         return shooter.pivot(ShooterIO.HANDOFF_TILT)
-        .andThen(Commands.waitSeconds(0.25))
-        .andThen(intake.zero());
+            .andThen(Commands.waitSeconds(0.25))
+            .andThen(intake.zero());
     }
 
     public Command readyAmp() {
@@ -419,6 +430,5 @@ public class Superstructure {
             .andThen(Commands.waitSeconds(0.15))
             .andThen(backOut())
             .andThen(stow());
-
     }
 }
