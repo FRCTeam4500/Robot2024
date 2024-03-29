@@ -75,12 +75,11 @@ public class RobotContainer {
 		Trigger highFerryButton = flightSim.button(6).debounce(0.1, DebounceType.kBoth);
 		Trigger climberDownButton = flightSim.button(7).debounce(0.1, DebounceType.kBoth);
 		Trigger climberUpButton = flightSim.button(8).debounce(0.1, DebounceType.kBoth);
-		// 9
+		Trigger sourceIntakeButton = flightSim.button(9).debounce(0.1, DebounceType.kBoth);
 		Trigger stowButton = flightSim.button(10);
 		Trigger ejectButton = flightSim.button(11).debounce(0.1, DebounceType.kBoth);
 		Trigger unstickShooterButton = flightSim.button(12).debounce(0.1, DebounceType.kBoth);
 		Trigger zeroIntakeButton = flightSim.povDown().debounce(0.1, DebounceType.kBoth);
-		Trigger sourceIntakeButton = flightSim.button(9).debounce(0.1, DebounceType.kBoth);
 
 		shootButton.onTrue(structure.shoot());
 		intakeButton.onTrue(structure.startIntake());
@@ -90,14 +89,14 @@ public class RobotContainer {
 		readyAmpButton.onTrue(structure.readyAmp());
 		climberDownButton.onTrue(structure.climberDown());
 		climberUpButton.onTrue(structure.climberUp());
+		sourceIntakeButton.whileTrue(structure.shooterIntake());
+		sourceIntakeButton.onFalse(structure.endShooterIntake());
 		highFerryButton.onTrue(structure.lowFerry());
 		stowButton.onTrue(structure.stow());
 		ejectButton.onTrue(structure.ejectLoader());
 		unstickShooterButton.onTrue(structure.backOut());
 		zeroIntakeButton.whileTrue(structure.zeroIntake());
 		zeroIntakeButton.onFalse(structure.stow());
-		sourceIntakeButton.whileTrue(structure.shooterIntake());
-		sourceIntakeButton.onFalse(structure.endShooterIntake());
 	}
 
 	public Command rumbleCommand(double timeSeconds) {
