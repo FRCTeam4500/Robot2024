@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter.real;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -34,7 +35,7 @@ public class Shooter extends ShooterIO {
     public static final double LOADER_HANDOFF_SPEED = -0.75;
     public static final double LOADER_SHOOT_SPEED = -1;
     public static final double LOADER_OFF_SPEED = 0;
-    
+
     private CANSparkMax tiltMotor;
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
@@ -80,10 +81,21 @@ public class Shooter extends ShooterIO {
     public Command autoPivot() {
         return Commands.run(
             () -> {
-                double distance = SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
-                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9
+                Pose2d currentPose = SwerveIO.getInstance().getEstimatedPose();
+                Alliance me = DriverStation.getAlliance().orElse(Alliance.Blue);
+
+                double distance = currentPose.getTranslation().getDistance(new Translation2d(
+                    me == Alliance.Blue ? 0 : 16.5, 5.9
                 ));
+
                 double angle = angleCalculator.get(distance);
+
+                // if (me == Alliance.Blue && currentPose.getY() < 4.76) { // TODO: Check for blue
+                //     angle-=1;
+                // } else if (me == Alliance.Red && currentPose.getY() > 6) {
+                //     angle-=1;
+                // }
+
                 tiltMotor.getPIDController().setReference(angle, ControlType.kPosition, 0, calcFF(angle));
             }, this
         );

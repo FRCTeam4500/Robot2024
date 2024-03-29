@@ -3,7 +3,9 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -14,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.swerve.SwerveIO;
 
 public class RobotContainer {
 	private CommandXboxController xbox;
@@ -56,7 +59,15 @@ public class RobotContainer {
 		resetGyroButton.onTrue(structure.resetGyro());
 		alignFerryButton.whileTrue(structure.driveToFerry());
 		alignAmpButton.whileTrue(structure.driveToAmp());
-		faceSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
+		faceSpeakerButton.whileTrue(
+			Commands.either(
+				structure.alignToSpeaker(xbox),
+				rumbleCommand(1),
+				() -> SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
+                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9
+                )) < 4.4
+			)
+		);
 		structure.hasNote().onTrue(rumbleCommand(1));
 		rumbleTestButton.onTrue(rumbleCommand(1));
 		alignSourceLeft.whileTrue(structure.driveToSourceLeft());
