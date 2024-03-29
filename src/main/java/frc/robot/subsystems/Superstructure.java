@@ -22,6 +22,7 @@ import static frc.robot.subsystems.swerve.SwerveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -273,6 +274,14 @@ public class Superstructure {
 
     public Command driveToFerry() {
         return driveToPose(new Pose2d(9, 1, Rotation2d.fromDegrees(-45)));
+    }
+
+    public Command driveToSource() {
+        return AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Path Find To Source"), TELEOP_CONSTRAINTS);
+    }
+
+    public Command testPathfindThenFollowPath() {
+        return AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Path Find Test"), TELEOP_CONSTRAINTS);
     }
 
     public Command resetGyro() {

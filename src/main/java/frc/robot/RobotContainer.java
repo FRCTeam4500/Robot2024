@@ -41,13 +41,15 @@ public class RobotContainer {
 	private void setupDriveController() {
 		xbox = new CommandXboxController(DRIVER_PORT);
 		structure.setDefaultDrive(xbox);
-		
+
 		Trigger cancelAllButton = xbox.start();
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmpButton = xbox.rightTrigger();
 		Trigger alignFerryButton = xbox.povLeft();
 		Trigger faceSpeakerButton = xbox.b();
 		Trigger rumbleTestButton = xbox.y();
+		Trigger sourceAlignButton = xbox.povUp();
+		Trigger testAlignButton = xbox.povRight();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
@@ -56,11 +58,13 @@ public class RobotContainer {
 		faceSpeakerButton.whileTrue(structure.alignToSpeaker(xbox));
 		structure.hasNote().onTrue(rumbleCommand(1));
 		rumbleTestButton.onTrue(rumbleCommand(1));
+		// sourceAlignButton.whileTrue(structure.driveToSource());
+		testAlignButton.whileTrue(structure.testPathfindThenFollowPath());
 	}
 
 	private void setupOperatorController() {
 		flightSim = new CommandJoystick(OPERATOR_PORT);
-		
+
 		Trigger shootButton = flightSim.button(1).debounce(0.1, DebounceType.kBoth);
 		Trigger intakeButton = flightSim.button(2).debounce(0.1, DebounceType.kBoth);
 		Trigger readyEverywhereButton = flightSim.button(3).debounce(0.1, DebounceType.kBoth);
