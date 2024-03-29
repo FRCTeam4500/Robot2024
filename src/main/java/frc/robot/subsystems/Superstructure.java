@@ -408,10 +408,11 @@ public class Superstructure {
     }
 
     public Command climberUp() {
-        return shooter.pivot(ShooterIO.AMP_TILT)
-            .andThen(intake.tilt(IntakeIO.GROUND_TILT))
-            .andThen(Commands.waitSeconds(0.5))
-            .andThen(climber.extend(ClimberIO.EXTENDED));
+        return intake.zero().alongWith(
+            shooter.pivot(ShooterIO.AMP_TILT)
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(climber.extend(ClimberIO.EXTENDED))
+        );
     }
 
     public Command climberDown() {
