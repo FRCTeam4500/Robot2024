@@ -48,7 +48,7 @@ public class RobotContainer {
 		Trigger cancelAllButton = xbox.start();
 		Trigger resetGyroButton = xbox.a();
 		Trigger alignAmpButton = xbox.rightTrigger();
-		Trigger alignFerryButton = xbox.povLeft();
+		Trigger alignFerryButton = xbox.povDown();
 		Trigger faceSpeakerButton = xbox.b();
 		Trigger rumbleTestButton = xbox.y();
 		Trigger alignSourceLeftButton = xbox.povLeft();
@@ -102,7 +102,7 @@ public class RobotContainer {
 		climberUpButton.onTrue(structure.climberUp());
 		sourceIntakeButton.whileTrue(structure.shooterIntake());
 		sourceIntakeButton.onFalse(structure.endShooterIntake());
-		highFerryButton.onTrue(structure.lowFerry());
+		highFerryButton.onTrue(structure.highFerry());
 		stowButton.onTrue(structure.stow());
 		ejectButton.onTrue(structure.ejectLoader());
 		unstickShooterButton.onTrue(structure.backOut());

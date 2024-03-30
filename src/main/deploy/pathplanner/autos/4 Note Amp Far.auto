@@ -16,15 +16,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "!Subwoofer to Piece2 Slow"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "2 Shots"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "!Subwoofer to Piece2 Slow"
                 }
               }
             ]
@@ -71,7 +71,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot + Stow"
+            "name": "Shoot + Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "!Close Shot to Piece1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Amp Shot + Stow"
           }
         }
       ]
