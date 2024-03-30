@@ -305,7 +305,7 @@ public class Swerve extends SwerveIO {
         ).beforeStarting(() -> driveMode = DriveMode.RobotCentric);
     }
 
-    public Command alignToPiece(CommandXboxController xbox) {
+    public Command pieceCentricDrive(CommandXboxController xbox) {
         return Commands.run(() -> {
                 double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;

@@ -143,6 +143,11 @@ public class SwerveSim extends SwerveIO {
 	}
 
     @Override
+    public Command pieceCentricDrive(CommandXboxController xbox) {
+        return angleCentricDrive(xbox);
+    }
+
+    @Override
     public Command resetGyro() {
         return Commands.runOnce(
             () -> {

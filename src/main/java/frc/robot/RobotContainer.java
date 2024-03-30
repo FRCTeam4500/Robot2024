@@ -51,9 +51,9 @@ public class RobotContainer {
 		Trigger alignFerryButton = xbox.povLeft();
 		Trigger faceSpeakerButton = xbox.b();
 		Trigger rumbleTestButton = xbox.y();
-		Trigger alignSourceLeft = xbox.povLeft();
-		Trigger alignSourceRight = xbox.povRight();
-		// Trigger testAlignButton = xbox.povRight();
+		Trigger alignSourceLeftButton = xbox.povLeft();
+		Trigger alignSourceRightButton = xbox.povRight();
+		Trigger alignPieceButton = xbox.rightBumper();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 		resetGyroButton.onTrue(structure.resetGyro());
@@ -70,9 +70,9 @@ public class RobotContainer {
 		);
 		structure.hasNote().onTrue(rumbleCommand(1));
 		rumbleTestButton.onTrue(rumbleCommand(1));
-		alignSourceLeft.whileTrue(structure.driveToSourceLeft());
-		alignSourceRight.whileTrue(structure.driveToSourceRight());
-		// testAlignButton.whileTrue(structure.testPathfindThenFollowPath());
+		alignSourceLeftButton.whileTrue(structure.driveToSourceLeft());
+		alignSourceRightButton.whileTrue(structure.driveToSourceRight());
+		alignPieceButton.whileTrue(structure.alignToPiece(xbox));
 	}
 
 	private void setupOperatorController() {

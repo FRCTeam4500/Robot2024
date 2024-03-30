@@ -24,6 +24,7 @@ public abstract class SwerveIO extends SubsystemBase implements LoggableInputs {
     public abstract Command angleCentricDrive(CommandXboxController xbox);
     public abstract Command speakerCentricDrive(CommandXboxController xbox);
     public abstract Command poseCentricDrive(Pose2d target);
+    public abstract Command pieceCentricDrive(CommandXboxController xbox);
     public abstract Command resetGyro();
     public abstract Pose2d getEstimatedPose();
     public abstract void resetPose(Pose2d pose);

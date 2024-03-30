@@ -260,6 +260,10 @@ public class Superstructure {
         return swerve.poseCentricDrive(target);
     }
 
+    public Command alignToPiece(CommandXboxController xbox) {
+        return swerve.pieceCentricDrive(xbox);
+    }
+
     public Command driveToAmp() {
         return driveToPose(new Pose2d(1.9, 7.7, Rotation2d.fromDegrees(-90)));
 	}
@@ -290,10 +294,6 @@ public class Superstructure {
             AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Away Speaker"), TELEOP_CONSTRAINTS),
             () -> DriverStation.getAlliance().get().equals(Alliance.Red)
         );
-    }
-
-    public Command testPathfindThenFollowPath() {
-        return AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("PathfindTest"), TELEOP_CONSTRAINTS);
     }
 
     public Command resetGyro() {
