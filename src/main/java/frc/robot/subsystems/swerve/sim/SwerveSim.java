@@ -39,10 +39,10 @@ public class SwerveSim extends SwerveIO {
 		anglePID.setTolerance(Math.PI / 32, Math.PI / 32);
 		anglePID.setSetpoint(0);
         kinematics = new SwerveDriveKinematics(
-            FRONT_LEFT_MODULE_TRANSLATION,
-            FRONT_RIGHT_MODULE_TRANSLATION,
-            BACK_LEFT_MODULE_TRANSLATION,
-            BACK_RIGHT_MODULE_TRANSLATION
+            FRONT_LEFT_MODULE_CONFIG.translation(),
+            FRONT_RIGHT_MODULE_CONFIG.translation(),
+            BACK_LEFT_MODULE_CONFIG.translation(),
+            BACK_RIGHT_MODULE_CONFIG.translation()
         );
         currentPose = new Pose2d();
         currentSpeeds = new ChassisSpeeds();
