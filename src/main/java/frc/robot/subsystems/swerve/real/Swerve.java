@@ -192,7 +192,7 @@ public class Swerve extends SwerveIO {
 					0,
 					getRobotAngle().plus(addition)
 				).vxMetersPerSecond,
-				pieceVision.getHorizontalOffset(new Rotation2d()).getDegrees() / (pieceVision.getTakenArea(99)),
+				pieceVision.getHorizontalOffset(new Rotation2d()).getDegrees() / 20,
 				calculateRotationalVelocityToTarget(aligningAngle)
 			)
 		);
@@ -260,7 +260,6 @@ public class Swerve extends SwerveIO {
 	public Command angleCentricDrive(CommandXboxController xbox) {
 		return Commands.run(
             () -> {
-				// double coefficent = Math.min(xbox.getLeftTriggerAxis() + 0.2, 1);
 				double coefficent = Math.max(1 - xbox.getLeftTriggerAxis(), 0.2);
                 double forwardSens = MAX_FORWARD_SENSITIVITY * coefficent;
                 double sidewaysSens = MAX_SIDEWAYS_SENSITIVITY * coefficent;
@@ -272,6 +271,11 @@ public class Swerve extends SwerveIO {
 					targetAngle = Rotation2d.fromDegrees(-90);
 				else if (xbox.getHID().getLeftBumper())
 					targetAngle = Rotation2d.fromDegrees(90);
+				else if (xbox.getHID().getYButton())
+					if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue)
+						targetAngle = Rotation2d.fromDegrees(-60);
+					else
+						targetAngle = Rotation2d.fromDegrees(-120);
 				else 
 					targetAngle = Rotation2d.fromDegrees(
 						targetAngle.getDegrees() -

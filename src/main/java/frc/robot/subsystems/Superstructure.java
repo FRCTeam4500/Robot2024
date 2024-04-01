@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.pieceVision.GamePieceVisionIO;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.SwerveIO;
 import frc.robot.subsystems.telescope.TelescopeIO;
@@ -253,6 +254,7 @@ public class Superstructure {
         debug.add(shooter);
         debug.add(climber);
         debug.add(AprilTagVisionIO.getInstance());
+        debug.add(GamePieceVisionIO.getInstance());
     }
 
     public Command shootWithEverything() {

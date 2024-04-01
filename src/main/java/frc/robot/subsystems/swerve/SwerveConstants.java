@@ -102,7 +102,7 @@ public class SwerveConstants {
             motor -> motor.getPIDController().setP(0.75)
         );
     public static final SwerveModuleConfig BACK_LEFT_MODULE_CONFIG = new SwerveModuleConfig(
-        new Translation2d(-0.2974, 0.2974), 0.088392, 1/7.5, 1/6.75
+        new Translation2d(-0.2974, 0.2974), 0.1016, 1/7.5, 1/6.75
     );
 
     public static final SwerveMotor BACK_RIGHT_DRIVE_MOTOR =
