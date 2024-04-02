@@ -50,7 +50,6 @@ public class RobotContainer {
 		Trigger alignAmpButton = xbox.rightTrigger();
 		Trigger alignFerryButton = xbox.povDown();
 		Trigger faceSpeakerButton = xbox.b();
-		Trigger rumbleTestButton = xbox.y();
 		Trigger alignSourceLeftButton = xbox.povLeft();
 		Trigger alignSourceRightButton = xbox.povRight();
 		Trigger alignPieceButton = xbox.rightBumper();
@@ -69,7 +68,6 @@ public class RobotContainer {
 			)
 		);
 		structure.hasNote().onTrue(rumbleCommand(1));
-		rumbleTestButton.onTrue(rumbleCommand(1));
 		alignSourceLeftButton.whileTrue(structure.driveToSourceLeft());
 		alignSourceRightButton.whileTrue(structure.driveToSourceRight());
 		alignPieceButton.whileTrue(structure.alignToPiece(xbox));
