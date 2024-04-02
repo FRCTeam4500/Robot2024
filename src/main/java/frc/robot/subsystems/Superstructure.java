@@ -306,16 +306,16 @@ public class Superstructure {
 
     public Command driveToSourceLeft() {
         return Commands.either(
-            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Toward Speaker"), TELEOP_CONSTRAINTS),
-            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Away Speaker"), TELEOP_CONSTRAINTS),
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("T Source Toward Speaker"), TELEOP_CONSTRAINTS),
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("T Source Away Speaker"), TELEOP_CONSTRAINTS),
             () -> DriverStation.getAlliance().get().equals(Alliance.Blue)
         );
     }
 
     public Command driveToSourceRight() {
         return Commands.either(
-            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Toward Speaker"), TELEOP_CONSTRAINTS),
-            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("Source Away Speaker"), TELEOP_CONSTRAINTS),
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("T Source Toward Speaker"), TELEOP_CONSTRAINTS),
+            AutoBuilder.pathfindThenFollowPath(PathPlannerPath.fromPathFile("T Source Away Speaker"), TELEOP_CONSTRAINTS),
             () -> DriverStation.getAlliance().get().equals(Alliance.Red)
         );
     }

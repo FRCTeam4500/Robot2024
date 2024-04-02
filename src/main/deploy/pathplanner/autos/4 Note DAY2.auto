@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "To Piece 2"
+            "pathName": "A To Piece 2"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Piece2 To Piece1"
+            "pathName": "A Piece2 To Piece1"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Piece2 To Piece3"
+            "pathName": "A Piece2 To Piece3"
           }
         },
         {
@@ -60,7 +60,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Piece3 to Far Shot"
+                  "pathName": "A Piece3 to Far Shot"
                 }
               }
             ]
