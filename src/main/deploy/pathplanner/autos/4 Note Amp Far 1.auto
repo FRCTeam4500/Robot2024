@@ -1,0 +1,94 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.35,
+      "y": 5.55
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "2 Shots"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A !Subwoofer to Piece2 Slow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Start Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A !Close Shot to Center1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A !Center1 to Close Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Handoff + Aim"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot + Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A !Close Shot to Piece1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Amp Shot + Stow"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

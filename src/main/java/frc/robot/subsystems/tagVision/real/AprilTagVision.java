@@ -12,12 +12,12 @@ import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 import frc.robot.utilities.ExtendedMath;
 
 public class AprilTagVision extends AprilTagVisionIO {
-    private Limelight front;
     private Limelight back;
+    private Limelight front;
 
     public AprilTagVision() {
-        front = new Limelight("limelight-hehehe");
-        back = new Limelight("limelight-hihihi"); // Not on robot yet
+        back = new Limelight("limelight-hehehe");
+        front = new Limelight("limelight-hihihi"); // Not on robot yet
     }
 
     public boolean seesTag(Camera camera) {
@@ -92,22 +92,22 @@ public class AprilTagVision extends AprilTagVisionIO {
 
     private Limelight getCamera(Camera camera) {
         switch (camera) {
-            case Front:
-                return front;
             case Back:
                 return back;
+            case Front:
+                return front;
         }
-        return front;
+        return back;
     }
     
     @Override
     public void toLog(LogTable table) {
-        table.put("Front Sees Tag", seesTag(Camera.Front));
-        table.put("Front Tag ID", getTagId(0, Camera.Front));
-        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Front));
         table.put("Back Sees Tag", seesTag(Camera.Back));
         table.put("Back Tag ID", getTagId(0, Camera.Back));
         Logger.recordOutput("Back Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Back));
+        table.put("Front Sees Tag", seesTag(Camera.Front));
+        table.put("Front Tag ID", getTagId(0, Camera.Front));
+        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Front));
     }
 
     @Override
@@ -115,9 +115,9 @@ public class AprilTagVision extends AprilTagVisionIO {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addBooleanProperty("Front Sees Tag", () -> seesTag(Camera.Front), null);
-        builder.addIntegerProperty("Front Tag ID", () -> getTagId(0, Camera.Front), null);
-        builder.addBooleanProperty("Back Sees Tag", () -> seesTag(Camera.Back), null);
-        builder.addIntegerProperty("Back Tag ID", () -> getTagId(0, Camera.Back), null);
+        builder.addBooleanProperty("Front Sees Tag", () -> seesTag(Camera.Back), null);
+        builder.addIntegerProperty("Front Tag ID", () -> getTagId(0, Camera.Back), null);
+        builder.addBooleanProperty("Back Sees Tag", () -> seesTag(Camera.Front), null);
+        builder.addIntegerProperty("Back Tag ID", () -> getTagId(0, Camera.Front), null);
     }
 }

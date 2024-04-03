@@ -440,9 +440,7 @@ public class Superstructure {
     }
 
     public Command climberDown() {
-        return climber.extend(ClimberIO.RETRACTED)
-            .andThen(Commands.waitSeconds(2))
-            .andThen(shooter.pivot(ShooterIO.STOW_TILT));
+        return climber.extend(ClimberIO.RETRACTED);
     }
 
     public Command shooterIntake() {

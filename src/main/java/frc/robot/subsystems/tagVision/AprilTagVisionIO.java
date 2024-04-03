@@ -24,6 +24,6 @@ public abstract class AprilTagVisionIO extends SubsystemBase implements Loggable
     public abstract void initSendable(SendableBuilder builder);
 
     public static enum Camera {
-        Front, Back
+        Back, Front
     }
 }
