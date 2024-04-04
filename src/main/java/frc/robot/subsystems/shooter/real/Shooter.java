@@ -100,6 +100,10 @@ public class Shooter extends ShooterIO {
             }, this
         );
     }
+    
+    public double getAngle(Translation2d currentTranslation) {
+        return angleCalculator.get(currentTranslation.getDistance(new Translation2d(0, 5.9)));
+    }
 
     public Command load(double output) {
         return Commands.runOnce(

@@ -222,9 +222,12 @@ public class Superstructure {
             shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT)
                 .andThen(intake.tilt(IntakeIO.GROUND_TILT))
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
-                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
-                .andThen(Commands.waitSeconds(1))
+                .andThen(Commands.waitSeconds(0.5))
                 .andThen(intake.coast())
+                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
+                .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
         );
         NamedCommands.registerCommand(
             "Amp Shot + Stow",
@@ -267,7 +270,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Ready Source Shot", 
-            shooter.pivot(-3)
+            shooter.pivot(-4.37)
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))
         );
