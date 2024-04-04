@@ -197,6 +197,19 @@ public class Superstructure {
                 .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
         );
         NamedCommands.registerCommand(
+            "1 Shot + Stow", 
+            telescope.extend(TelescopeIO.SHOOTING)
+                .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.pivot(-3))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(stow())
+
+        );
+        NamedCommands.registerCommand(
             "Handoff + Aim",
             shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT)
                 .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
@@ -210,6 +223,18 @@ public class Superstructure {
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))
                 .andThen(shooter.autoPivot())
+        );
+        NamedCommands.registerCommand(
+            "Handoff + Stow",
+            shooter.load(ShooterIO.LOADER_HANDOFF_OUTPUT)
+                .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
+                .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
+                .andThen(telescope.extend(TelescopeIO.HANDOFF))
+                .andThen(intake.zero())
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                .andThen(Commands.waitSeconds(0.25))
+                .andThen(backOut())
+                .andThen(stow())
         );
         NamedCommands.registerCommand(
             "Shoot + Stow",
