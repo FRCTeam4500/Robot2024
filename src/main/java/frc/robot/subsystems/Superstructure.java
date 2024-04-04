@@ -238,6 +238,34 @@ public class Superstructure {
                 .andThen(stow())
         );
         NamedCommands.registerCommand(
+            "Amp Shot",
+            shooter.pivot(-3)
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                .andThen(intake.zero())
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+        );
+        NamedCommands.registerCommand(
+            "Podium Shot",
+            shooter.pivot(-3)
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                .andThen(intake.zero())
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+        );
+        NamedCommands.registerCommand(
+            "Stow",
+            stow()
+        );
+        NamedCommands.registerCommand(
             "Ready Source Shot", 
             shooter.pivot(-3)
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
