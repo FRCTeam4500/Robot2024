@@ -272,11 +272,18 @@ public class Swerve extends SwerveIO {
 					targetAngle = Rotation2d.fromDegrees(-90);
 				else if (xbox.getHID().getLeftBumper())
 					targetAngle = Rotation2d.fromDegrees(90);
-				else if (xbox.getHID().getYButton())
+				else if (xbox.getHID().getYButton()) {
 					if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue)
 						targetAngle = Rotation2d.fromDegrees(-60);
 					else
 						targetAngle = Rotation2d.fromDegrees(-120);
+				}
+				else if (xbox.getHID().getXButton()) {
+					if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue)
+						targetAngle = Rotation2d.fromDegrees(120);
+					else
+						targetAngle = Rotation2d.fromDegrees(60);
+				}
 				else 
 					targetAngle = Rotation2d.fromDegrees(
 						targetAngle.getDegrees() -
