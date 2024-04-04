@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 
@@ -12,10 +13,10 @@ public class AprilTagVisionSim extends AprilTagVisionIO {
     public void toLog(LogTable table) {
         table.put("Front Sees Tag", seesTag(Camera.Back));
         table.put("Front Tag ID", getTagId(0, Camera.Back));
-        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Back));
+        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), new Rotation2d(), Camera.Back));
         table.put("Back Sees Tag", seesTag(Camera.Front));
         table.put("Back Tag ID", getTagId(0, Camera.Front));
-        Logger.recordOutput("Back Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Front));
+        Logger.recordOutput("Back Vision Robot Pose", getRobotPose(new Pose2d(), new Rotation2d(), Camera.Front));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class AprilTagVisionSim extends AprilTagVisionIO {
     }
 
     @Override
-    public Pose2d getRobotPose(Pose2d defaultPose, Camera camera) {
+    public Pose2d getRobotPose(Pose2d defaultPose, Rotation2d currentRotation, Camera camera) {
         return defaultPose;
     }
 

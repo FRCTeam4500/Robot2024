@@ -71,6 +71,10 @@ public class Limelight {
 		table.getEntry(key).setNumber(value);
 	}
 
+	public void setRobotRotation(Rotation2d rotation) {
+		table.getEntry("robot_orientation_set").setDoubleArray(new double[] {rotation.getDegrees(), 0.0, 0.0, 0, 0, 0});
+	}
+
 	public Optional<Pose2d> getRobotPoseToField() {
 		if (!hasValidTargets()) return Optional.empty();
 		return Optional.of(getEntryPose2d("botpose"));

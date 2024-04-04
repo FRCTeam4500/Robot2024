@@ -84,13 +84,13 @@ public class Swerve extends SwerveIO {
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d(), Camera.Back)
+			tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back)
 		);
 		poseEstimator = new SwerveDrivePoseEstimator(
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d(), Camera.Back)
+			tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back)
 		);
 		targetAngle = getRobotAngle();
         driveMode = DriveMode.AngleCentric;
@@ -125,14 +125,15 @@ public class Swerve extends SwerveIO {
 		poseEstimator.update(gyroAngle, modulePositions);
 		double frontTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Back).getTranslation().getNorm();
 		double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
+		double trustworthyDistance = 4;
 		boolean speedLimit = 
-			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 0.5)) || 
+			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 2 * Math.PI)) || 
 			!DriverStation.isAutonomous());
-		if (tagVision.seesTag(Camera.Back) && speedLimit && frontTagDist < 4) {	
-			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Back), Timer.getFPGATimestamp());
+		if (tagVision.seesTag(Camera.Back) && speedLimit && frontTagDist < trustworthyDistance) {	
+			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back), Timer.getFPGATimestamp());
 		}
-		if (tagVision.seesTag(Camera.Front) && speedLimit && backTagDist < 4) {
-			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), Camera.Front), Timer.getFPGATimestamp());
+		if (tagVision.seesTag(Camera.Front) && speedLimit && backTagDist < trustworthyDistance) {
+			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Front), Timer.getFPGATimestamp());
 		}
 		field.setRobotPose(getEstimatedPose());
 	}

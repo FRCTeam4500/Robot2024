@@ -28,7 +28,8 @@ public class AprilTagVision extends AprilTagVisionIO {
         return getCamera(camera).getTargetTagId().orElse(defaultId);
     }
 
-    public Pose2d getRobotPose(Pose2d defaultPose, Camera camera) {
+    public Pose2d getRobotPose(Pose2d defaultPose, Rotation2d currentRotation, Camera camera) {
+        getCamera(camera).setRobotRotation(currentRotation);
 		return getRobotPose(defaultPose, Alliance.Blue, camera);
 	}
 
@@ -104,10 +105,10 @@ public class AprilTagVision extends AprilTagVisionIO {
     public void toLog(LogTable table) {
         table.put("Back Sees Tag", seesTag(Camera.Back));
         table.put("Back Tag ID", getTagId(0, Camera.Back));
-        Logger.recordOutput("Back Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Back));
+        Logger.recordOutput("Back Vision Robot Pose", getRobotPose(new Pose2d(), new Rotation2d(), Camera.Back));
         table.put("Front Sees Tag", seesTag(Camera.Front));
         table.put("Front Tag ID", getTagId(0, Camera.Front));
-        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), Camera.Front));
+        Logger.recordOutput("Front Vision Robot Pose", getRobotPose(new Pose2d(), new Rotation2d(), Camera.Front));
     }
 
     @Override
