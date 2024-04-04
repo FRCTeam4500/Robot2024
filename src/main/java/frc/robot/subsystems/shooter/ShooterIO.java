@@ -21,7 +21,7 @@ public abstract class ShooterIO extends SubsystemBase implements LoggableInputs 
     public static final double HANDOFF_TILT = -7.0;
     public static final double SUBWOOFER_TILT = 1.5;
     public static final double FAR_TILT = -2.2;
-    public static final double STOW_TILT = -0.5;
+    public static final double STOW_TILT = -1;
     public static final double SOURCE_TILT = 1.4;
 
     public static final double SOURCE_INTAKE_OUTPUT = -0.5;

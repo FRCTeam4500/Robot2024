@@ -295,7 +295,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Ready Source Shot", 
-            shooter.pivot(-4.37)
+            shooter.pivot(-4.6)
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))
         );
@@ -464,12 +464,12 @@ public class Superstructure {
     public Command stow() {
         return intake.zero()
             .andThen(intake.run(IntakeIO.OFF_SPEED))
-            .andThen(telescope.extend(TelescopeIO.STOW))
+            .andThen(shooter.pivot(ShooterIO.STOW_TILT))
             .andThen(climber.extend(ClimberIO.ZERO))
             .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
             .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
             .andThen(Commands.waitSeconds(0.25))
-            .andThen(shooter.pivot(ShooterIO.STOW_TILT));
+            .andThen(telescope.extend(TelescopeIO.STOW));
     }
 
     public Command readyVariableShot() {

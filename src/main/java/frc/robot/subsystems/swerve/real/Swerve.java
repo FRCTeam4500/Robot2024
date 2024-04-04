@@ -127,7 +127,7 @@ public class Swerve extends SwerveIO {
 		double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
 		double trustworthyDistance = 4;
 		boolean speedLimit = 
-			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(0.5, 0.5, 2 * Math.PI)) || 
+			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(6, 6, 2 * Math.PI)) || 
 			!DriverStation.isAutonomous());
 		if (tagVision.seesTag(Camera.Back) && speedLimit && frontTagDist < trustworthyDistance) {	
 			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back), Timer.getFPGATimestamp());
