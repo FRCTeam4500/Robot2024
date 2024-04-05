@@ -488,14 +488,15 @@ public class Superstructure {
     }
 
     public Command stow() {
-        return intake.zero()
+        return shooter.pivot(ShooterIO.HANDOFF_TILT)
+            .andThen(intake.zero())
             .andThen(intake.run(IntakeIO.OFF_SPEED))
-            .andThen(shooter.pivot(ShooterIO.STOW_TILT))
+            .andThen(telescope.extend(TelescopeIO.STOW))
             .andThen(climber.extend(ClimberIO.ZERO))
             .andThen(shooter.spinUp(ShooterIO.OFF_OUTPUT, ShooterIO.OFF_OUTPUT))
             .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
             .andThen(Commands.waitSeconds(0.25))
-            .andThen(telescope.extend(TelescopeIO.STOW));
+            .andThen(shooter.pivot(ShooterIO.STOW_TILT));
     }
 
     public Command readyVariableShot() {
