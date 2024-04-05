@@ -124,17 +124,17 @@ public class Swerve extends SwerveIO {
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
 		double frontTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Back).getTranslation().getNorm();
-		double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
+		// double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
 		double trustworthyDistance = 4;
 		boolean speedLimit = 
-			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(6, 6, 2 * Math.PI)) || 
+			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(1, 1, 2 * Math.PI)) || 
 			!DriverStation.isAutonomous());
 		if (tagVision.seesTag(Camera.Back) && speedLimit && frontTagDist < trustworthyDistance) {	
 			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back), Timer.getFPGATimestamp());
 		}
-		if (tagVision.seesTag(Camera.Front) && speedLimit && backTagDist < trustworthyDistance) {
-			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Front), Timer.getFPGATimestamp());
-		}
+		// if (tagVision.seesTag(Camera.Front) && speedLimit && backTagDist < trustworthyDistance) {
+		// 	poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Front), Timer.getFPGATimestamp());
+		// }
 		field.setRobotPose(getEstimatedPose());
 	}
 
@@ -283,6 +283,12 @@ public class Swerve extends SwerveIO {
 						targetAngle = Rotation2d.fromDegrees(120);
 					else
 						targetAngle = Rotation2d.fromDegrees(60);
+				}
+				else if (xbox.getHID().getBackButton()) {
+					if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue)
+						targetAngle = Rotation2d.fromDegrees(60);
+					else
+						targetAngle = Rotation2d.fromDegrees(120);
 				}
 				else 
 					targetAngle = Rotation2d.fromDegrees(

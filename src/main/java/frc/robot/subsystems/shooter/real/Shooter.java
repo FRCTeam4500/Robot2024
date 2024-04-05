@@ -85,7 +85,7 @@ public class Shooter extends ShooterIO {
                 Alliance me = DriverStation.getAlliance().orElse(Alliance.Blue);
 
                 double distance = currentPose.getTranslation().getDistance(new Translation2d(
-                    me == Alliance.Blue ? -0.5 : 16.75, 5.9
+                    me == Alliance.Blue ? 0 : 15, 5.9
                 ));
 
                 double angle = angleCalculator.get(distance);

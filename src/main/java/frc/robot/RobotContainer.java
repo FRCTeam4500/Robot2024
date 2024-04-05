@@ -61,7 +61,7 @@ public class RobotContainer {
 		faceSpeakerButton.whileTrue(
 			Commands.either(
 				structure.alignToSpeaker(xbox),
-				rumbleCommand(1),
+				rumbleCommand(1).alongWith(structure.angleCentricDrive(xbox)),
 				() -> SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
                     DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9
                 )) < 4.4
@@ -79,7 +79,7 @@ public class RobotContainer {
 		Trigger shootButton = flightSim.button(1).debounce(0.1, DebounceType.kBoth);
 		Trigger intakeButton = flightSim.button(2).debounce(0.1, DebounceType.kBoth);
 		Trigger readyEverywhereButton = flightSim.button(3).debounce(0.1, DebounceType.kBoth);
-		Trigger readySubwooferButton = flightSim.button(4).debounce(0.1, DebounceType.kBoth);
+		Trigger readySubwooferButton = flightSim.povRight().debounce(0.1, DebounceType.kBoth);
 		Trigger readyAmpButton = flightSim.button(5).debounce(0.1, DebounceType.kBoth);
 		Trigger highFerryButton = flightSim.button(6).debounce(0.1, DebounceType.kBoth);
 		Trigger climberDownButton = flightSim.button(7).debounce(0.1, DebounceType.kBoth);

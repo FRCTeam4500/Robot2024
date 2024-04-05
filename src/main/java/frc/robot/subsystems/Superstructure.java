@@ -109,6 +109,34 @@ public class Superstructure {
                 .andThen(shooter.pivot(ShooterIO.FAR_TILT))
         );
         NamedCommands.registerCommand(
+            "Subwoofer Shot + Intake",
+            shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT)
+                .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(shooter.pivot(ShooterIO.SUBWOOFER_TILT))
+                .andThen(intake.tilt(IntakeIO.GROUND_TILT))
+                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.coast())
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(Commands.waitSeconds(1))
+        );
+        NamedCommands.registerCommand(
+            "Close Shot + Intake",
+            shooter.pivot(-2.5)
+                .andThen(intake.run(IntakeIO.OFF_SPEED))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(intake.zero())
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(intake.tilt(IntakeIO.GROUND_TILT))
+                .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+                .andThen(Commands.waitSeconds(0.5))
+                .andThen(intake.coast())
+        );
+        NamedCommands.registerCommand(
             "Finish Intake + Far Shot + Intake",
             intake.zero().raceWith(Commands.waitSeconds(1.512))
                 .andThen(intake.run(IntakeIO.EJECT_SPEED))
@@ -274,8 +302,6 @@ public class Superstructure {
                 .andThen(intake.zero())
                 .andThen(intake.run(IntakeIO.EJECT_SPEED))
                 .andThen(Commands.waitSeconds(1))
-                .andThen(shooter.load(ShooterIO.LOADER_OFF_OUTPUT))
-                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
         );
         NamedCommands.registerCommand(
             "Podium Shot",
