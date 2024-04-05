@@ -508,7 +508,7 @@ public class Superstructure {
     public Command backOut() {
         return shooter.load(0.25)
             .andThen(shooter.spinUp(-0.15, -0.15 ))
-            .andThen(Commands.waitSeconds(0.125))
+            .andThen(Commands.waitSeconds(0.1))
             .andThen(shooter.load(0))
             .andThen(shooter.spinUp(0, 0));
     }
