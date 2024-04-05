@@ -305,7 +305,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Podium Shot",
-            shooter.pivot(-3)
+            shooter.pivot(-2.75)
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))

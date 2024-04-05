@@ -51,7 +51,7 @@ public class Shooter extends ShooterIO {
         rightMotor.getPIDController().setP(0.3);
         tiltMotor.getPIDController().setP(3);
         tiltMotor.getPIDController().setOutputRange(-0.5, 0.3);
-        tiltMotor.setIdleMode(IdleMode.kBrake);
+        tiltMotor.setIdleMode(IdleMode.kCoast);
 
         rightMotor.setSmartCurrentLimit(30);
         leftMotor.setSmartCurrentLimit(30);
@@ -83,10 +83,12 @@ public class Shooter extends ShooterIO {
             () -> {
                 Pose2d currentPose = SwerveIO.getInstance().getEstimatedPose();
                 Alliance me = DriverStation.getAlliance().orElse(Alliance.Blue);
+                System.out.println(me.name());
 
                 double distance = currentPose.getTranslation().getDistance(new Translation2d(
-                    me == Alliance.Blue ? 0 : 15, 5.9
+                    me == Alliance.Blue ? 0 : 16.5, 5.9
                 ));
+                System.out.println(distance);
 
                 double angle = angleCalculator.get(distance);
 
