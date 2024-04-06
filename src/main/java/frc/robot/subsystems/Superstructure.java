@@ -71,7 +71,7 @@ public class Superstructure {
         shooter = ShooterIO.getInstance();
         climber = ClimberIO.getInstance();
         configurePathPlanner();
-        debugToShuffleboard();
+        // debugToShuffleboard();
         SmartDashboard.putData("To Amp", driveToAmp());
         SmartDashboard.putData("To Amp Shot", driveToAmpShot());
         SmartDashboard.putData("To Far Shot", driveToFarShot());
@@ -107,6 +107,10 @@ public class Superstructure {
                 .andThen(Commands.waitSeconds(0.5))
                 .andThen(telescope.extend(TelescopeIO.AUTO))
                 .andThen(shooter.pivot(ShooterIO.FAR_TILT))
+        );
+        NamedCommands.registerCommand(
+            "Ready Roboducks Shot",
+            readyVariableShot().withTimeout(1.5)
         );
         NamedCommands.registerCommand(
             "Subwoofer Shot + Intake",

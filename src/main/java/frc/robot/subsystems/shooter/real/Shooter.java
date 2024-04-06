@@ -85,12 +85,10 @@ public class Shooter extends ShooterIO {
             () -> {
                 Pose2d currentPose = SwerveIO.getInstance().getEstimatedPose();
                 Alliance me = DriverStation.getAlliance().orElse(Alliance.Blue);
-                System.out.println(me.name());
 
                 double distance = currentPose.getTranslation().getDistance(new Translation2d(
                     me == Alliance.Blue ? 0 : 16.5, 5.9
                 ));
-                System.out.println(distance);
 
                 double angle = angleCalculator.get(distance);
 
