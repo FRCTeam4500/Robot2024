@@ -17,7 +17,7 @@ public class AprilTagVision extends AprilTagVisionIO {
 
     public AprilTagVision() {
         back = new Limelight("limelight-hehehe");
-        front = new Limelight("limelight-hihihi"); // Not on robot yet
+        front = new Limelight("limelight-haha"); // Not on robot yet
     }
 
     public boolean seesTag(Camera camera) {

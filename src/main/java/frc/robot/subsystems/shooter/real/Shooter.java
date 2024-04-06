@@ -53,6 +53,8 @@ public class Shooter extends ShooterIO {
         tiltMotor.getPIDController().setOutputRange(-0.5, 0.3);
         tiltMotor.setIdleMode(IdleMode.kCoast);
 
+        loaderMotor.setIdleMode(IdleMode.kBrake);
+
         rightMotor.setSmartCurrentLimit(30);
         leftMotor.setSmartCurrentLimit(30);
         tiltMotor.setSmartCurrentLimit(30);

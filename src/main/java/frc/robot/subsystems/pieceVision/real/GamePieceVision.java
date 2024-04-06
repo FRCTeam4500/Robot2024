@@ -16,7 +16,7 @@ public class GamePieceVision extends GamePieceVisionIO {
     private Limelight limelight;
 
     public GamePieceVision() {
-        limelight = new Limelight("limelight-haha");
+        limelight = new Limelight("limelight-hihihi");
     }
 
     public boolean seesPiece() {

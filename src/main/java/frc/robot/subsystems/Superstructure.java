@@ -295,7 +295,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Amp Shot",
-            shooter.pivot(-3)
+            shooter.pivot(-3.246)
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))
@@ -305,7 +305,7 @@ public class Superstructure {
         );
         NamedCommands.registerCommand(
             "Podium Shot",
-            shooter.pivot(-2.75)
+            shooter.pivot(-3.4)
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))
@@ -501,6 +501,8 @@ public class Superstructure {
 
     public Command readyVariableShot() {
         return shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT)
+            .andThen(shooter.pivot(ShooterIO.HANDOFF_TILT))
+            .andThen(Commands.waitSeconds(0.5))
             .andThen(telescope.extend(TelescopeIO.SHOOTING))
             .andThen(Commands.waitSeconds(0.5))
             .andThen(shooter.autoPivot());
@@ -509,7 +511,7 @@ public class Superstructure {
     public Command backOut() {
         return shooter.load(0.25)
             .andThen(shooter.spinUp(-0.15, -0.15 ))
-            .andThen(Commands.waitSeconds(0.1))
+            .andThen(Commands.waitSeconds(0.11))
             .andThen(shooter.load(0))
             .andThen(shooter.spinUp(0, 0));
     }
