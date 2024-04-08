@@ -83,7 +83,7 @@ public class Limelight {
 	public Optional<Pose2d> getRobotPoseToAlliance(Alliance alliance) {
 		if (!hasValidTargets()) return Optional.empty();
 		return Optional.of(getEntryPose2d(
-			"botpose_wpi" + (alliance == Alliance.Red ? "red" : "blue")
+			"botpose_orb_wpi" + (alliance == Alliance.Red ? "red" : "blue")
 		));
 	}
 

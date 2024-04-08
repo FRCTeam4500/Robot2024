@@ -82,6 +82,9 @@ public class SwerveModule {
 			new Rotation2d(targetVelocityMetersPerSecond * 2 /
 			(config.driveRatio() * config.wheelDiameter()))
 		);
+		driveMotor.setAngularVelocity(Rotation2d.fromRotations(
+			targetVelocityMetersPerSecond / config.wheelDiameter() / Math.PI / config.driveRatio()	
+		));
 	}
 
 	public static record SwerveModuleConfig(Translation2d translation, double wheelDiameter, double driveRatio, double angleRatio) {}
