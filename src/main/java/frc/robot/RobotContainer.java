@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.swerve.SwerveIO;
@@ -22,8 +22,6 @@ public class RobotContainer {
 	private CommandXboxController xbox;
 	private CommandJoystick flightSim;
     private Superstructure structure;
-	private Command autoCommand;
-	private SendableChooser<Command> autonChooser;
 
 	private final int DRIVER_PORT = 2;
 	private final int OPERATOR_PORT = 1;
@@ -37,8 +35,9 @@ public class RobotContainer {
 	}
 
 	private void setupAuto() {
-		autonChooser = AutoBuilder.buildAutoChooser();
-		Shuffleboard.getTab("Display").add(autonChooser);
+		var chooser = AutoBuilder.buildAutoChooser();
+		Shuffleboard.getTab("Display").add(chooser);
+		RobotModeTriggers.autonomous().whileTrue(Commands.deferredProxy(() -> chooser.getSelected()));
 	}
 
 	private void setupDriveController() {
@@ -113,14 +112,5 @@ public class RobotContainer {
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0.5),
 			() -> xbox.getHID().setRumble(RumbleType.kBothRumble, 0)
 		).withTimeout(timeSeconds);
-	}
-
-	public void autonomousInit() {
-		autoCommand = autonChooser.getSelected();
-		if (autoCommand != null) autoCommand.schedule();
-	}
-
-	public void teleopInit() {
-		if (autoCommand != null) autoCommand.cancel();
 	}
 }

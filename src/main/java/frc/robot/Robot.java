@@ -19,28 +19,17 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
-	private RobotContainer robotContainer;
 
 	@Override
 	public void robotInit() {
 		initLogging();
-		robotContainer = new RobotContainer();
+		new RobotContainer();
 		startLogging();
 	}
 
 	@Override
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
-	}
-
-	@Override
-	public void autonomousInit() {
-		robotContainer.autonomousInit();
-	}
-
-	@Override
-	public void teleopInit() {
-		robotContainer.teleopInit();
 	}
 
 	private void initLogging() {
