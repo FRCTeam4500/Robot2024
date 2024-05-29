@@ -2,7 +2,6 @@ package frc.robot.subsystems.pieceVision.real;
 
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -35,7 +34,7 @@ public class GamePieceVision extends GamePieceVisionIO {
 		return new Translation2d(
 			forwardDistance,
 			forwardDistance * Math.tan(
-				getVerticalOffset(new Rotation2d())
+				getHorizontalOffset(new Rotation2d())
 				.getRadians()
 			)
 		);
@@ -58,7 +57,7 @@ public class GamePieceVision extends GamePieceVisionIO {
         table.put("Sees Piece", seesPiece());
         Logger.recordOutput(
             "Piece Translation", 
-            new Pose2d(getTranslation(new Translation2d()), new Rotation2d())
+            getTranslation(new Translation2d())
         );
     }
 

@@ -6,7 +6,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.hardware.Limelight;
 import frc.robot.subsystems.tagVision.AprilTagVisionIO;
 import frc.robot.utilities.ExtendedMath;
@@ -30,18 +29,18 @@ public class AprilTagVision extends AprilTagVisionIO {
 
     public Pose2d getRobotPose(Pose2d defaultPose, Rotation2d currentRotation, Camera camera) {
         getCamera(camera).setRobotRotation(currentRotation);
-		return getRobotPose(defaultPose, Alliance.Blue, camera);
+		return getRobotPose(defaultPose, camera);
 	}
 
-	public Pose2d getRobotPose(Pose2d defaultPose, Alliance poseOrigin, Camera camera) {
+	public Pose2d getRobotPose(Pose2d defaultPose, Camera camera) {
 		return getCamera(camera)
-			.getRobotPoseToAlliance(poseOrigin)
+			.getRobotPoseToAlliance()
 			.orElse(defaultPose);
 	}
 
     public Pose2d getRelativeTagPose(Pose2d defaultPose, Camera camera) {
         if (!seesTag(camera)) return defaultPose;
-		Pose2d backwardsPose = getRobotPose(new Pose2d(), Alliance.Blue, camera)
+		Pose2d backwardsPose = getRobotPose(new Pose2d(), camera)
 			.relativeTo(getTagPose(getTagId(0, camera)));
         return new Pose2d(
             backwardsPose.getTranslation(), 

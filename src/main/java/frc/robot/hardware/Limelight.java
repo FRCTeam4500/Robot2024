@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Limelight {
 	private NetworkTable table;
@@ -80,11 +79,9 @@ public class Limelight {
 		return Optional.of(getEntryPose2d("botpose"));
 	}
 
-	public Optional<Pose2d> getRobotPoseToAlliance(Alliance alliance) {
+	public Optional<Pose2d> getRobotPoseToAlliance() {
 		if (!hasValidTargets()) return Optional.empty();
-		return Optional.of(getEntryPose2d(
-			"botpose_orb_wpi" + (alliance == Alliance.Red ? "red" : "blue")
-		));
+		return Optional.of(getEntryPose2d("botpose_orb_wpiblue"));
 	}
 
 	public Optional<Pose2d> getRobotPoseToTarget() {
