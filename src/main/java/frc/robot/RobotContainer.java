@@ -49,8 +49,6 @@ public class RobotContainer {
 		Trigger alignAmpButton = xbox.rightTrigger();
 		Trigger alignFerryButton = xbox.povDown();
 		Trigger faceSpeakerButton = xbox.b();
-		Trigger alignSourceLeftButton = xbox.povLeft();
-		Trigger alignSourceRightButton = xbox.povRight();
 		Trigger alignPieceButton = xbox.rightBumper();
 
 		cancelAllButton.onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
@@ -59,16 +57,13 @@ public class RobotContainer {
 		alignAmpButton.whileTrue(structure.driveToAmp());
 		faceSpeakerButton.whileTrue(
 			Commands.either(
-				structure.alignToSpeaker(xbox),
-				rumbleCommand(1).alongWith(structure.angleCentricDrive(xbox)),
+				rumbleCommand(1), Commands.none(), 
 				() -> SwerveIO.getInstance().getEstimatedPose().getTranslation().getDistance(new Translation2d(
-                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9
-                )) < 4.4
-			)
+                    DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue ? 0 : 16.5, 5.9)
+				) > 4.4
+			).alongWith(structure.alignToSpeaker(xbox))
 		);
 		structure.hasNote().onTrue(rumbleCommand(1));
-		alignSourceLeftButton.whileTrue(structure.driveToSourceLeft());
-		alignSourceRightButton.whileTrue(structure.driveToSourceRight());
 		alignPieceButton.whileTrue(structure.alignToPiece(xbox));
 	}
 

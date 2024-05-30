@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swerve.real;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -90,7 +91,9 @@ public class Swerve extends SwerveIO {
 			kinematics,
 			gyro.getUnwrappedAngle(),
 			getModulePositions(),
-			tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back)
+			tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back),
+			VecBuilder.fill(0.1, 0.1, 0.1),
+        	VecBuilder.fill(1.9, 1.9, 1.9)
 		);
 		targetAngle = getRobotAngle();
         driveMode = DriveMode.AngleCentric;
@@ -123,18 +126,14 @@ public class Swerve extends SwerveIO {
 		SwerveModulePosition[] modulePositions = getModulePositions();
 		odometry.update(gyroAngle, modulePositions);
 		poseEstimator.update(gyroAngle, modulePositions);
-		double frontTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Back).getTranslation().getNorm();
-		// double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Front).getTranslation().getNorm();
+		double backTagDist = tagVision.getRelativeTagPose(new Pose2d(), Camera.Back).getTranslation().getNorm();
 		double trustworthyDistance = 4;
 		boolean speedLimit = 
 			(ExtendedMath.within(getChassisSpeeds(), new ChassisSpeeds(), new ChassisSpeeds(1, 1, 2 * Math.PI)) || 
 			!DriverStation.isAutonomous());
-		if (tagVision.seesTag(Camera.Back) && speedLimit && frontTagDist < trustworthyDistance) {	
-			poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back), Timer.getFPGATimestamp());
+		if (tagVision.seesTag(Camera.Back) && speedLimit && backTagDist < trustworthyDistance) {	
+			poseEstimator.addVisionMeasurement(new Pose2d(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Back).getTranslation(), getRobotAngle()), Timer.getFPGATimestamp());
 		}
-		// if (tagVision.seesTag(Camera.Front) && speedLimit && backTagDist < trustworthyDistance) {
-		// 	poseEstimator.addVisionMeasurement(tagVision.getRobotPose(new Pose2d(), getRobotAngle(), Camera.Front), Timer.getFPGATimestamp());
-		// }
 		field.setRobotPose(getEstimatedPose());
 	}
 

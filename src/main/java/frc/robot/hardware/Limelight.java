@@ -66,6 +66,11 @@ public class Limelight {
 		return new Pose2d(raw[0], raw[1], Rotation2d.fromDegrees(raw[5]));
 	}
 
+	private Pose2d getMT2EntryPose2d(String key) {
+		double[] raw = table.getEntry(key).getDoubleArray(new double[11]);
+		return new Pose2d(raw[0], raw[1], Rotation2d.fromDegrees(raw[5]));		
+	}
+
 	private void setEntry(String key, Number value) {
 		table.getEntry(key).setNumber(value);
 	}
@@ -81,7 +86,7 @@ public class Limelight {
 
 	public Optional<Pose2d> getRobotPoseToAlliance() {
 		if (!hasValidTargets()) return Optional.empty();
-		return Optional.of(getEntryPose2d("botpose_orb_wpiblue"));
+		return Optional.of(getEntryPose2d("botpose_wpiblue"));
 	}
 
 	public Optional<Pose2d> getRobotPoseToTarget() {
