@@ -49,7 +49,7 @@ public class Robot extends LoggedRobot {
 				Logger.recordMetadata("GitDirty", "Unknown");
 				break;
 		}
-		Logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+		// Logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
 		Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
 		LoggedPowerDistribution.getInstance(1, ModuleType.kRev); // Enables power distribution logging
 		Logger.start();

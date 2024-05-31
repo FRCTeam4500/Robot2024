@@ -1,0 +1,87 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.35,
+      "y": 5.55
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Subwoofer Shot + Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A !Subwoofer to Piece2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Close Shot + Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A Close Shot to Piece 1"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Close Shot + Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A Piece 1 to Close Shot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A Close Shot to Piece 3"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Close Shot + Stow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A Piece 3 to Close Shot"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -141,6 +141,18 @@ public class Superstructure {
                 .andThen(intake.coast())
         );
         NamedCommands.registerCommand(
+            "Close Shot + Stow",
+            shooter.pivot(-2.5)
+                .andThen(intake.run(IntakeIO.OFF_SPEED))
+                .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
+                .andThen(telescope.extend(TelescopeIO.SHOOTING))
+                .andThen(shooter.load(ShooterIO.LOADER_SHOOTING_OUTPUT))
+                .andThen(intake.zero())
+                .andThen(intake.run(IntakeIO.EJECT_SPEED))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(stow())
+        );
+        NamedCommands.registerCommand(
             "Finish Intake + Far Shot + Intake",
             intake.zero().raceWith(Commands.waitSeconds(1.512))
                 .andThen(intake.run(IntakeIO.EJECT_SPEED))
