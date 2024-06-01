@@ -341,6 +341,13 @@ public class Superstructure {
                 .andThen(shooter.spinUp(ShooterIO.SHOOTING_OUTPUT, ShooterIO.SHOOTING_OUTPUT))
                 .andThen(telescope.extend(TelescopeIO.SHOOTING))
         );
+        NamedCommands.registerCommand(
+            "SubShootStow",
+            readySubwooferShot()
+                .andThen(shooter.pivot(0))
+                .andThen(Commands.waitSeconds(1))
+                .andThen(shoot())
+        );
 
     }
 
