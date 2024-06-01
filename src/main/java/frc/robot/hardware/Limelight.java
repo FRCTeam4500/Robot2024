@@ -66,10 +66,10 @@ public class Limelight {
 		return new Pose2d(raw[0], raw[1], Rotation2d.fromDegrees(raw[5]));
 	}
 
-	private Pose2d getMT2EntryPose2d(String key) {
-		double[] raw = table.getEntry(key).getDoubleArray(new double[11]);
-		return new Pose2d(raw[0], raw[1], Rotation2d.fromDegrees(raw[5]));		
-	}
+	// private Pose2d getMT2EntryPose2d(String key) {
+	// 	double[] raw = table.getEntry(key).getDoubleArray(new double[11]);
+	// 	return new Pose2d(raw[0], raw[1], Rotation2d.fromDegrees(raw[5]));		
+	// }
 
 	private void setEntry(String key, Number value) {
 		table.getEntry(key).setNumber(value);
