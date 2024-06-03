@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
@@ -25,10 +26,15 @@ public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
     private Mechanism2d currentMech;
     private MechanismRoot2d root;
     private MechanismLigament2d intakeMech;
+    private DutyCycleEncoder throughBore;
+    public Trigger zeroed;
     public Intake() {
         runMotor = new CANSparkMax(INTAKE_OUTPUT_ID, MotorType.kBrushless);
         tiltMotor = new CANSparkMax(INTAKE_TILT_ID, MotorType.kBrushless);
-
+        throughBore = new DutyCycleEncoder(7);
+        throughBore.setPositionOffset(0);
+        throughBore.reset();
+        
         // Wires are backwards, black is signal, white is ground
         limitSwitch = new DigitalInput(INTAKE_ZEROING_LIMIT_SWITCH_ID);
 
@@ -39,6 +45,12 @@ public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
 
         tiltMotor.setSmartCurrentLimit(30);
         runMotor.setSmartCurrentLimit(30);
+        zeroed = new Trigger(() -> !limitSwitch.get());
+        zeroed.onTrue(Commands.runOnce(() -> {
+            tiltMotor.getEncoder().setPosition(0);
+            throughBore.setPositionOffset(0);
+            throughBore.reset();
+        }).ignoringDisable(true));
 
         currentMech = Superstructure.getCurrentMech();
         root = currentMech.getRoot("Intake Root", 0.4, 0.1);
@@ -46,12 +58,14 @@ public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
         root.append(intakeMech);
     }
 
-    @Override
-    public void periodic() {
-        if (!limitSwitch.get()) {
-            tiltMotor.getEncoder().setPosition(0);
-        }
-    }
+    // @Override
+    // public void periodic() {
+    //     if (!limitSwitch.get()) {
+    //         tiltMotor.getEncoder().setPosition(0);
+    //         throughBore.setPositionOffset(0);
+    //         throughBore.reset();
+    //     }
+    // }
 
     public Command tilt(double angle) {
         return Commands.runOnce(
@@ -89,6 +103,7 @@ public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
         builder.addDoubleProperty("Speed", () -> runMotor.get(), null);
         builder.addDoubleProperty("Velocity", () -> runMotor.getEncoder().getVelocity(), null);
         builder.addDoubleProperty("Tilt", () -> tiltMotor.getEncoder().getPosition(), null);
+        builder.addDoubleProperty("Encoder", () -> throughBore.get(), null);
         builder.addBooleanProperty("Switch", () -> !limitSwitch.get(), null);
     }
 

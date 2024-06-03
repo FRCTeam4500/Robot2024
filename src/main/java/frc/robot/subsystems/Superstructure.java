@@ -71,7 +71,7 @@ public class Superstructure {
         shooter = ShooterIO.getInstance();
         climber = ClimberIO.getInstance();
         configurePathPlanner();
-        // debugToShuffleboard();
+        debugToShuffleboard();
         SmartDashboard.putData("To Amp", driveToAmp());
         SmartDashboard.putData("To Amp Shot", driveToAmpShot());
         SmartDashboard.putData("To Far Shot", driveToFarShot());
