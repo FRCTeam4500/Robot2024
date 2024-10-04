@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.intake.real.Intake;
+import frc.robot.subsystems.intake.real.IntakeThroughBore;
 import frc.robot.subsystems.intake.sim.IntakeSim;
 
 public abstract class IntakeIO extends SubsystemBase implements LoggableInputs {
     private static IntakeIO instance;
     public static synchronized IntakeIO getInstance() {
-        if (instance == null && RobotBase.isReal()) instance = new Intake();
+        if (instance == null && RobotBase.isReal()) instance = new IntakeThroughBore();
         if (instance == null && !RobotBase.isReal()) instance = new IntakeSim();
         return instance;
     }

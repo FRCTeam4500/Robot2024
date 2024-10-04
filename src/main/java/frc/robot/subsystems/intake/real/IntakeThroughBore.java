@@ -8,9 +8,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -36,7 +38,7 @@ public class IntakeThroughBore extends IntakeIO {
         mech = new MechanismLigament2d("Intake State", 0/4, 0.1);
         MechanismRoot2d root = Superstructure.getCurrentMech().getRoot("Intake Root", 0.3, 45);
         root.append(mech);
-        pid = new PIDController(5, 0, 0);
+        pid = new PIDController(28, 0, 0);
         tracking = false;
         wasTracking = false;
         target = 0;
@@ -50,6 +52,8 @@ public class IntakeThroughBore extends IntakeIO {
         table.put("Output", runMotor.get());
         table.put("Tilt", throughBore.get());
         table.put("Target", target);
+        table.put("Tracking", tracking);
+        table.put("Was tracking", wasTracking);
         mech.setAngle(45 - 360 * throughBore.get());
     }
 
@@ -63,10 +67,26 @@ public class IntakeThroughBore extends IntakeIO {
             throughBore.reset();
         }
         if (tracking) {
-            tiltMotor.setVoltage(pid.calculate(throughBore.get(), target));
+            if (throughBore.get() < 0.05) {
+                tiltMotor.setVoltage(-3);
+                SmartDashboard.putBoolean("Going slow!", true);
+            } else {
+                tiltMotor.setVoltage(-pid.calculate(throughBore.get(), target));
+                SmartDashboard.putBoolean("Going slow!", false);
+            }
             wasTracking = true;
         } else if (wasTracking) {
             wasTracking = false;
+            tiltMotor.setVoltage(0);
+            SmartDashboard.putBoolean("Going slow!", false);
+
+        } else {
+            SmartDashboard.putBoolean("Going slow!", false);
+        }
+        if (DriverStation.isDisabled()) {
+            wasTracking = false;
+            tracking = false;
+            target = 0;
             tiltMotor.setVoltage(0);
         }
     }
@@ -75,7 +95,7 @@ public class IntakeThroughBore extends IntakeIO {
     public Command tilt(double tilt) {
         return Commands.runOnce(() -> {
             tracking = true;
-            target = tilt;
+            target = .42;
         }, this);
     }
 
@@ -103,7 +123,7 @@ public class IntakeThroughBore extends IntakeIO {
     @Override
     public Trigger hasNote() {
         return new Trigger(
-            () -> throughBore.get() > 0.5 && runMotor.getEncoder().getVelocity() < 100
+            () -> throughBore.get() > 0.2 && runMotor.getEncoder().getVelocity() < 100
         );
     }
 
