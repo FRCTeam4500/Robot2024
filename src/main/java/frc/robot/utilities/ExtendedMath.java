@@ -246,7 +246,7 @@ public class ExtendedMath {
 
 	public static Rotation2d getSpeakerAngle(Translation2d current, Alliance currentAlliance) {
 		return new Translation2d(
-			currentAlliance == Alliance.Blue ? 0 : 16, 5.975
+			currentAlliance == Alliance.Blue ? 0 : 16, 6.1
 		).minus(current).getAngle().plus(Rotation2d.fromDegrees(180));
 	}
 

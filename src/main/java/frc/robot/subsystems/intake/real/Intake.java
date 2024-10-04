@@ -19,7 +19,8 @@ import static frc.robot.CANConstants.*;
 
 import org.littletonrobotics.junction.LogTable;
 
-public class Intake extends IntakeIO {private CANSparkMax tiltMotor;
+public class Intake extends IntakeIO {
+    private CANSparkMax tiltMotor;
     private CANSparkMax runMotor;
     private DigitalInput limitSwitch;
     private Mechanism2d currentMech;
