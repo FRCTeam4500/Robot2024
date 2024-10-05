@@ -128,6 +128,11 @@ public class IntakeThroughBore extends IntakeIO {
     }
 
     @Override
+    public Trigger intakeDown() {
+        return new Trigger(() -> throughBore.get() > 0.35);
+    }
+
+    @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Speed", () -> runMotor.get(), null);
         builder.addDoubleProperty("Velocity", () -> runMotor.getEncoder().getVelocity(), null);

@@ -478,12 +478,21 @@ public class Superstructure {
             .andThen(stow());
     }
 
+    // public Command startIntake() {
+    //     return shooter.pivot(ShooterIO.HANDOFF_TILT)
+    //         .andThen(Commands.waitSeconds(0.3))
+    //         .andThen(intake.tilt(IntakeIO.GROUND_TILT))
+    //         .andThen(intake.run(IntakeIO.PICKUP_SPEED))
+    //         .andThen(Commands.waitSeconds(0.75))
+    //         .andThen(intake.coast());
+    // }
+
     public Command startIntake() {
         return shooter.pivot(ShooterIO.HANDOFF_TILT)
             .andThen(Commands.waitSeconds(0.3))
             .andThen(intake.tilt(IntakeIO.GROUND_TILT))
             .andThen(intake.run(IntakeIO.PICKUP_SPEED))
-            .andThen(Commands.waitSeconds(0.75))
+            .andThen(Commands.waitUntil(intake.intakeDown()))
             .andThen(intake.coast());
     }
 

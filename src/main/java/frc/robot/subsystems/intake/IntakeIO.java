@@ -20,7 +20,7 @@ public abstract class IntakeIO extends SubsystemBase implements LoggableInputs {
 
     public static final double GROUND_TILT = -30;
     public static final double EJECT_SPEED = -1;
-    public static final double PICKUP_SPEED = 0.5;
+    public static final double PICKUP_SPEED = 0.4;
     public static final double OFF_SPEED = 0.0;
 
     public abstract Command tilt(double tilt);
@@ -28,6 +28,7 @@ public abstract class IntakeIO extends SubsystemBase implements LoggableInputs {
     public abstract Command run(double output);
     public abstract Command coast();
     public abstract Trigger hasNote();
+    public abstract Trigger intakeDown();
     public abstract void initSendable(SendableBuilder builder);
 
 }

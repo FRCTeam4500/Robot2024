@@ -66,5 +66,10 @@ public class IntakeSim extends IntakeIO {
         builder.addDoubleProperty("Tilt", () -> currentTilt, null);
         builder.addDoubleProperty("Output", () -> currentOutput, null);
     }
+
+    @Override
+    public Trigger intakeDown() {
+        return new Trigger(() -> true);
+    }
     
 }

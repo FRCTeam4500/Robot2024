@@ -86,6 +86,11 @@ public class Intake extends IntakeIO {
     }
 
     @Override
+    public Trigger intakeDown() {
+        return new Trigger(() -> true);
+    }
+
+    @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Speed", () -> runMotor.get(), null);
         builder.addDoubleProperty("Velocity", () -> runMotor.getEncoder().getVelocity(), null);
